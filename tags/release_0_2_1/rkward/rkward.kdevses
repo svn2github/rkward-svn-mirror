@@ -1,0 +1,62 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE KDevPrjSession>
+<KDevPrjSession>
+ <LastCompileConfig>(Default)</LastCompileConfig>
+ <Mainframe MaximizeMode="1" />
+ <DocsAndViews NumberOfDocuments="6" >
+  <Doc0 NumberOfViews="1" URL="file:/home/thomas/develop/rkward/rkward/rkwarddoc.cpp" >
+   <View0 line="209" Type="???" >
+    <AdditionalSettings Top="2" Width="954" Attach="1" Height="514" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:/home/thomas/develop/rkward/rkward/twintable.cpp" >
+   <View0 line="38" Type="???" >
+    <AdditionalSettings Top="2" Width="954" Attach="1" Height="514" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc1>
+  <Doc2 NumberOfViews="1" URL="file:/home/thomas/develop/rkward/rkward/twintable.h" >
+   <View0 line="79" Type="???" >
+    <AdditionalSettings Top="2" Width="954" Attach="1" Height="514" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:/home/thomas/develop/rkward/rkward/twintablemember.h" >
+   <View0 line="42" Type="???" >
+    <AdditionalSettings Top="2" Width="954" Attach="1" Height="514" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:/home/thomas/develop/rkward/rkward/twintablemember.cpp" >
+   <View0 line="0" Type="???" >
+    <AdditionalSettings Top="2" Width="954" Attach="1" Height="514" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:/home/thomas/develop/rkward/rkward/rkwarddoc.h" >
+   <View0 line="0" Type="???" >
+    <AdditionalSettings Top="2" Width="954" Attach="1" Height="514" Left="2" MinMaxMode="0" />
+   </View0>
+  </Doc5>
+ </DocsAndViews>
+ <pluginList>
+  <kdevbookmarks>
+   <bookmarks>
+    <bookmark url="/home/thomas/develop/rkward/rkward/plugins/code.php" >
+     <mark line="48" />
+    </bookmark>
+    <bookmark url="/home/thomas/develop/rkward/rkward/rksettings.cpp" >
+     <mark line="106" />
+    </bookmark>
+   </bookmarks>
+  </kdevbookmarks>
+  <kdevsubversion>
+   <subversion recurseresolve="1" recurserelocate="1" recursemerge="1" recursecommit="1" base="" recursepropget="1" recurseswitch="1" recurseupdate="1" recursepropset="1" recursediff="1" recurserevert="1" forcemove="1" recursecheckout="1" forceremove="1" recurseadd="1" recurseproplist="1" forcemerge="1" />
+  </kdevsubversion>
+  <kdevvalgrind>
+   <executable path="" params="" />
+   <valgrind path="" params="" />
+  </kdevvalgrind>
+  <kdevdebugger>
+   <breakpointList>
+    <breakpoint0 location="/home/thomas/develop/rkward/rkward/phpbackend.cpp:228" type="1" condition="" enabled="1" />
+   </breakpointList>
+  </kdevdebugger>
+ </pluginList>
+</KDevPrjSession>
