@@ -1,0 +1,52 @@
+The following list of TODO-items is NOT complete!
+Also, plans change frequently. If something is listed for a specific release, that's no more than a rough plan.
+
+stuff to do before 0.2.9 release
+
+stuff to do before 0.3.0 release
+- dataeditor
+	- add formatting options
+- plugins (general)
+	- rework structure (directory layout) of plugin definitions
+	- add import-filter plugins
+	- add component-wrapper and allow embedded plugins
+	- add preliminary image generation
+- on exit, check whether there are still RCommands left in the backend and wait/request user-interaction before tearing down the thread. After all, the last command might have been a "save"!
+- error-handling/raising in .rk.do.call
+- pick some from below:
+
+(relatively) small stuff to do soon
+- Twintable/RKEditorDataFrame
+	- merge the two classes
+	- more efficient syncing: fetch only the values actually needed instead of the whole table
+- Object editing / modification tracking:
+	- functions to set double/int/string-vectors directly. Use in paste-operations
+- RKVariable:
+	- use QIntDict instead of string-map for value-labels / factor levels?
+- change EditLabelsDialog to use a small QTable? Probably a lot easier / straightforward to use
+- plugins (general)
+	- add more plugin-widgets
+	- setValue-API for plugin-widgets and copying of values when switching from wizard to dialog-interface
+	- improve and use debugging framework
+	- cleanup label-mess for plugin-widgets
+	- setEnabled (), setVisible ()-API (trivial, once the plugin-widgets are QWidgets)
+	- add XML-parsing helper functions and error-checking
+- formula-widget:
+	- use smart sorting, esp. of generated string
+	- add labels, add "up to level" option
+	- add constant term option
+- create a spinbox, that can really deal with real numbers
+- UNPROTECT_PTR
+- use RKGlobals::marginHint (), RKGlobals::spacingHint () everywhere
+- give informative feedback on syntax errors (line numbers, etc.)!
+
+stuff to do before the thing is usable
+- RKWatch
+	- use a cool new RHistory-Widget for the watch
+	- maybe keep an (optional) log of RCommands
+- add a help-system
+- add MDI-framework
+- mostly everything
+
+stuff to do before a 1.0 release
+- handle graphics
