@@ -1,0 +1,42 @@
+The following list of TODO-items is NOT complete!
+
+stuff to do before 0.2.5 release
+- 
+
+(relatively) small stuff to do soon
+- merge common functionality of RObjectBrowser and RKVarselector into a base of some sort
+- update RKVarselectors on changes in the object-list!
+- use a friendly startup-dialog instead of opening an empty table unconditionally
+- plugins-scanning: don't duplicate everything
+- add more plugin-widgets
+- setValue-API for plugin-widgets and copying of values when switching from wizard to dialog-interface
+- improve and use debugging framework
+- cleanup label-mess for plugin-widgets
+- formula-widget:
+	- use smart sorting, esp. of generated string
+	- add labels, add "up to level" option
+	- add constant term option
+- Object editing / modification tracking:
+	- keep pointer to editor with objects instead of modification information
+	- maybe make objects assume own responsibility for syncing their data
+	- maybe store data directly with objects
+	- functions to set double/int/string-vectors directly
+- add XML-parsing helper functions and error-checking
+- create a spinbox, that can really deal with real numbers
+- create DemonDialogs that notify the user what's going on and potentially request further actions, if an action is to be carried out in the
+	R backend that might potentially fail or require user interaction (asynchronously)
+
+stuff to do before the thing is usable
+- RKWatch
+	- use a cool new RHistory-Widget for the watch
+	- discard RCommand-data that is not needed in the history
+	- access to (command) editor-settings
+	- load / save / spawn as separate editor ...
+- add a help-system
+- support for multiple tables/data.frames
+- mostly everything
+- calls from R to RKWard
+	- using TCP-sockets?
+
+stuff to do before a 1.0 release
+- handle graphics

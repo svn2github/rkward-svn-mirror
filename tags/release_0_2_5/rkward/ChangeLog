@@ -1,0 +1,60 @@
+--- Version 0.2.5 - Aug-24-2004 ---
+- added simple viewer for R-objects
+- added simple browser for objects in the R-workspace
+- allow deletion of columns/objects (finally)
+- allow editing and using several objects/tables
+- added command-line parameter "debug-level"
+- interpret command-line parameter "file"
+- save and restore size of the main window correctly
+- use internal representation of object-tree in the R-workspace
+- store meta-information (labels, etc.) as R-attributes
+- keep track of whether the windows (watch, output) are open
+- new method of access to objects in R: getIntVector
+- use some "global" static pointers instead of passing them around (e.g. for the r-interface)
+- reorganized sources: now using subdirectories for most components
+
+--- Version 0.2.2 - Aug-15-2004 ---
+- added an improved kate syntax-highlighting definition for R
+- output-formatting is done in R instead of PHP
+- added a formula widget for use in plugins (not entirely finished, yet)
+- fixed some small compilation problems
+- added spinbox widget for use in plugins
+- use coloring for "unsatisfied" plugin widgets instead of the "Problems" display
+- added support for wizard-like plugins
+- same plugin can be opened several times at once
+- use katepart for plugin code view, too
+
+--- Version 0.2.1 - Aug-08-2004 ---
+- added "don't show again" setting to initial warning
+- added correlation matrix plugin
+- ask for R_HOME-setting if not availalbe at startup
+- allow direct (read) access of vectors in R
+- support for selection of multiple variables at once
+- use a katepart as the command-editor (provides basic syntax-highlighting)
+- plugins can use a tabbook-layout
+- display status of R-process in the statusbar
+- R-backend allows chains of commands that are guaranteed to be run without other intermitting commands
+- run R in a separate thread
+
+--- Version 0.2.0 - Aug-01-2004 ---
+- Use a PHP-backend for the plugins
+- Run R embedded (currently synchronous)
+- Some changes in plugin-creation
+- Use pretty HTML-output
+- got rid of ui-files
+- added descriptive statistics plugin
+- lots of small changes I didn't document properly
+
+--- Version 0.1.0 - Nov-19-2002 ---
+- Initial features:
+- A simple backend-interface communicating with R via stdin/stdout
+- Asynchronous command stack
+- A simple window for watching communication with R
+- Ability to issue commands manually
+- Editor window including meta information on the variables
+- Copy-and-Paste with some quirks
+- highlighting of invalid data
+- load/save of R-workspace (load only works for RKWard data)
+- Automatic generation of menu-structure and plugin-dialogs from XML-files
+- Supported plugin widgets: textfield, variable-selector, variable-slot, radiobuttons
+- independent samples t-test plugin
