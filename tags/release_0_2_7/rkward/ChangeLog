@@ -1,0 +1,101 @@
+--- Version 0.2.7 - Sep-02-2004
+- several compilation fixes for KDE/Qt < 3.2.x (and maybe some new ones were introduced?)
+- slight reorganization of menus
+- added menu option to close all editor windows
+- some improvements in the editing behavior for the table. Some quirks still present
+- renamed windows
+- fixed some typos
+- set initial minimum sizes for object browser and object viewer windows
+- don't show all windows on startup
+- ask whether to save current workspace before loading a new one
+- added command-line option to set, which components to show debug-messages for
+- added option(s) to show/raise watch-window when new commands get displayed
+- formula-widget handles multiple table situation correctly
+- RKVarselector and RKObjectBrowser use a common base class for the list view
+- RKVarselector and dependent widgets get updated when objects get added/removed/modified
+- prevent conversion to factors when creating data.frames for now
+- variables can be added/removed correctly in the data.frame editor. Those changes are propagated to the RObjectBrowser automatically
+- synchronisation from the GUI to the R-workspace is done immediately
+- added ability to spawn separate command-editor window(s) with load/save/print/etc.
+- command-editor part in the watch-window keeps keyboard focus (most of the time)
+
+--- Version 0.2.6a - Aug-30-2004
+- synchronize edited objects before "View"ing them
+- fix small typo
+- quick-and-dirty fix for problem with objects in a new table (e.g. "my.data") never getting synced
+
+--- Version 0.2.6 - Aug-29-2004
+- added error-handling to workspace saving
+- ask whether to save workspace on application quit
+- added menu-entries to clear output-window and watch-log
+- don't duplicate menu-entries when plugins get re-scanned
+- place "Analyse"-menu left of help-menu
+- converted plugins to rely entirely on R for formatting, i.e. the printout ()-section contains pure R-code only
+- wizard-interface is set as default for plugins
+- added access to kate-config dialog in the command-editor part of the interface watch
+- added configuration settings for which types of commands to show in the interface watch
+- added a nice startup-dialog instead of creating an emtpy table unconditionally
+- limit size of upper-half in the data.frame editor
+- added convenience R-library: used to streamline communication with R
+- fix against data being synced over and over again
+
+--- Version 0.2.5 - Aug-24-2004 ---
+- added simple viewer for R-objects
+- added simple browser for objects in the R-workspace
+- allow deletion of columns/objects (finally)
+- allow editing and using several objects/tables
+- added command-line parameter "debug-level"
+- interpret command-line parameter "file"
+- save and restore size of the main window correctly
+- use internal representation of object-tree in the R-workspace
+- store meta-information (labels, etc.) as R-attributes
+- keep track of whether the windows (watch, output) are open
+- new method of access to objects in R: getIntVector
+- use some "global" static pointers instead of passing them around (e.g. for the r-interface)
+- reorganized sources: now using subdirectories for most components
+
+--- Version 0.2.2 - Aug-15-2004 ---
+- added an improved kate syntax-highlighting definition for R
+- output-formatting is done in R instead of PHP
+- added a formula widget for use in plugins (not entirely finished, yet)
+- fixed some small compilation problems
+- added spinbox widget for use in plugins
+- use coloring for "unsatisfied" plugin widgets instead of the "Problems" display
+- added support for wizard-like plugins
+- same plugin can be opened several times at once
+- use katepart for plugin code view, too
+
+--- Version 0.2.1 - Aug-08-2004 ---
+- added "don't show again" setting to initial warning
+- added correlation matrix plugin
+- ask for R_HOME-setting if not availalbe at startup
+- allow direct (read) access of vectors in R
+- support for selection of multiple variables at once
+- use a katepart as the command-editor (provides basic syntax-highlighting)
+- plugins can use a tabbook-layout
+- display status of R-process in the statusbar
+- R-backend allows chains of commands that are guaranteed to be run without other intermitting commands
+- run R in a separate thread
+
+--- Version 0.2.0 - Aug-01-2004 ---
+- Use a PHP-backend for the plugins
+- Run R embedded (currently synchronous)
+- Some changes in plugin-creation
+- Use pretty HTML-output
+- got rid of ui-files
+- added descriptive statistics plugin
+- lots of small changes I didn't document properly
+
+--- Version 0.1.0 - Nov-19-2002 ---
+- Initial features:
+- A simple backend-interface communicating with R via stdin/stdout
+- Asynchronous command stack
+- A simple window for watching communication with R
+- Ability to issue commands manually
+- Editor window including meta information on the variables
+- Copy-and-Paste with some quirks
+- highlighting of invalid data
+- load/save of R-workspace (load only works for RKWard data)
+- Automatic generation of menu-structure and plugin-dialogs from XML-files
+- Supported plugin widgets: textfield, variable-selector, variable-slot, radiobuttons
+- independent samples t-test plugin
