@@ -1,0 +1,35 @@
+The following list of TODO-items is NOT complete!
+
+stuff to do before 0.2.2 release
+
+small stuff to do soon
+- plugins-scanning: don't duplicate everything
+- rework plugin-XML-format
+- add more plugin-widgets
+- setValue-API for plugin-widgets and copying of values when switching from wizard to dialog-interface
+- improve and use debugging framework
+- cleanup label-mess for plugin-widgets
+- formula-widget:
+	- use smart sorting, esp. of generated string
+	- add labels, add "up to level" option
+	- add constant term option
+
+mid-term stuff
+- add XML-parsing helper functions and error-checking
+- restructure source-layout
+- create a spinbox, that can really deal with real numbers
+
+stuff to do before the thing is usable
+- RKWatch
+	- use a cool new RHistory-Widget for the watch
+	- discard RCommand-data that is not needed in the history
+	- access to (command) editor-settings
+	- load / save / spawn as separate editor ...
+- add a help-system
+- support for multiple tables/data.frames
+- mostly everything
+- calls from R to RKWard
+	- using TCP-sockets?
+
+stuff to do before a 1.0 release
+- handle graphics
