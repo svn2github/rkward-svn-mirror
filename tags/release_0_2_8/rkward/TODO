@@ -1,0 +1,45 @@
+The following list of TODO-items is NOT complete!
+Also, plans change frequently. If something is listed for a specific release, that's no more than a rough plan.
+
+stuff to do before 0.2.9 release
+- Twintable/RKEditorDataFrame
+	- merge the two classes
+	- rework type-select cell (actually all cells have to be reworked, but the type-select cell is worst)
+	- rework table not to keep QTableItems around for all cells; store data efficiently
+	- more efficient syncing: fetch only the values actually needed instead of the whole table
+- Object editing / modification tracking:
+	- maybe store data directly with objects? Probably not.
+	- functions to set double/int/string-vectors directly. Use in paste-operations
+- convert plugin-widgets to QWidgets instead of QLayouts
+- error-handling/raising in .rk.do.call
+- pick some from below:
+
+(relatively) small stuff to do soon
+- add more plugin-widgets
+- setValue-API for plugin-widgets and copying of values when switching from wizard to dialog-interface
+- improve and use debugging framework
+- cleanup label-mess for plugin-widgets
+- add component-wrapper and allow embedded plugins
+- setEnabled (), setVisible ()-API (trivial, once the plugin-widgets are QWidgets)
+- formula-widget:
+	- use smart sorting, esp. of generated string
+	- add labels, add "up to level" option
+	- add constant term option
+- add XML-parsing helper functions and error-checking
+- create a spinbox, that can really deal with real numbers
+- UNPROTECT_PTR
+- KDialog::marginHint (), KDialog::spacingHint ()
+- give informative feedback on syntax errors (line numbers, etc.)!
+- GUI for installation/updating of packages
+	- show on failed require ()
+
+stuff to do before the thing is usable
+- RKWatch
+	- use a cool new RHistory-Widget for the watch
+	- maybe keep an (optional) log of RCommands
+- add a help-system
+- add MDI-framework
+- mostly everything
+
+stuff to do before a 1.0 release
+- handle graphics
