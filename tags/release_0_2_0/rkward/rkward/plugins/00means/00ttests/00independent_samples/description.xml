@@ -1,0 +1,28 @@
+<!DOCTYPE rkplugin>
+
+<!-- This is a simple example, of how a "plugin" might be configured. -->
+
+<document>
+	<entry type="entry" id="istt" label="Independed Samples T-Test"/>
+
+<!-- The layout-section takes care of the layout of the GUI for this plugin. -->
+
+	<layout>
+		<row>
+			<column>
+				<varselector id="vars"/>
+			</column>
+			<column>
+				<varslot type="numeric" id="x" source="vars" required="true" label="compare"/>
+				<varslot type="numeric" id="y" source="vars" required="true" label="against"/>
+				<radio id="hypothesis" label="using test hypothesis">
+					<option value="two.sided" label="Two-sided"/>
+					<option value="greater" label="First is greater"/>
+					<option value="less" label="Second is greater"/>
+				</radio>
+				<checkbox id="varequal" label="assume equal variances" value="TRUE"/>
+			</column>
+		</row>
+	</layout>
+	
+</document>
