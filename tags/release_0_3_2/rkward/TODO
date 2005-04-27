@@ -1,0 +1,70 @@
+The following list of TODO-items is NOT complete!
+Also, plans change frequently. If something is listed for a specific release, that's no more than a rough plan.
+
+Little annoying stuff:
+- fix flickering when one uses arrows in the console
+- auto refresh output + auto scroll at the bottom
+- add an example to show rkward-specific commands (rk.print, rk.graph)
+- instead of delete RObject, call RObject::deleteThis () and check for deleted in rCommandDone ()?
+
+stuff to do before 0.3.2 release
+- plugins (general)
+	- rework structure (directory layout) of plugin definitions
+	- add import-filter plugins
+	- add component-wrapper and allow embedded plugins
+	- add preliminary image generation
+- on exit, check whether there are still RCommands left in the backend and wait/request user-interaction before tearing down the thread. After all, the last command might have been a "save"!
+- error-handling/raising in .rk.do.call
+- pick some from below:
+
+code cleanups
+- I've changed the simple RInterface::issueCommand (QString, ...) command to return a pointer to the RCommand created. This will allow for lots of small cleanups. Do them.
+	- well, on second thought, it might be better to rely more on RCommand::id () instead of pointers. Why? The id is unique (until integer overflow). The pointer may be reused after a delete -> potential problem when trying to cancel command which is actually already deleted (and potentially other cases)
+	- let's set this back for a while
+
+API documentation:
+- add page containing a rough overview of general architecture
+- include protected (and maybe even private) members in API-documentation (this is not a library, after all)
+
+(relatively) small stuff to do soon
+- Twintable/RKEditorDataFrame
+	- merge the two classes
+	- more efficient syncing: fetch only the values actually needed instead of the whole table
+	- make configurable:
+		- invalid color (global and per variable)
+		- unused color (global and per variable)
+		- default alignment (per var type)
+		- default precision
+		- display of factor level labels (global and per variable)
+		- delay of factor-level popup
+	- highlighting of value ranges
+- Object editing / modification tracking:
+	- functions to set double/int/string-vectors directly. Use in paste-operations
+- RKVariable:
+	- use QIntDict instead of string-map for value-labels / factor levels?
+- change EditLabelsDialog to use a small QTable? Probably a lot easier / straightforward to use
+- plugins (general)
+	- add more plugin-widgets
+	- setValue-API for plugin-widgets and copying of values when switching from wizard to dialog-interface
+	- improve and use debugging framework
+	- cleanup label-mess for plugin-widgets
+	- setEnabled (), setVisible ()-API (trivial, once the plugin-widgets are QWidgets)
+	- add XML-parsing helper functions and error-checking
+- formula-widget:
+	- use smart sorting, esp. of generated string
+	- add labels, add "up to level" option
+	- add constant term option
+- create a spinbox, that can really deal with real numbers
+- UNPROTECT_PTR
+- use RKGlobals::marginHint (), RKGlobals::spacingHint () everywhere
+- give informative feedback on syntax errors (line numbers, etc.)!
+
+stuff to do before the thing is usable
+- RKWatch
+	- use a cool new RHistory-Widget for the watch
+	- maybe keep an (optional) log of RCommands
+- add a help-system
+- mostly everything
+
+stuff to do before a 1.0 release
+- handle graphics
