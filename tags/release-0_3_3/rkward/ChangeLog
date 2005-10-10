@@ -1,0 +1,194 @@
+--- Version 0.3.3 - Oct-06-2005
+- honor debug-level setting everywhere
+- reworked handling of output from R (no more file-sinks)
+- fix display of warning messages (behavior does not match plain R, yet, but is mostly sane)
+- option to change list of package repositories
+- option to archive downloaded packages
+- assorted bugfixes
+- provide context/function help for the console
+- output-window has been switched to KPart-infrastructure
+- command-editor has been switched to KPart-infrastructure completely
+- data-editor uses KPart-infrastructure (better integration)
+- override standard callbacks used by R for ReadConsole, ShowFiles, EditFile(s), ChooseFile, Suicide, CleanUp. No more reliance on stdin
+- some cleanups of dead code
+- plugins can now be placed in different menus
+- keep list of components/plugins and menu-hierarchy in (few) .pluginmap files instead of parsing directory structure
+- improved handling of tcltk windows
+- new icon
+- decrease default debug level
+- don't crash when objects change their type from vector to list/data.frame, etc.
+- graph-creation no longer relies on (removable) R objects (can graph after loading a workspace)
+
+--- Version 0.3.2 - Apr-27-2005
+- overloaded require works properly with character.only=FALSE
+- several API documentation improvement
+- hidden objects get shown/hidden according to configuration setting
+- settings dialog honors KDE-button order
+- R's x11 windows now handle their events (x11-device is now usable)
+- fixed bug in the output (no update on empty output)
+- paste in the console is properly handled
+- r console and command log divorced
+- console can handle incomplete statements (allowing multi-line input)
+- fixed silly crash on incomplete statements
+- updated spanish translation
+- new plugin (graph)
+- reworked the interface to use kparts properly
+
+--- Version 0.3.1 - Mar-26-2005
+- added the possibility to unable widget in plugins.
+- added a new plugin (basic statistics)
+- added icons in the object browser
+- using IDEAI dock mode style
+- new, console-like widget to enter commands manually.
+- added a class to show html help in an mdi child
+- added a new dock to search R help
+- many changes in labels
+- fixed: bug that prevented RKWard to build on some systems
+- added R functions to show graphs in the html output and to print objects (using E. Lecoutre's R2HTML)
+- use a KHTML part to show output (instead of the qt widget)
+
+--- Version 0.3.0 - Nov-12-2004
+- added french and italian translations
+- added toolbars and some icons
+- some small i18n fixes
+- rework of user interface (now using KMDI and IDEAl mode)
+- compilation fix for R 2.0
+- added basic per variable formatting options in the data editor (alignment, precision)
+- fixed: cell last edited did not react to single mouse click
+- fixed: switched to line below after a new row was automatically added
+- fixed: cursor right did not move to next cell when editing last (active) column
+- while editing, tab-key moves to next cell
+
+--- Version 0.2.9 - Sep-22-2004
+- use KDialog::marginHint () and KDialog::spacingHint () in plugins
+- fixed a crash in the formula widget
+- converted plugin element to QWidgets (in preparation for more extensive rework of plugin elements)
+- almost complete rework of data editor
+- added edit support for factors
+- added support for editing factor levels
+- data editor stores data more efficiently
+- renaming columns in a data.frame does not change their position in the frame
+- recursively remove children of removed objects (fixes one of probably many memory leaks)
+- wait for backend-thread to terminate on exit. Avoids crashes when closing RKWard
+- do not crash if loading the "rkward" R package fails, but rather display a nice error-message
+
+--- Version 0.2.8 - Sep-09-2004
+- override for require () to show install-packages dialog, if required package is not installed.
+- Dialog to load/unload packages, update and install packages from CRAN
+- added capability to cancel commands (not properly integrated in the GUI, yet)
+- basic name checking for objects added or renamed by the user
+- remove uneccessary blank are below menu in R-Console window
+- fix R process busy/idle display
+- show error message if loading workspace fails
+- do not ask for save, if workspace is empty
+- results of user-commands get printed if not invisible (i.e. just like in a regular R session)
+- provide at least basic feedback on syntax errors
+- added communication channel from R-backend to RKWard. Initial features:
+	- checking for errors setting up the connection
+	- simple rk.sync for synchronisation of objects modified in the R workspace
+	- rk.get.tempfile.name for generation of a suitable temporary file (e.g. for storing images)
+	- allows for in-place execution of commands or scheduling of commands in the regular stack
+- auto addition of rows/columns when typing on last row/column
+- allow deletion of rows without losing meta-data
+
+--- Version 0.2.7 - Sep-02-2004
+- several compilation fixes for KDE/Qt < 3.2.x (and maybe some new ones were introduced?)
+- slight reorganization of menus
+- added menu option to close all editor windows
+- some improvements in the editing behavior for the table. Some quirks still present
+- renamed windows
+- fixed some typos
+- set initial minimum sizes for object browser and object viewer windows
+- don't show all windows on startup
+- ask whether to save current workspace before loading a new one
+- added command-line option to set, which components to show debug-messages for
+- added option(s) to show/raise watch-window when new commands get displayed
+- formula-widget handles multiple table situation correctly
+- RKVarselector and RKObjectBrowser use a common base class for the list view
+- RKVarselector and dependent widgets get updated when objects get added/removed/modified
+- prevent conversion to factors when creating data.frames for now
+- variables can be added/removed correctly in the data.frame editor. Those changes are propagated to the RObjectBrowser automatically
+- synchronisation from the GUI to the R-workspace is done immediately
+- added ability to spawn separate command-editor window(s) with load/save/print/etc.
+- command-editor part in the watch-window keeps keyboard focus (most of the time)
+
+--- Version 0.2.6a - Aug-30-2004
+- synchronize edited objects before "View"ing them
+- fix small typo
+- quick-and-dirty fix for problem with objects in a new table (e.g. "my.data") never getting synced
+
+--- Version 0.2.6 - Aug-29-2004
+- added error-handling to workspace saving
+- ask whether to save workspace on application quit
+- added menu-entries to clear output-window and watch-log
+- don't duplicate menu-entries when plugins get re-scanned
+- place "Analyse"-menu left of help-menu
+- converted plugins to rely entirely on R for formatting, i.e. the printout ()-section contains pure R-code only
+- wizard-interface is set as default for plugins
+- added access to kate-config dialog in the command-editor part of the interface watch
+- added configuration settings for which types of commands to show in the interface watch
+- added a nice startup-dialog instead of creating an emtpy table unconditionally
+- limit size of upper-half in the data.frame editor
+- added convenience R-library: used to streamline communication with R
+- fix against data being synced over and over again
+
+--- Version 0.2.5 - Aug-24-2004 ---
+- added simple viewer for R-objects
+- added simple browser for objects in the R-workspace
+- allow deletion of columns/objects (finally)
+- allow editing and using several objects/tables
+- added command-line parameter "debug-level"
+- interpret command-line parameter "file"
+- save and restore size of the main window correctly
+- use internal representation of object-tree in the R-workspace
+- store meta-information (labels, etc.) as R-attributes
+- keep track of whether the windows (watch, output) are open
+- new method of access to objects in R: getIntVector
+- use some "global" static pointers instead of passing them around (e.g. for the r-interface)
+- reorganized sources: now using subdirectories for most components
+
+--- Version 0.2.2 - Aug-15-2004 ---
+- added an improved kate syntax-highlighting definition for R
+- output-formatting is done in R instead of PHP
+- added a formula widget for use in plugins (not entirely finished, yet)
+- fixed some small compilation problems
+- added spinbox widget for use in plugins
+- use coloring for "unsatisfied" plugin widgets instead of the "Problems" display
+- added support for wizard-like plugins
+- same plugin can be opened several times at once
+- use katepart for plugin code view, too
+
+--- Version 0.2.1 - Aug-08-2004 ---
+- added "don't show again" setting to initial warning
+- added correlation matrix plugin
+- ask for R_HOME-setting if not availalbe at startup
+- allow direct (read) access of vectors in R
+- support for selection of multiple variables at once
+- use a katepart as the command-editor (provides basic syntax-highlighting)
+- plugins can use a tabbook-layout
+- display status of R-process in the statusbar
+- R-backend allows chains of commands that are guaranteed to be run without other intermitting commands
+- run R in a separate thread
+
+--- Version 0.2.0 - Aug-01-2004 ---
+- Use a PHP-backend for the plugins
+- Run R embedded (currently synchronous)
+- Some changes in plugin-creation
+- Use pretty HTML-output
+- got rid of ui-files
+- added descriptive statistics plugin
+- lots of small changes I didn't document properly
+
+--- Version 0.1.0 - Nov-19-2002 ---
+- Initial features:
+- A simple backend-interface communicating with R via stdin/stdout
+- Asynchronous command stack
+- A simple window for watching communication with R
+- Ability to issue commands manually
+- Editor window including meta information on the variables
+- Copy-and-Paste with some quirks
+- highlighting of invalid data
+- load/save of R-workspace (load only works for RKWard data)
+- Automatic generation of menu-structure and plugin-dialogs from XML-files
+- Supported plugin widgets: textfield, variable-selector, variable-slot, radiobuttons
+- independent samples t-test plugin

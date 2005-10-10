@@ -1,0 +1,23 @@
+<!DOCTYPE rkplugin>
+
+<!-- This is a simple example, of how a "plugin" might be configured. -->
+
+<document>
+	<code file="code.php"/>
+	
+	<dialog label="Descriptive Statistics">
+		<row>
+			<column>
+				<varselector id="vars"/>
+			</column>
+			<column>
+				<varslot type="numeric" multi="true" id="x" source="vars" required="true" label="variable(s):"/>
+				<checkbox id="mean" label="mean" value="1" value_unchecked="0" checked="true"/>
+				<checkbox id="median" label="median" value="1" value_unchecked="0"/>
+				<checkbox id="range" label="range" value="1" value_unchecked="0" checked="true"/>
+				<checkbox id="sd" label="standard deviation" value="1" value_unchecked="0" checked="true"/>
+			</column>
+		</row>
+	</dialog>
+
+</document>
