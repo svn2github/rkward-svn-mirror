@@ -1,0 +1,63 @@
+Requirements
+==================
+
+RKWard requires:
+- KDE-libraries and headers (>= 3.x) (http://www.kde.org)
+- Qt-libraries and headers (>= 3.x) (http://www.trolltech.com)
+- R and headers (http://www.r-project.org)
+- PHP with commandline-interface (http://www.php.net)
+
+Compilation
+==================
+
+Compilation / installation is basically just a
+# ./configure
+# make
+# make install
+
+you may need to pass the following options to configure:
+
+
+--prefix=/path/to/kde
+
+you can determine your kde-directory by looking for some K-Application you know you have installed:
+
+# which kedit
+
+and strip the final /bin of the path (e.g. if which kedit returns /usr/bin/kedit , use /usr ).
+
+for debian use --prefix=/usr
+
+
+You might also have to specify your qt (3) directory, passing the commandline-option
+--with-qt-dir=/usr/lib/qt3			(or similar)
+to configure.
+
+
+Likely you will need to specify the location of the R home directory:
+--with-r-home=/path/to/R/home			(default is /usr/local/lib/R)
+If you have the standalone version of R installed, you can determine this directory by running:
+# R RHOME
+for debian use --with-r-home=/usr/lib/R
+
+You will need to have the R shared library installed. The makefiles assumes it to be in $R_HOME/lib/libR.so
+
+Personally, I need the following options for configure (debian sid):
+--prefix=/usr --with-r-home=/usr/lib/R
+
+
+Installation
+==================
+
+You _have to_ install RKWard. Otherwise RKWard will be missing important menu-options, may behave strangely, or may not run at all.
+As root run:
+# make install
+
+Make sure you have set the correct path in ./configure (the --prefix=... option)
+
+
+Running
+==================
+
+For now it's recommended to run RKWard from the command-line for debug-output. There are no useful commandline-options so far.
+
