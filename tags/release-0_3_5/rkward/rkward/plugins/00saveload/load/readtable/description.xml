@@ -1,0 +1,84 @@
+<!DOCTYPE rkplugin>
+<document> 
+	<logic>
+		<connect client="rowname.enabled" governor="isrow.state" />
+
+		<convert id="userow" mode="equals" sources="rowname.string" standard="rowcol" />
+		<convert id="customizerow" mode="equals" sources="rowname.string" standard="custoRow" />
+		<connect client="nomrow.enabled" governor="userow" />
+		<connect client="nomrow.required" governor="userow" />
+		<connect client="rownames.enabled" governor="customizerow" />
+		<connect client="rownames.required" governor="customizerow" />
+		<connect client="varname.enabled" governor="customizerow" />
+
+		<convert id="customizecol" mode="equals" sources="colname.string" standard="custoCol" />
+		<connect client="colnames.enabled" governor="customizecol" />
+		<connect client="colnames.required" governor="customizecol" />
+		<convert id="customizeclasses" mode="equals" sources="colclass.string" standard="custoClass" />
+		<connect client="custoClasses.enabled" governor="customizeclasses" />
+		<connect client="custoClasses.required" governor="customizeclasses" />
+		<convert id="customizecolclass" mode="or" sources="colnames.enabled;custoClasses.enabled" />
+		<connect client="varnames.enabled" governor="customizecolclass" />
+	</logic>
+	<code file="code.php"/>
+	<dialog label="Load data" >
+		<tabbook>
+			<tab label="Load" >
+				<browser size="small" id="file" label="File name" />
+				<input label="Table name" id="name" initial="rk.temp.table" size="small"/>
+				<checkbox id="header" value="TRUE" value_unchecked="FALSE" checked="true" label="First row contains column names"/>
+				<radio id="dec" label="Character used decimal points" >
+					<option value="'.'" label="'.'" />
+					<option value="','" label="','" />
+				</radio>
+				<radio id="sep" label="Field separator character" >
+					<option value="'\t'" label="Tab" />
+					<option value="';'" label="';'" />
+					<option value="','" label="','" />
+					<option value="' '" label="Coma" />
+				</radio>
+			</tab>
+			<tab label="Rows" >
+				<checkbox value_unchecked="false" checked="false" value="true" id="isrow" label="Customize row names" />
+				<radio id="rowname" label="Rows names" >
+					<option value="NULL" label="Number" />
+					<option value="rowcol" label="Use a column" />
+					<option value="custoRow" label="Use a vector" />
+				</radio>
+				<input size="small" id="nomrow" initial="1" label="Column number or variable name" />
+				<varslot multi="false" classes="character" id="rownames" source="varname" label="Row names character vector" />
+				<varselector id="varname" />
+			</tab>
+				<tab label="Columns" >
+				<radio id="colname" label="Columns names" >
+					<option value="" label="Default" />
+					<option value="custoCol" label="Use a character vector" />
+				</radio>
+				<varslot multi="false" classes="character" id="colnames" source="varnames" label="Column names character vector" />
+				<radio id="colclass" label="Classes of columns" >
+					<option value="" label="Default" />
+					<option value="custoClass" label="Use a character vector" />
+				</radio>
+				<varslot multi="false" classes="character" id="custoClasses" source="varnames" label="Column names character vector" />
+				<varselector id="varnames" />
+			</tab>
+			<tab label="Options" >
+				<radio id="fill" label="Fill the rows if unequal length" >
+					<option value="FALSE" label="False" />
+					<option value="'TRUE" label="'True" />
+				</radio>
+				<row>
+					<input size="small" initial="0" id="skip" label="Number of lines" />
+					<input size="small" initial="-1" id="nrows" label="Max number of lines" />
+				</row>
+				<row>
+					<input size="small" initial="NA" id="na" label="Character for missing values" />
+					<input size="small" initial="#" id="commentchar" label="Character for comments" />
+				</row>
+				<checkbox value_unchecked="FALSE" checked="true" value="TRUE" id="checkname" label="Check syntax of the variables names" />
+				<checkbox value_unchecked="FALSE" checked="false" value="TRUE" id="stripwhite" label="Strip white values" />
+				<checkbox value_unchecked="FALSE" checked="true" value="TRUE" id="blanklinesskip" label="Skip blank lines" />
+			</tab>
+		</tabbook>
+	</dialog>
+</document>
