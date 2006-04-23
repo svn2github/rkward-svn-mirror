@@ -1,0 +1,50 @@
+rkward (0.3.6-1) unstable; urgency=low
+
+  * new upstream release
+  * clean up manpage
+  * debian dir is not longer included in upstream; create non-native package
+  * create symlink rkward.bin.1 to rkward.1 and remove linitian expection (no man page)
+  * use ${shlibs:Depends} for runtime dependencies
+  * make sure to require correct version of r-base-core
+  * specify --with-r-home in ./configure, in case there is more than one version of R installed
+
+ -- Thomas Friedrichsmeier <tfry@users.sourceforge.net>  Sun, 23 Apr 2006 19:45:00 +0200
+
+rkward (0.3.5) unstable; urgency=low
+
+  * new upstream release
+  * add lintian exception for rkward.bin (no man page)
+  * remove call to build-help.pl during postinst postrm
+  * use --disable-rpath in ./configure
+  * remove /usr/sbin from dirs
+  * use standards version 3.6.2
+  * add man page
+  * remove redundant build-dependency on libqt3-mt-dev
+  * break long lines in description
+
+ -- Thomas Friedrichsmeier <tfry@users.sourceforge.net>  Sun, 16 Apr 2006 15:45:00 +0200
+
+rkward (0.3.4) unstable; urgency=low
+
+  * new upstream release
+  * debian directory is now included in official release
+
+ -- Thomas Friedrichsmeier <tfry@users.sourceforge.net>  Tue, 08 Nov 2005 16:00:33 +0200
+
+rkward (0.3.3) unstable; urgency=low
+
+  * new upstream release
+  * Adjusted depends for R (2.1.0)
+  * added run-time depend for libstdc++6
+  * correct path for KDE help files
+
+ -- Thomas Friedrichsmeier <tfry@users.sourceforge.net>  Mon, 10 Oct 2005 11:20:33 +0200
+
+rkward (0.3.2) unstable; urgency=low
+
+  * new upstream release
+  * Initial Release.
+  * removing r.xml highlighting definition in order to avoid conflict with verison shipped with katepart
+
+ -- Thomas Friedrichsmeier <tfry@users.sourceforge.net>  Tue, 26 Apr 2005 00:00:33 +0200
+
