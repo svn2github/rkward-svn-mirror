@@ -171,8 +171,7 @@ RObject *RContainerObject::findObject (const QString &name, bool is_canonified) 
 
 	QString canonified = name;
 	if (!is_canonified) {
-		// yeah, ok, this could be made more efficient relatively easily ...
-		canonified = canonified.replace ("[\"", "$").replace ('[', "").replace ("\"]", "").replace (']', "");
+		canonified = RObject::canonifyName (name);
 	}
 
 	// TODO: there could be objects with "$" in their names!

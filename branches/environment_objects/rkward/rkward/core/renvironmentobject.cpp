@@ -17,18 +17,21 @@
 
 #include "renvironmentobject.h"
 
+#include "../rkglobals.h"
+#include "../rbackend/rinterface.h"
+#include "robjectlist.h"
+
 #include "../debug.h"
 
 REnvironmentObject::REnvironmentObject (RContainerObject *parent, const QString &name) : RContainerObject (parent, name) {
 	RK_TRACE (OBJECTS);
 
 	type = Environment;
-	if (name == ".GlobalEnv") {
-		type |= GlobalEnv;
-	}
 
+	if (parent != RKGlobals::rObjectList ()) {
+		type |= EnvironmentVar;
+	}
 	// TODO: determine namespace_name
-	// TODO: determine if this is an environment var (or maybe this is done from the parent)
 }
 
 REnvironmentObject::~REnvironmentObject () {
@@ -47,7 +50,7 @@ QString REnvironmentObject::makeChildName (const QString &short_child_name) {
 
 	if (type & GlobalEnv) return (short_child_name);
 	if (type & EnvironmentVar) return (name + "$" + short_child_name);
-	return (namespace_name + "::" + short_child_name);
+	return (namespace_name + "::" + RObject::rQuote (short_child_name));
 }
 
 void REnvironmentObject::writeMetaData (RCommandChain *chain) {
@@ -56,10 +59,17 @@ void REnvironmentObject::writeMetaData (RCommandChain *chain) {
 	if (type & EnvironmentVar) RContainerObject::writeMetaData (chain);
 }
 
+bool REnvironmentObject::handleClassifyCommand (RCommand *command, bool *dims_changed) {
+	RK_TRACE (OBJECTS);
+
+	if (type & EnvironmentVar) return RContainerObject::handleClassifyCommand (command, dims_changed);
+	return true;
+}
+
 QString REnvironmentObject::listChildrenCommand () {
 	RK_TRACE (OBJECTS);
 
-	return ("ls (as.environment (" + getFullName () + ", all.names=TRUE)");
+	return ("ls (" + getFullName () + ", all.names=TRUE)");
 }
 
 void REnvironmentObject::renameChild (RObject *object, const QString &new_name) {

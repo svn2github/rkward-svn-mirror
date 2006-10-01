@@ -39,6 +39,9 @@ public:
 
 	bool isGlobalEnv () { return (type & GlobalEnv); };
 
+/** reimplemented from RObject: Check type only for EnvironmentVars. Toplevel-environments are hard to classify from R space, and don't simply change their type */
+	bool handleClassifyCommand (RCommand *command, bool *dims_changed);
+
 	QString listChildrenCommand ();
 /** 
 # search ()
@@ -64,6 +67,7 @@ RContainerObject::findObjectsMatching (...) for code completion popups
 RContainerObject::canonifyName
 */
 protected:
+	friend class RObjectList;
 /** reimplemented from RContainerObject to raise an assert if this is not the isGlobalEnv (). Otherwise calls "remove (objectname)" instead of objectname <- NULL" */
 	void renameChild (RObject *object, const QString &new_name);
 /** reimplemented from RContainerObject to raise an assert if this is not the isGlobalEnv (). Otherwise calls "remove (objectname)" instead of objectname <- NULL" */

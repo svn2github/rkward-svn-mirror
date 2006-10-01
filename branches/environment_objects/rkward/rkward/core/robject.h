@@ -134,10 +134,12 @@ automatically take care of fetching its data. When closed by all editors, takes 
 @param is_canonified the object name may usually have to be canonified. Since this function may be called recursively, canonification may already have occured on a higher level. In this case the argument is set to true to avoid some duplicate work. When calling from outside always leave the default false.
 @returns a pointer to the object (if found) or 0 if not found */
 	virtual RObject *findObject (const QString &name, bool is_canonified=false);
+	static QString canonifyName (const QString &name);
 protected:
 // why do I need those to compile? I thought they were derived classes!
 	friend class RContainerObject;
 	friend class RObjectList;
+	friend class REnvironmentObject;
 	RContainerObject *parent;
 	QString name;
 	int type;
@@ -165,7 +167,7 @@ protected:
 @param command The command. Make sure it really is a  .rk.classify command *before* calling this function!
 @param dims_changed If the dimensions changed, this bool is set to true. If the dimensions did not change, it is left untouched (i.e. even if it already was true)
 @returns false if there was a type mismatch. In this case you *must* return! */
-	bool handleClassifyCommand (RCommand *command, bool *dims_changed);
+	virtual bool handleClassifyCommand (RCommand *command, bool *dims_changed);
 
 /** an instance of this struct is created, when the object is opened for editing. For one thing, it keeps track of which editor(s) are working on the object.
 In subclasses like RKVariable, the struct is extended to additionally hold the data of the object, etc. */

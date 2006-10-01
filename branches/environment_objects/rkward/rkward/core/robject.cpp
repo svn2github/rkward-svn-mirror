@@ -72,6 +72,15 @@ RObject *RObject::findObject (const QString &, bool) {
 	return 0;
 }
 
+// static
+QString RObject::canonifyName (const QString &name) {
+	RK_TRACE (OBJECTS);
+
+	QString canonified = name;
+	// yeah, ok, this could be made more efficient relatively easily ...
+	return (canonified.replace ("[\"", "$").replace ('[', "").replace ("\"]", "").replace (']', ""));
+}
+
 QString RObject::getMetaProperty (const QString &id) {
 	RK_TRACE (OBJECTS);
 	if (meta_map) {

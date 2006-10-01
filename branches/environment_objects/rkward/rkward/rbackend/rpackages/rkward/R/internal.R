@@ -23,14 +23,15 @@
 	if (is.list (x)) type = type + 8
 	if (type != 0) type = type + 16 else type = 32
 	if (is.function (x)) type = 128
-	if (!is.null (attr (x, ".rk.meta"))) type = type + 256
+	if (is.environment (x)) type = type + 256 + 1024	# Environment variable
+	if (!is.null (attr (x, ".rk.meta"))) type = type + 2048
 	d <- dim (x)
 	if (length (d) < 1) d <- length (x);	# handling for objects that according to R do not have a dimension (such as vectors, functions, etc.)
 	c (type, d)
 }
 
 ".rk.get.type" <- function (x) {
-	if (is.data.frame (x) || is.matrix (x) || is.array (x) || is.list (x)) return (1)		# container
+	if (is.data.frame (x) || is.matrix (x) || is.array (x) || is.list (x) || is.environment (x)) return (1)		# container
 	if (is.function (x)) return (2)		# function
 	if (is.vector (x)) return (3)		# a vector/variable
 	return (4)		# something else
