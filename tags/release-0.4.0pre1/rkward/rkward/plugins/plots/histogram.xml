@@ -1,0 +1,33 @@
+<!DOCTYPE rkplugin>
+<document>
+<code file="histogram.php" />
+<logic>
+	<connect client="plotoptions.xvar" governor="x.available"/>
+	<set id="plotoptions.allow_log" to="false"/>
+	<set id="plotoptions.allow_type" to="false"/>
+</logic>
+<dialog label="Histogram" >
+	<tabbook>
+	<tab label="Variable(s)" >
+		<row>
+		<varselector id="vars" />
+		<varslot multi="false" type="numeric" id="x" source="vars" label="variable(s):" required="true" />
+		</row>
+	</tab>
+	<tab label="Options" >
+		<radio id="breaks" label="Method of setting breakpoints" >
+			<option value="Sturges" label="Sturges" />
+			<option value="Scott" label="Scott" />
+			<option value="FD" label="Friedman-Diaconis" />
+			<option checked="true" value="int" label="Integer numbers" />
+		</radio>
+		<radio id="scale" label="Y Scale" >
+			<option value="TRUE" label="Frequency" />
+			<option value="FALSE" label="Density" />
+		</radio>
+		<embed id="plotoptions" component="rkward::plot_options" as_button="true" label="Plot Options" />
+		<stretch/>
+	</tab>
+	</tabbook>
+</dialog>
+</document>
