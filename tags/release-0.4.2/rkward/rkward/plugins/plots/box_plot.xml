@@ -1,0 +1,34 @@
+<!DOCTYPE rkplugin>
+<document>
+<code file="box_plot.php" />
+<logic>
+	<connect client="plotoptions.xvar" governor="x.available"/>
+	<set id="plotoptions.allow_type" to="false"/>
+</logic>
+<dialog label="Boxplot" >
+	<tabbook>
+	<tab label="Variable(s)" >
+		<row>
+		<varselector id="vars" />
+		<varslot multi="true" type="numeric" source="vars" id="x" label="variable(s):" required="true" />
+		</row>
+	</tab>
+	<tab label="Options" >
+		<row>
+			<column>
+				<radio id="orientation" label="orientation" >
+					<option value="TRUE" label="horizontal" />
+					<option checked="true" value="FALSE" label="vertical" />
+				</radio>
+				<checkbox id="notch" label="Draw Notches" checked="false" value="TRUE" value_unchecked="FALSE" />
+				<checkbox id="outline" label="Outline" checked="true" value="TRUE" value_unchecked="FALSE" />
+				
+				<stretch/>
+				<embed id="plotoptions" component="rkward::plot_options" as_button="true" label="Plot Options" />
+				<stretch/>
+			</column>
+		</row>
+	</tab>
+	</tabbook>
+</dialog>
+</document>

@@ -1,0 +1,244 @@
+The following list of TODO-items is NOT complete!
+Also, plans change frequently. If something is listed for a specific release, that's no more than a rough plan.
+All in all, this TODO list is mostly for internal purposes, and many parts may not necessarily be intellegible to anybody but the authors.
+
+Advertizing:
+	- start being a bit bolder about RKWard (descriptions, startup notification, etc.)
+
+Bugs:
+	- There seems to be a race condition at startup, leading to a crash in doPostInit () in rkward.cpp. (Un-)Fortunately it triggers only rarely, and I have not yet figured out, when it occurs. Is this still the case? I've fixed one potential race condition a while ago, and have not seen this crash in a while (2006/09/27)
+	- "cannot create html package index" when installing package as a regular user (due to R.home ("doc") not writable)
+	- There is definitely a memory leak in handling output!
+		- Produce lots and lots of output -> watch mem usage grow
+		- Probably the RKConsole is to blame (run outside console -> no significant increase)
+			- Maybe the kate-part needs to be reset (syntax parse tree) every once in a while?
+	- rnorm () and friends auto-print value only once. R_Visible is 0 on subsequent calls (what in the world is going on, here?)
+	- RKEditorDataFrame:
+		- sometimes the current cell indicator (the box around the current cell) gets lost.
+			- Navigation and editing is still fine
+			- seems to happen more often with larger data frames
+			- more precisely: seems to happen after scrolling
+			- no idea, why this happens
+
+Compilation / technical
+	- Incorporate FreeBSD patches http://www.freshports.org/math/rkward/files.php?message_id=200609172111.k8HLBiob081349@repoman.freebsd.org
+	- cleanup DISABLE_RKWINDOWCATCHER (either get rid of it, or do it right)
+
+UI-stuff
+	- Output window should gain some sort of auto-update functionality:
+		- After user commands, should check, whether the output file was modified. If so, reload
+	"First-run wizard"
+		- pre-install R packages
+	- Check for existence of php binary on startup, not only when loading a plugin
+	- RKEditorDataFrame
+		- undo/redo
+			- KDE4
+		- deletion of multiple columns in one step
+		- when pasting a large array, rows should not be added one by one. Suggested algorithm:
+			- if we find out we've already pasted 100 rows, first check, how many more are to come and add this many both to the variable and to the R workspace. Can potentially avoid *lots* of work
+	- Twintable/RKEditorDataFrame
+		- merge the two classes
+		- more efficient syncing: fetch only the values actually needed instead of the whole table. How?
+		- make configurable:
+			- invalid color (global and per variable)
+			- unused color (global and per variable)
+			- default alignment (per var type)
+			- default precision
+			- display of factor level labels (global and per variable)
+			- delay of factor-level popup
+		- highlighting of value ranges
+	- Create an editor for single vectors/factors, or rework RKEditorDataFrame to handle those as well
+	- Rework package management dialog
+		- the UI should probably be simplified somehow. But how? All in a single list with "filter"? Ask for ideas/look at other apps
+			- this will be very hard to do with the current Qt. We'd really need several checkboxes *within* a QListViewItem. Tackle this when/after porting to Qt4
+	- RObjectListView
+		- use better icons to mark up the different base types
+	- RKConsole:
+		- Console should start a command chain when submitting a batch of pasted commands
+		- Better yet, the commands might be autosplit in the backend. Need to think about how to design this correctly, though
+		- Allow pasting at other positions than line end
+		- Prevent cursor from venturing into lines other than the last line
+	- Script editor:
+		- allow to pipe scripts to the console (console might have to be made smarter about large pasted commands, first)
+	- RKConsole / Script editor:
+		- highlight only valid function names
+	- RKHelpDlg:
+		- in the mid term, this should probably be renamed and moved to windows
+		- call .rk.get.installed.packages, and update package selection drop down on every show, but not on startup? Really? Maybe both.
+	- RKVarslot:
+		- allow "save as" selection mode (i.e. new object names, or selection of existing symbol) -> RKSaveObjectChooser
+	- RKVarselector:
+		- pop-up-able selectors (maybe more generic, not only for varselectors): Like a "Browse" button
+	- RKCommandLog:
+		- optionally keep a file log!
+	- hot-key/permanent icon to cancel current command / hold processing. Perhaps in the busy/idle indicator?
+	- find out how to save toolbar states properly in parts-GUI
+	- David's usability items
+	- use RKGlobals::marginHint (), RKGlobals::spacingHint () everywhere
+	- from Ralf:
+		- another nifty feature would be - if F8 would work also in the console/log.
+
+Internal stuff:
+	- should we override bindingIsActive()?
+	RKVariable:
+		- True Support for Logicals
+		- In the current design, RKVariable would not handle storage mode changes from outside well at all
+		- use QIntDict instead of string-map for value-labels / factor levels? Qt4: QHash
+	- maybe we can do stuff like auto-printing, (toplevel handlers: no, not those, they are not called in R_ReplDLLdo1 ()), syntax error information by using R_ReplDLLdo1 () for user/console commands. The command-text would be fed in via R_ReadConsole (would need to keep a buffer).
+		- How to differentiate readline calls to get new command data from readline calls to get user info?! The prompt may not be realiable enough. Is there other info?
+			- the hist parameter may be a hint, but is also set in do_browser
+			- Does R_ResetConsole play any role in this?
+			- maybe (but this would really be taking chances) do so by determining, if the buffer belongs to the main Repl_Console (currently that buffer always remains the same during one loop, but can we be certain, this never changes?). Same buffer is used while inside do_browser ().
+			- RBusy is set to 0 just before the command data is read! (but also while inside do_browser ())
+				- These patterns may emerge after a call to R_ReplDLLdo1 ():
+					- first: R_Busy (0), second: R_Busy (1), ... : Between first and second, the R_ReadConsole is a request for code
+					- first: R_Busy (1), ...: No code is requested
+				- hence, as soon as R_Busy (1) is set after a call to R_ReplDLLdo1 (), the following R_ReadConsole calls are for user input, not code
+		- Where would we jump after a SIGINT? I suppose we'd have to make sure to clear the buffer before signalling (another mutex)
+		- Is it UTF-8 safe?
+	RCommandReceiver:
+		- add virtual rCommandStarted () function, so receivers can find out, when their command becomes active
+	REmbedInternal:
+		- probably we do not need na_double at all (just any NaN) => less confusion
+	Detecting object modifications inside R:
+		- left TODO:
+			- detection hole:
+				x is 1
+				user does
+				rm (x); x <- function () {}
+				(object list remains the same, watch was not active, but symbol changed)
+				- will need to put an extra notification inside .rk.watch.globalenv ()? Will that get run?
+	- RExpressionObject as an abstraction for R-Expressions (i.e. manually edited expressions).
+		- It will be possible to "store" these in the RObjectList and select them just like any other object
+		- RKVarslot will allow editing the selected value by hand (or just typing the name in)
+			- How to do this nicely UI wise?
+	- RKCancelDialog / RKErrorDialog:
+		- remove these classes. Port to use RKProgressControl instead
+	- use R_DirtyImage to determine, whether workspace needs to be saved
+	- in REmbedInternal, add extractTemporaryStrings (), for strings that do not have to be copied
+	- Object editing / modification tracking:
+		- functions to set double/int/string-vectors directly. Use in paste-operations
+	- on exit, check whether there are still RCommands left in the backend and wait/request user-interaction before tearing down the thread. After all, the last command might have been a "save"!
+		- How about always doing exiting via a "q ()" command in the backend, instead? That way we could always be sure, all previous commands have been completed before the q ()!
+	- error-handling/raising in .rk.do.call
+	- I've changed the simple RInterface::issueCommand (QString, ...) command to return a pointer to the RCommand created. This will allow for lots of small cleanups. Do them.
+		- well, on second thought, it might be better to rely more on RCommand::id () instead of pointers. Why? The id is unique (until integer overflow). The pointer may be reused after a delete -> potential problem when trying to cancel command which is actually already deleted (and potentially other cases)
+		- let's set this back for a while
+	- give informative feedback on syntax errors (line numbers, etc.)!
+	- .rk.get.available.packages ()
+		- use external (file) storage for cache to save mem
+	- can the mutex be made non-recursive? I think so, but don't recall
+
+General code:
+	- use constBegin (), constEnd ()
+	- get rid of all the superflous dependencies: http://lists.debian.org/debian-devel/2005/12/msg00439.html
+	- use more QDicts instead of QMap<QString,...>s
+	- remove classes/files:
+		- RKGlobals
+			- static members should be moved to the respective classes. Much cleaner!
+
+R plugins:
+	- use SVG device for graphics output
+	- provide context menu / other UI to export to different formats / edit
+	- PHP-backend:
+		- switch to KProcIO for easier logic
+		- http://de3.php.net/manual/en/function.call-user-func.php seems to be faster than eval
+		- find out why an error in the backend often leads to a subsequent crash
+	- plugins (general)
+		- add import-filter plugins
+			- also export plugins, export x11 plugins, and probably more
+			- maybe this can be generalized as "context sensitive plugins"
+		- ODS filter (try to find someone to implement one in R)
+	- formula-widget:
+		- use smart sorting, esp. of generated string
+		- add labels, add "up to level" option
+		- add constant term option
+	- create a spinbox, that can really deal with real numbers
+	- add a help system
+
+Documentation:
+	- add an example to show rkward-specific commands (rk.print, rk.graph)
+
+API documentation:
+	- add page containing a rough overview of general architecture
+	- RCommandStack
+
+Configuration:
+	- additional console options:
+		- color highlighting for warnings/errors (once we can identify them reliably)
+	- additional R engine options:
+		- stack size (commandline arg --map-ppsize)
+		- disable html help
+	- new dataeditor options:
+		- see comments on RKEditorDataFrame
+
+
+################## Some internal notes below ##############
+
+################## menu structure file/workspace ###########
+File
+	New
+		Dataset
+		Script File
+	Open R Script File
+	Open Recent (Script File)
+	Save/Load R Objects
+		Save
+			...
+		Load
+			...
+	Save
+	Save As
+	Reload
+	Print
+	Quit
+
+Workspace
+	Open Workspace
+	Open Recent (Workspace)
+	Save Workspace
+	Save Workspace As
+	Configure Packages (redundant)
+
+How should this be changed? Maybe:
+
+File
+	New
+		Dataset
+		Script File
+	Open R Script File
+	Open Recent (Script File)
+	Open Workspace
+	Open Recent (Workspace)
+	Import (previously Load R Objects)
+	Export (previously Save R Objects)
+	Save
+	Save As
+	Save Workspace
+	Save Workspace As
+	Reload
+	Print
+	Quit
+
+
+################## cryptic notes ######################
+
+- printutils.c->481 Rvprintf: can we get at the standard out-connection and give it a fake vprintf (or better write?!) and fake fflush?
+	- see also: connections.c line 3246ff InitConnections
+	- seems ok now. But maybe we could still use this to catch immediate warning messages (which go to R_Consolefile)?
+
+- still mysterious in warning-handling: 'help (doesnotexist); print ("stuff");'. Why is the order wrong?!
+	- because first both are evaluated, then the warnings are printed. R_ReplIteration works differently in that it stops at each ";" and "\n"
+
+tryCatch (message ("a"), error=function (x) {print ("e"); x$message}, warning=function (y) {print ("w"); conditionMessage(y)}, message=function (z) {print ("m"); conditionCall (z)})
+withCallingHandlers ({message ("a"); stop ("b");}, error=function (x) {print ("e"); x$message}, warning=function (y) {print ("w"); conditionMessage(y)}, message=function (z) {print ("c"); conditionCall (z)})
+
+Not quite correct yet:
+	.Internal (.addCondHands (c ("error"), list (function (x) {print ("e"); print (conditionMessage (x))}), parent.frame (), NULL, TRUE))
+
+.Internal (.addCondHands (c ("warning"), list (function (x) {print ("w"); print (conditionCall (x))}), globalenv (), NULL, TRUE))
+
+condition handlers seem to be reset after an error!
+condition handlers do not seem to carry over two separate calls of R_tryEval ().
+
+http://slashdot.org/article.pl?sid=05/06/24/149231&tid=121&tid=188&tid=95&tid=1
