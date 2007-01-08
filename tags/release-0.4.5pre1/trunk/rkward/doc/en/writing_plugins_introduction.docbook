@@ -1,0 +1,1432 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1-Based Variant V1.0//EN" "dtd/kdex.dtd" [
+  <!ENTITY rkward '<application>RKWard</application>'>
+  <!ENTITY kapp "&rkward;"><!-- replace rkward here -->
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % English "INCLUDE"><!-- change language only here -->
+  
+  
+  <!-- Do not define any other entities; instead, use the entities
+       from kde-genent.entities and $LANG/user.entities. -->
+]>
+
+<book lang="&language;">
+
+<!-- This header contains all of the meta-information for the document such
+as Authors, publish date, the abstract, and Keywords -->
+
+<bookinfo>
+<title>Introduction to Writing Plugins for RKWard</title>
+
+<authorgroup>
+<author>
+<firstname>Thomas</firstname>
+<surname>Friedrichsmeier</surname>
+<affiliation>
+<address><email>tfry AT users DOT sourceforge DOT net</email></address>
+</affiliation>
+</author>
+<!-- Additional authors go here -->
+</authorgroup>
+
+<!-- TRANS:ROLES_OF_TRANSLATORS -->
+
+<copyright>
+<year>2006</year>
+<holder>Thomas Friedrichsmeier</holder>
+</copyright>
+<!-- Translators: put here the copyright notice of the translation -->
+<!-- Put here the FDL notice.  Read the explanation in fdl-notice.docbook 
+     and in the FDL itself on how to use it. -->
+<legalnotice>&FDLNotice;</legalnotice>
+
+<date>2006-03-24</date>
+<releaseinfo>0.3.5.00</releaseinfo>
+
+<abstract>
+<para>
+This is a guide to writing plugins for &rkward;.
+</para>
+</abstract>
+
+<keywordset>
+<keyword>KDE</keyword>
+<keyword>R</keyword>
+<keyword>rkward</keyword>
+<keyword>plugins</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title>Introduction</title>
+
+<para>
+Documentation as of &kapp; release 0.3.5.
+</para>
+<para>
+This document describes how to write your own plugins. Note, that at the time of this writing, none of the concepts are set it stone. Therefore, this document should be regarded as an introduction to the current approach, and as a basis for discussion. All sorts of comments are welcome.
+</para>
+<para>
+For questions and comments, please write to the &kapp; development mailing list.
+</para>
+<para>
+<emphasis>You do not need to read this in order to use &kapp;.</emphasis> This document is about extending &kapp;. It is targeted at advanced users, or people willing to help improve &kapp;.
+</para>
+<para>
+Writing a standard plugin is basically a three-step process:
+<itemizedlist>
+<listitem><link linkend="pluginmap">Placing a new Action in the menu-hierarchy</link></listitem>
+<listitem><link linkend="mainxml">Describing the looks and behavior of the plugin-GUI</link></listitem>
+<listitem><link linkend="phptemplate">Defining, how R-code is to be generated from the settings, the user makes in the GUI</link></listitem>
+</itemizedlist>
+Those will be dealt with in turn.
+</para>
+<para>
+Some advanced concepts may be used in those three steps, but are dealt with in separate chapters, to keep things simple:
+<itemizedlist>
+<listitem><link linkend="logic">GUI logic</link></listitem>
+<listitem><link linkend="embedding">Embedding Plugins into Plugins</link></listitem>
+</itemizedlist>
+</para>
+<para>
+Also, none of the chapters shows all options, but rather only the basic concepts. A complete <link linkend="reference">reference</link> of options is provided separately.
+</para>
+</chapter>
+
+<chapter id="whatareplugins">
+<title>Preliminaries: What are plugins in &kapp;? How do they work?</title>
+<para>
+Of course the first question you might have is: What portions of &kapp; functionality is realized using plugins? Or: What can plugins do?
+</para>
+<para>
+One way to answer this is: Deselect all .pluginmap-files under Settings->Configure &kapp;->Plugins, and see what's missing. A slightly more helpful answer: Most acutal statistics functions accessable via the GUI are realized using plugins. Also, you can create fairly flexible GUIs for all kinds of operations using plugins.
+</para>
+<para>
+The basic paradigm behind &kapp; plugins is the one we'll walk you through in this document: An xml-file describes what the GUI looks like. An additional PHP-file is used to generate R syntax from the GUI settings. That is, plugins do not really have to perform any statistical calculations. Rather plugins generate the R syntax needed to run those calculations. The R syntax is then sent to the R backend for evaluation, and typically a result is shown in the output window.
+</para>
+<para>
+Read on in the next chapters to see how this is done.
+</para>
+</chapter>
+
+<chapter id="pluginmap">
+<title>Creating menu entries</title>
+<para>
+When you create a new plugin, you need to tell &kapp; about it. So the first thing to do, is to write a .pluginmap-file (or modify an existing one). The format of .pluginmap is XML. I'll walk you through an example (also of course, be sure you have &kapp; configured to load your pluginmap – Settings->Configure &kapp;->Plugins):
+</para>
+<programlisting>
+&lt;!DOCTYPE rkpluginmap&gt;
+</programlisting>
+<para>
+The doctype is not really interpreted, but set it to "rkpluginmap" anyway.
+</para>
+<programlisting>
+&lt;document base_prefix="" namespace="rkward"&gt;
+</programlisting>
+<para>
+The "base_prefix"-attribute can be used, if all your plugins reside in a common directory. Basically, then, you can omit that directory from the filenames specified below. As you will see below, all plugins get a unique identifier. The "namespace" is a way to organized those ids, and make it less likely to create a duplicate identifier accidentally. Internally, basically the namespace and then a "::" gets prepended to all the identifiers you specify below.
+</para>
+<programlisting>
+	&lt;components&gt;
+</programlisting>
+<para>
+Components? Aren't we talking about plugins? Yes, but in the future, plugins will be no more than a special class of components. What we do here, then, is to register all components/plugins with &kapp;. Let's look at an example entry:
+</para>
+<programlisting>
+		&lt;component type="standard" id="independent_samples_t_test" file="means/ttests/independent_samples.xml" label="Independent Samples" /&gt;
+</programlisting>
+<para>
+First the "type"-attribute: Leave this to "standard" for now. Further types are not yet implemented. The "id" I've already hinted at. Each component has to be given a unique (in its namespace) identifier. Pick one that is easily recognizable. Avoid spaces and any special characters. Those are not banned, so far, but might have special meanings. With the "file" attribute, you specify where the <link linkend="mainxml">description of the actual plugin itself</link> is located. This is relative to the directory the .pluginmap-file is in, and the "base_prefix" above. Finally, give the component a label. This label will be shown whereever the plugin is placed in the menu (or in the future perhaps in other places as well).
+</para>
+<para>
+Typically a .pluginmap-file will contain several components, so here are a few more:
+</para>
+<programlisting>
+		&lt;component type="standard" id="unimplemented_test" file="means/unimplemented.xml" /&gt;
+		&lt;component type="standard" id="fictional_t_test" file="means/ttests/fictional.xml" label="This is a fictional t-test" /&gt;
+		&lt;component type="standard" id="descriptive" file="descriptive.xml" label="Descriptive Statistics" /&gt;
+		&lt;component type="standard" id="corr_matrix" file="corr_matrix.xml" label="Correlation Matrix" /&gt;
+		&lt;component type="standard" id="simple_anova" file="simple_anova.xml" label="Simple Anova" /&gt;
+	&lt;/components&gt;
+</programlisting>
+<para>
+Ok, this was the first step. &kapp; now knows those plugins exist. But how to invoke them? They need to be placed in a menu-hierarchy:
+</para>
+<programlisting>
+	&lt;hierarchy&gt;
+		&lt;menu id="analysis" label="Analysis" index="4"&gt;
+</programlisting>
+<para>
+Right below the &lt;hierarchy&gt;-tag, you start describing, in which menu, your plugins should go. With the above line, you basically say, that your plugin should be in the "Analysis" menu (not necessarily directly there, but in a submenu). The "Analysis" menu is standard in &kapp;, so it does not acutally have to be created from scratch. However, if it did not exist yet, using the "label"-attribute you'd give it its name. The "index" attribute says, that the menu (if newly created) should be placed at the fourth position in the menubar.
+Finally, the "id" once again identifies this menu. This is needed, so several .pluginmap-files can place their plugins in the same menus. They do this by looking for a menu with the given "id". If the id does not yet exist, a new menu will be created. Otherwise the entries will be added to the existing menu.
+</para>
+<programlisting>
+			&lt;menu id="means" label="Means" index="1"&gt;
+</programlisting>
+<para>
+Basically the same thing here: Now we define a submenu to the "Analysis"-menu. It is to be called "Means".
+</para>
+<programlisting>
+				&lt;menu id="ttests" label="T-Tests"&gt;
+</programlisting>
+<para>
+And a final level in the menu-hierarchy: A sub-menu of the sub-menu "Means". Note, that if you omit the "index" parameter, the new entry will be placed below any already existing ones.
+</para>
+<programlisting>
+					&lt;entry component="independent_samples_t_test" /&gt;
+</programlisting>
+<para>
+Now, finally, this is the menu, we want to place the plugin in. The &lt;entry&gt;-tag signals, this actually is the real thing, instead of another submenu. The "component"-attribute refers to the "id" you gave the plugin/component above.
+</para>
+<programlisting>
+					&lt;entry component="fictional_t_test" /&gt;
+				&lt;/menu&gt;
+				&lt;entry component="fictional_t_test" /&gt;
+			&lt;/menu&gt;
+			&lt;menu id="frequency" label="Frequency" index="2"/&gt;
+</programlisting>
+<para>
+In case you have lost track: This is another submenu to the "Analysis" menu. See the screenshot below. We'll skip some of what's not visible, marked with [...].
+</para>
+<programlisting>
+				[...]
+			&lt;/menu&gt;
+			&lt;entry component="corr_matrix" index="4"/&gt;
+			&lt;entry component="descriptive" index="3"/&gt;
+			&lt;entry component="simple_anova" index="5"/&gt;
+		&lt;/menu&gt;
+</programlisting>
+<para>
+These are the final entries visible in the screenshots below. Note, that you don't need to define the entries in the order they should have in the menu. Use the "index"-attribute instead.
+</para>
+<programlisting>
+		&lt;menu id="plots" label="Plots" index="5"&gt;
+			[...]
+		&lt;/menu&gt;
+</programlisting>
+<para>
+Of course you can also place your plugins in menus other than "Analysis".
+</para>
+<programlisting>
+		&lt;menu id="file" label="File" index="0"&gt;
+			[...]
+		&lt;/menu&gt;
+</programlisting>
+<para>
+Even in standard-menus such as "File". All you need is the correct "id".
+</para>
+<programlisting>
+	&lt;/hierarchy&gt;	
+&lt;/document&gt;
+</programlisting>
+<para>
+That's how to do it. And this screenshot shows the result:
+</para>
+<screenshot>
+<screeninfo>Menu hierarchy created by the code shown above</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="menu_hierarchy_example.png" format="PNG"/>
+	  </imageobject>
+	  <textobject>
+	    <phrase>Menu hierarchy created by the code shown above</phrase>
+	  </textobject>
+	</mediaobject>
+</screenshot>
+<para>
+Confused? The easiest way to get started is probably taking some of the existing .plugin_map files shipped with the distribution, and modifying them to your needs. Also, if you need help, don't hesitate to write to the development mailing list.
+</para>
+</chapter>
+
+<chapter id="mainxml">
+<title>Defining the GUI</title>
+<para>
+In the <link linked="pluginmap">previous chapter</link> you've seen how to register a plugin with &kapp;. The most important ingredient was specifying the path to an XML file with a description of what the plugin actually looks like. In this chapter you'll learn how to create this XML file.
+</para>
+<para>
+Once again we'll walk you through an example. The example is a (slightly simplified) version of the independent samples t-test.
+</para>
+<programlisting>
+&lt;!DOCTYPE rkplugin&gt;
+</programlisting>
+<para>
+The doctype is not really interpreted, yet. Set it to rkplugin, anyway.
+</para>
+<programlisting>
+&lt;document&gt;
+	&lt;code file="code.php"/&gt;
+</programlisting>
+<para>
+All plugins generate some code. Currently the only way to do so is using PHP, as detailed in <link linkend="phptemplate">the next chapter</link>. This defines, where to look for the PHP-code. The filname is relative to the directory the plugin-xml is in.
+</para>
+<programlisting>
+	&lt;dialog label="Independent Samples T-Test"&gt;
+</programlisting>
+<para>
+As you know, plugins may have either a dialog or a wizard-interface or both. Here we start definining a dialog-interface. the label-attribute specifies the caption of the dialog.
+</para>
+<programlisting>
+		&lt;tabbook&gt;
+			&lt;tab label="Basic settings"&gt;
+</programlisting>
+<para>
+GUI-elements can be organized using a tabbook. Here we define a tabbook as the first element in the dialog. Use &lt;tabbook&gt;[...]&lt;/tabbook&gt; to define the tabbook and then for each page in the tabbook use &lt;tab&gt;[...]&lt;/tab&gt;. The "label"-attribute in the &lt;tab&gt;-element allows you to specify a caption for that page of the tabbook.
+</para>
+<programlisting>
+				&lt;row&gt;
+</programlisting>
+<para>
+The &lt;row&gt; and &lt;column&gt; tags specify the layout of the GUI elements. Here you say, that you'd like to place some elements side-by-side (left to right) and the first of these elements is to be a:
+</para>
+<programlisting>
+					&lt;varselector id="vars"/&gt;
+</programlisting>
+<para>
+Using this simple tag you create a list from which the user can select variables. You have to specify an id for this element, so RKWard knows how to find it. Note that you may NOT use a dot (.) in the "id" string.
+</para>
+<programlisting>
+					&lt;column&gt;
+</programlisting>
+<para>
+Next, we nest a &lt;column&gt; inside the row. I.e. the following elements will be place above each other (top-to-bottom), and all will be to the right of the &lt;varselector&gt;.
+</para>
+<programlisting>
+						&lt;varslot type="numeric" id="x" source="vars" required="true" label="compare"/&gt;
+						&lt;varslot type="numeric" id="y" source="vars" required="true" label="against"/&gt;
+</programlisting>
+<para>
+These elements are the counterpart to the &lt;varselector&gt;. They represent "slots" into which the user can put variables. You will note that the "source" is set to the same value as the "id" of the &lt;varselector&gt;. This means, the &lt;varslot&gt;s will each take their variables from the varselector. The &lt;varslot&gt;s also have to be given an "id". They may have a label, and they may be set to "required". This means that the submit-button will not be enabled until the &lt;varslot&gt; holds a valid value. Finally the "type"-attribute is not interpreted, yet, but it will be used to take care that only the correct types of variables will be allowed in the &lt;varslot&gt;.
+</para>
+<programlisting>
+						&lt;radio id="hypothesis" label="using test hypothesis"&gt;
+							&lt;option value="two.sided" label="Two-sided"/&gt;
+							&lt;option value="greater" label="First is greater"/&gt;
+							&lt;option value="less" label="Second is greater"/&gt;
+						&lt;/radio&gt;
+</programlisting>
+<para>
+Here, you define a group of &lt;radio&gt;-exclusive buttons. The group has a "label" and an "id". Each &lt;option&gt; (button) has a label and is assigned a value. This is the value the &lt;radio&gt;-element will return when the option is selected.
+</para>
+<programlisting>
+					&lt;/column&gt;
+				&lt;/row&gt;
+			&lt;/tab&gt;
+</programlisting>
+<para>
+Each tag has to be closed. We've put all the elements we wanted (the two &lt;varslots&gt; and the &lt;radio&gt;) in the &lt;column&gt;. We put all elements we wanted (the &lt;varselector&gt; and the &lt;column&gt; with those elements) in the &lt;row&gt;. And we've put all the elements we wanted into the first page in the &lt;tabbook&gt;. We're not yet done defining the &lt;tabbook&gt; (more pages to come) and of course there's more to come in the &lt;dialog&gt;, too. But this screenshot is basically what we've done so far:
+</para>
+<screenshot>
+<screeninfo>T test plugin</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="t_test_plugin_example.png" format="PNG"/>
+	  </imageobject>
+	  <textobject>
+	    <phrase>T test plugin</phrase>
+	  </textobject>
+	</mediaobject>
+</screenshot>
+<para>
+Note that we have not specified the "Submit", "Close", etc. buttons or the code-view. Those elements get generated automatically. But of course we still have to define the second page of the &lt;tabbook&gt;:
+</para>
+<programlisting>
+			&lt;tab label="Options"&gt;
+				&lt;checkbox id="varequal" label="assume equal variances" value=", var.equal=TRUE"/&gt;
+</programlisting>
+<para>
+By default elements will be placed top-to-bottom like in a &lt;column&gt;. Since that is what we want here, we don't have to explicitly state a &lt;row&gt; or &lt;column&gt;-layout. The first element we define is a checkbox. Just like the &lt;radio&gt;&lt;option&gt;s, the checkbox has a "label" and a "value". The "value" is what gets returned, if the checkbox is checked. Of course the checkbox also needs an "id".
+</para>
+<programlisting>
+				&lt;frame label="Confidence Interval"&gt;
+</programlisting>
+<para>
+Here's yet another layout-element: In order to signal that the two elements below  belong together, we draw a &lt;frame&gt; (box). That frame may have a caption. Since the frame is just a passive layout-element, it does not need an "id".
+</para>
+<programlisting>
+					&lt;checkbox id="confint" label="print confidence interval" value="1" checked="true"/&gt;
+					&lt;spinbox type="real" id="conflevel" label="confidence level" min="0" max="1" initial="0.95"/&gt;
+				&lt;/frame&gt;
+</programlisting>
+<para>
+Inside the &lt;frame&gt; we place another &lt;checkbox&gt; (using checked="true", we signal that checkbox should be checked by default), and a &lt;spinbox&gt;. The spinbox allows the user to select a value between "min" and "max" with the default/initial value "0.95". Setting the "type" to "real" signals that real numbers are accepted as opposed to type="integer" which would accept integers only.
+</para>
+<programlisting>
+			&lt;/tab&gt;
+		&lt;/tabbook&gt;
+	&lt;/dialog&gt;
+</programlisting>
+<para>
+That all for the second page of the &lt;tabbook&gt;, all pages in the &lt;tabbook&gt; and all elements in the &lt;dialog&gt;. We're finished defining what the dialog looks like. Actually we don't have to define an additional &lt;wizard&gt;-interface, but here's how that would be done. Things should be fairly self-explanatory be now, so I leave that part without comments:
+</para>
+<programlisting>
+	&lt;wizard label="Independent Samples T-Test"&gt;
+		&lt;page id="firstpage"&gt;
+			&lt;text&gt;As a first step, select the two variables you want to compare against each other. And specify, which one you theorize to be greater. Select two-sided, if your theory does not tell you, which variable is greater.&lt;/text&gt;
+			&lt;row&gt;
+				&lt;column&gt;
+					&lt;varselector id="vars"/&gt;
+				&lt;/column&gt;
+				&lt;column&gt;
+					&lt;varslot type="numeric" id="x" source="vars" required="true" label="compare"/&gt;
+					&lt;varslot type="numeric" id="y" source="vars" required="true" label="against"/&gt;
+					&lt;radio id="hypothesis" label="using test hypothesis"&gt;
+						&lt;option value="two.sided" label="Two-sided"/&gt;
+						&lt;option value="greater" label="First is greater"/&gt;
+						&lt;option value="less" label="Second is greater"/&gt;
+					&lt;/radio&gt;
+				&lt;/column&gt;
+			&lt;/row&gt;
+		&lt;/page&gt;
+		&lt;page id="secondpage"&gt;
+			&lt;text&gt;Below are some advanced options. It's generally safe not to assume the variables have equal variances. An appropriate correction will be applied then. Chosing "assume equal variances" may increase test-strength, however.&lt;/text&gt;
+			&lt;checkbox id="varequal" label="assume equal variances" value=", var.equal=TRUE"/&gt;
+			&lt;text&gt;Sometimes it's helpful to get an estimate of the confidence interval of the difference in means. Below you can specify whether one should be shown, and which confidence-level should be applied (95% corresponds to a 5% level of significance).&lt;/text&gt;
+			&lt;frame label="Confidence Interval"&gt;
+				&lt;checkbox id="confint" label="print confidence interval" value="1" checked="true"/&gt;
+				&lt;spinbox type="real" id="conflevel" label="confidence level" min="0" max="1" initial="0.95"/&gt;
+			&lt;/frame&gt;
+		&lt;/page&gt;
+	&lt;/wizard&gt;
+</programlisting>
+<para>
+As you see, all of this is mostly a duplication of what has been defined for the dialog-interface. You may of course make the wizard-interface look very different to the plain dialog. Be sure, however, to assign corresponding elements the same "id" in both interfaces. This is not only used to transfer settings from the dialog-interface to the wizard-interface and back, when the user switches interfaces (which does not yet happen in the current version of RKWard), but also simplifies writing your code-template (see below). 
+</para>
+<programlisting>
+&lt;/document&gt;
+</programlisting>
+<para>
+Finally we close the &lt;document&gt;-tag, and that's it. The GUI is defined. You can save the file now. But how does R-syntax get generated from the GUI-settings? I'll deal with that next.
+</para>
+</chapter>
+
+<chapter id="phptemplate">
+<title>Generating R code from GUI settings</title>
+<para>
+Now we have a GUI defined, but we still need to generate some R-code from that. For that, we need another text-file, "code.php", located in the same directory as the <link linkend="mainxml">description.xml</link>. You may or may not be familiar with PHP. Documentation on PHP can be found here: http://www.php.net. But for most purposes you will not need to know much about PHP at all, as we'll only use some very basic features..
+</para>
+<para>
+For the independent samples t-test, the code.php file looks as follows (with comments in between):
+</para>
+<programlisting>
+&lt;?
+</programlisting>
+<para>
+This is a sort of opening tag in PHP. Everything between &lt;? and ?&gt; will be interpreted as PHP-code. Everything outside of these tags will simply be returned as plain text. See below for examples.
+</para>
+<programlisting>
+	function preprocess () {
+	}
+</programlisting>
+<para>
+The PHP-file is organized into four separate functions: preprocess, calculate, printout and cleanup. This is because not all code is needed at all stages. Currently the preprocess-function is not really used.
+</para>
+<programlisting>
+	function calculate () {
+?&gt;rk.temp &lt;- t.test (&lt;? getRK ("x"); ?&gt;, &lt;? getRK ("y"); ?&gt;, "&lt;? getRK ("hypothesis"); ?&gt;"&lt;? getRK ("varequal"); if (($conflevel = getRK_val ("conflevel")) != "0.95") echo (", conf.level=" . $conflevel); ?&gt;)
+&lt;?
+	}
+</programlisting>
+<para>
+This function generates the actual R-syntax to be run from the GUI-settings. Let's look at this in detail:
+First we leave the PHP-mode (?&gt;) and hence return
+</para>
+<screen>
+rk.temp &lt;- t.test (
+</screen>
+<para>
+as plain text. Next we need to fill in the value, the user selected as the first variable. Hence we enter PHP-mode again (&lt;?) and call 'getRK ("x");'. This prints out the value of the GUI-element with id "x": our first &lt;varslot&gt;. Next we leave PHP-mode again, print a ', ', and do the same to fetch the value of the element "y" - the second &lt;varslot&gt;. For the hypothesis (the &lt;radio&gt;-group), and the equal variances-&lt;checkbox&gt;, the procedure is very similar.
+</para>
+<para>
+It gets a little more tricky for the confidence level. For reasons of aestethics, we don't want to explicitly specify the confidence level to use, if it corresponds to the default value. Hence, instead of printing the value with 'getRK', we fetch it silently using 'getRK_val' and assign it to a PHP-variable. We then check, whether that variable differs from "0.95" and if so print out an additional argument.
+Finally, we leave PHP-mode again, print a last ')', and that's it for the calculate-function.
+</para>
+<programlisting>
+	function printout () {
+?&gt;rk.print (rk.temp);
+&lt;?
+	}
+</programlisting>
+<para>
+And this was all there is to the printout function in most cases. rk.print utilizes the R2HTML package to provide HTML formatted output. You could also excert greater control over the generated output. For this, you'll generate an R syntax, that consists esp. of "cat ()" commands, piecing together an HTML output. If in doubt, just use rk.print (), and be done with.
+</para>
+<para>
+Note: At the time of this writing, I plan to add an rk.print.header () function to print out some information about what kind of analysis was done, when, what parameters, etc. Check back with this document, soon.
+</para>
+<programlisting>
+	function cleanup () {
+?&gt;rm (rk.temp)
+&lt;?
+	}
+?&gt;
+</programlisting>
+<para>
+Finally, in the function cleanup we discard the temporary object(s) we left in the R-workspace. You should always clean up all objects created while running the plugin, except if the user explicitely requested otherwise.
+</para>
+<para>
+Congratulations! You created your first plugin. Read on in the next chapters for more advanced concepts
+</para>
+</chapter>
+
+<chapter id="logic">
+<title>GUI logic</title>
+<para>
+All the basic concepts of creating a plugin for &kapp; have been described in the previous chapters. Those basic concepts should be sufficient for many - if not most - cases. However, sometimes you want more control over how your plugin's GUI behaves.
+</para>
+<para>
+For instance, suppose you want to extend the t-test example used in this documentation to allow both: comparing a variable against another variable (as shown), and comparing a variable against a constant value. Now, one way of doing this would be to add a radio-control that switches between the two modes, and adding a spinbox to enter the constant value to compare against. Consider this simplified example:
+</para>
+<programlisting>
+&lt;!DOCTYPE rkplugin&gt;
+&lt;document&gt;
+	&lt;code file="code.php"/&gt;
+
+	&lt;dialog label="T-Test"&gt;
+		&lt;row&gt;
+			&lt;varselector id="vars"/&gt;
+			&lt;column&gt;
+				&lt;varslot id="x" type="numeric" source="vars" required="true" label="compare"/&gt;
+				&lt;radio id="mode" label="Compare against"&gt;
+					&lt;option value="variable" checked="true" label="another variable (select below)"/&gt;
+					&lt;option value="constant" label="a constant value (set below)"/&gt;
+				&lt;/radio&gt;
+				&lt;varslot id="y" type="numeric" source="vars" required="true" label="variable"/&gt;
+				&lt;spinbox id="constant" initial="0" label="constant" /&gt;
+			&lt;/column&gt;
+		&lt;/row&gt;
+	&lt;/dialog&gt;
+&lt;/document&gt;
+</programlisting>
+<para>
+So far so good, but there are a number of problems with this GUI. First, both the varslot and the spinbox are always shown, whereas only one of the two is really used. Worse, the varslot always requires a valid selection, even if you compare against a constant. Obviously, if we create a multi-purpose GUI like this, we want more flexibility. Enter: the &lt;logic&gt;-section (inserted at the same level as &lt;code&gt;, &lt;dialog&gt;, or &lt;wizard&gt;).
+</para>
+<para>
+<programlisting>
+	[...]
+	&lt;code file="code.php"/&gt;
+
+	&lt;logic&gt;
+		&lt;convert id="varmode" mode="equals" sources="mode.string" standard="variable" /&gt;
+		&lt;convert id="constmode" mode="equals" sources="mode.string" standard="constant" /&gt;
+
+		&lt;connect client="y.required" governor="varmode" /&gt;
+		&lt;connect client="y.visible" governor="varmode" /&gt;
+
+		&lt;connect client="constant.required" governor="constmode" /&gt;
+		&lt;connect client="constant.visible" governor="constmode" /&gt;
+	&lt;/logic&gt;
+
+	&lt;dialog label="T-Test"&gt;
+	[...]
+</programlisting>
+</para>
+<para>
+The first two lines inside the logic section are &lt;conver&gt; tags. Those basically provide two new boolean (on or off, true or false) properties, which can be used later on. The first property ("varmode") is true, whenever the upper radio-button is selected and the second whenever the lower radio-button is selected. How is this done?
+</para>
+<para>
+First, under sources, the "source" properties to work on are listed (in this case only one each; you could list several as sources="mode.string;somethingelse", then varmode would only be true, if both mode.string and somethingelse are equal to the string "variable"). Note that in this case we don't just write "mode" (as we would in getRK("mode"), but "mode.string". This is actually the internal way a radio control works: It has a property "string", which holds its string value. getRK ("mode") is just a shorthand, and equivalent to getRK ("mode.string"). See the reference for all properties of the different GUI elements.
+</para>
+<para>
+Second, we set the mode of conversion to mode="equals". This means, we want to check, whether the sources are equal to a certain value. Finally standard is the value to compare against, so with standard="variable", we check whether the property mode.string is equal to the string "variable" (the value of the upper radio option). If it is equal, then the property varmode is true, else it is false.
+</para>
+<para>
+The next line is basically the same, but reversed. Here we define a property ("constmode") which becomes true, if the second radio option is selected.
+</para>
+<para>
+Now to the real stuff: We &lt;connect&gt; the "varmode" property to two different properties. Firstly, to y.required. This specifies, whether the varslot "y" is required or not. Secondly, to y.visible, which controls whether the varslot "y" is shown or not. Hence, if the upper radio-option is selected, the varslot "y" is required, and visible. Else it is not required and hidden.
+</para>
+<para>
+We do just the reverse for the spinbox. So in effect, either the varslot is shown and required, <emphasis>or</emphasis> the spinbox is shown and required - depending on which option is selected in the radio control. The GUI is changing itself according to the radio option. Try the example, if you like.
+</para>
+<para>
+Once again, for a complete list of properties, refer to the <link linkend="reference">reference</link>. One more property, however, is special in that all GUI elements have it: "enabled". This is slightly less drastic that "visible". It does not show/hide the GUI element, but only enables/disables it. Disabled elements are typically shown grayed out, and do not react to user input.
+</para>
+</chapter>
+
+<chapter id="embedding">
+<title>Embedding Plugins into Plugins</title>
+<para>
+When writing plugins, you will often find that you're creating a number of plugins that only differ in some respects, but have a lot more in common. For instance, for plotting, there are a number of generic R options that can be used with mostly all types of plots. Should you create a GUI and PHP-template for those over and over again?
+</para>
+<para>
+Obviously that would be quite a hassle. Fortunately, you don't have to do that. Rather you create the common functionality once, and later you can embed it into several plugins. In fact it is possible to embed any plugin into any other plugin, even if the original author of the embedded plugin never thought, somebody would want to embed their plugin into another one.
+</para>
+<section id="embedding_dialog">
+<title>Embedding inside a dialog</title>
+<para>
+Ok, enough said. How does it work? Simple: Just use the &lt;embed&gt; tag. Here's a stripped down example:
+</para>
+<programlisting>
+&lt;dialog&gt;
+	&lt;tabbook&gt;
+		&lt;tab [...]&gt;
+			[...]
+		&lt;/tab&gt;
+		&lt;tab label="Plot Options"&gt;
+			&lt;embed id="plotoptions" component="rkward::plot_options"/&gt;
+		&lt;/tab&gt;
+		&lt;tab [...]&gt;
+			[...]
+		&lt;/tab&gt;
+	&lt;/tabbook&gt;
+&lt;/dialog&gt;
+</programlisting>
+<para>
+What happens here, is that the entire GUI or the plot options plugin (except of course for the standard elements like submit-button, etc.) is embedded right into your plugin (try it!).
+</para>
+<para>
+As you can see the syntax of the &lt;embed&gt;-tag is fairly simple. It takes an id as most elements. The parameter component specifies which plugin to embed, as defined in the <link linkend="pluginmap">.pluginmap</link> file ("rkward::plot_options" is the result of concatenating the namespace "rkward", a separator "::", and the name of the component "plot_options").
+</para>
+</section>
+<section id="embedding_code">
+<title>Code generation when embedding</title>
+<para>
+So far so good, but what about the generated code? How are the code for the embedding and embedded plugin merged? In the embedding plugin's PHP-code, simply write something like this:
+</para>
+<programlisting>
+function printout () {
+[...] ?&gt;
+myplotfunction ([...]&lt;? getRK ("plotoptions.code.printout"); ?&gt;)
+&lt;? [...]
+}
+</programlisting>
+<para>
+So essentially, we're fetching the code generated by the embedded plugin just like we're fetchting any other GUI setting. Here the string "plotoptions.code.printout" can be deparsed to: "The printout section of the generated code of the element with the id plotoptions" (plotoptions is the id we gave for the &lt;embed&gt;-tag above). And yes, if you want advanced control, you can even fetch the values of individual GUI elements inside the embedded plugin (but not the other way around, as the embedded plugin does not know anything about its surroundings).
+</para>
+</section>
+<section id="embedding_wizard">
+<title>Embedding inside a wizard</title>
+<para>
+If your plugin provides a wizard GUI, embedding works basically in the same way. You'll generally use:
+</para>
+<programlisting>
+	&lt;wizard [...]&gt;
+		[...]
+		&lt;page id="page12"&gt;
+			[...]
+		&lt;/page&gt;
+		&lt;embed id="plotoptions" component="rkward::plot_options"/&gt;
+		&lt;page id="page13"&gt;
+			[...]
+		&lt;/page&gt;
+		[...]
+	&lt;/wizard&gt;
+</programlisting>
+<para>
+If the embedded plugin provides a wizard interface, its pages will be inserted right between page12 and page13 of your plugin. If the embedded plugin provides a dialog interface only, a single new page will be added between your pages page12 and page13. The user will never notice.
+</para>
+</section>
+<section id="embedding_as_button">
+<title>Less embedded embedding: Further options button</title>
+<para>
+While embedding is cool, you should be careful not to overdo it. Too many functions inside a GUI just make it hard to find the relevant options. Of course, sometimes you may want to embed a great deal of options (like all the options to plot ()), but as those are really optional, you don't want them prominently in your GUI.
+</para>
+<para>
+An alternative is to embed those options "as a button":
+</para>
+<programlisting>
+&lt;dialog&gt;
+	&lt;tabbook&gt;
+		[...]
+		&lt;tab label="Options"&gt;
+			[...]
+			&lt;embed id="plotoptions" component="rkward::plot_options" as_button="true" label="Specify plotting options"/&gt;
+		&lt;/tab&gt;
+		[...]
+	&lt;/tabbook&gt;
+&lt;/dialog&gt;
+</programlisting>
+<para>
+In this case, a single push button will be added to your plugin, labelled "Specify plotting options". When you press that button, a separate dialog will come up, with all the options of the embedded plugin. Even while this embedded GUI is not visible most of the time, you can fetch its settings just as described <link linkend="embedding_code">above</link>.
+</para>
+<para>
+<emphasis>Caution:</emphasis> Probably the "button" approach should only ever be used for plugins that can never be invalid (for missing/bad settings). Otherwise the user would not be able to submit the code, but might have a hard time finding out, the reason for that is hidden behind some button.
+</para>
+</section>
+<section id="embedding_incomplete">
+<title>Embedding/defining incomplete plugins</title>
+<para>
+Some plugins - and as a matter of fact, the plot_options used as an example above, is one of them - are not complete by themselves. They simply do not have the GUI elements to select some important values. They are meant to be used only embedded into other plugins.
+</para>
+<para>
+In how far is the plot_options plugin incomplete? Well, for some option settings, it needs to know the name of the objects/expressions for the x and y axes (actually it will do fine if it only has either, but it needs at least one to function properly). However, it does not have a mechansim of selecting those objects, or entering them any other way. So how does it know about them?
+</para>
+<para>
+In the logic section of the plot_options plugin there are two additional lines, not covered, yet:
+</para>
+<programlisting>
+	&lt;logic&gt;
+		&lt;external id="xvar" /&gt;
+		&lt;external id="yvar" /&gt;
+
+		[...]
+	&lt;/logic&gt;
+</programlisting>
+<para>
+This defines two additional properties in the plot_options plugin, whose sole purpose is to be connected to some (yet unknown) properties of the embedding plugin. In the plot_options plugin those two properties are simply used like any other, and for instance there are calls to getRK("xvar") in the plot_options PHP template.
+</para>
+<para>
+Now, for the incomplete plugin there is no way of knowing, where it will be embedded, and what the relevant settings in the embedding plugin will be called. So we need to add two additional lines in the embedding plugin's logic section as well:
+</para>
+<programlisting>
+	&lt;logic&gt;
+		[...]
+
+		&lt;connnect client="plotoptions.xvar" governor="xvarslot.available" /&gt;
+		&lt;connnect client="plotoptions.yvar" governor="yvarslot.available" /&gt;
+	&lt;/logic&gt;
+</programlisting>
+<para>
+This is nothing new in principle, we've covered &lt;connect&gt; statements in the <link linkend="logic">chapter of GUI logic</link>. You simply connect the values in two varlots (called "xvarslot" and "yvarslot" in this example) to the receiving "external" properties of the embedded plugin. That's it. Everything else is taken care of automatically.
+</para>
+</section>
+</chapter>
+
+<appendix id="reference">
+<title>Reference</title>
+
+<section id="propertytypes"><title>Types of properties / Modifiers</title>
+<para>
+At some places in this introduction we've talked about "properties" of GUI elements or otherwise. In fact there are several different types of properties. Usually you do not need to worry about this, as you can use common sense to connect any property to any other property. However, internally, there are different types of properties. What this matters for, is when fetching some special values in the PHP-template. In getRK ("id") statements you can also specify some so called "modifiers" like so: getRK ("id.modifier"). This modifier will affect, in which way the value is printed. Read on for the list of properties, and the modifiers they each make available:
+</para>
+<variablelist>
+<varlistentry>
+<term>String properties</term>
+<listitem>The most simple type of property, used to simply hold a piece of text. It does not provide any modifiers. If you attempt to fetch modified values from the PHP template, it will return the usual value, and a warning will be written to the terminal you're running rkward from.</listitem>
+</varlistentry>
+<varlistentry>
+<term>Boolean properties</term>
+<listitem>Properties that can either be on or off, true or false. For instance the properties created by &lt;convert&gt;-tags, also the property accompanying a &lt;checkbox&gt; (see below). The following values will be returned according to the given modifier:
+	<variablelist>
+	<varlistentry>
+	<term>No modifier ("")</term>
+	<listitem>By default the property will return the string "TRUE", if it is true, and "FALSE" otherwise. Boolean properties attached to a checkbox behave slightly differently, and return the strings you specified in the "value" and "value_unchecked" attributes.</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"true"</term>
+	<listitem>Return the string as if the property was true, even if it is false</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"false"</term>
+	<listitem>Return the string as if the property was false, even if it is true</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"not"</term>
+	<listitem>Return the string as if the property held its opposite value (i.e. false if true, true if false)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"numeric"</term>
+	<listitem>Return the string "1" if the property is true, or "0" if it is false</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>Integer properties</term>
+<listitem>A property designed to hold an integer value (but of course it still returns a numeric character string to the PHP-template). It does not accept any modifiers. Used in &lt;spinbox&gt;es (see below)</listitem>
+</varlistentry>
+<varlistentry>
+<term>Real number properties</term>
+<listitem>A property designed to hold a real number value (but of course it still returns a numeric character string to the PHP-template). It does not accept any modifiers. Used in &lt;spinbox&gt;es (see below)</listitem>
+</varlistentry>
+<varlistentry>
+<term>RObject properties</term>
+<listitem>A property designed a selection of one or more R objects. Used most porminently in varselectors and varslots.  The following values will be returned according to the given modifier:
+	<variablelist>
+	<varlistentry>
+	<term>No modifier ("")</term>
+	<listitem>By default the property will the full name of the selected object. If more than one object is selected, the object names will be separated by linebreaks ("\n").</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"shortname"</term>
+	<listitem>Like above, but returns only short name(s) for the object(s). For instance an object inside a list would only be given the name it has inside the list, without the name of the list.</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"label"</term>
+	<listitem>Like above, but returns the &kapp; label(s) of the object(s) (if no label availabe, this is the same as shortname)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>Code properties</term>
+<listitem>A property held by plugins that generated code. This is important for embedding plugins, in order to embed the code generated by the embedded plugin into the code generated by the embedding (top-level) plugin. The following values will be returned according to the given modifier:
+	<variablelist>
+	<varlistentry>
+	<term>No modifier ("")</term>
+	<listitem>Returns the entire code, i.e. all the sections below concatenated to one string.</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"preprocess"</term>
+	<listitem>Returns only the preprocess section of the code</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"calculate"</term>
+	<listitem>Returns only the calculate section of the code</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"printout"</term>
+	<listitem>Returns only the printout section of the code</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"cleanup"</term>
+	<listitem>Returns only the cleanup section of the code</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+</variablelist>
+</section>
+
+<section id="xmlelements"><title>Elements to be used in the XML description of the plugin</title>
+<para>Properties held by the elements are listed in a <link linkend="elementproperties">separate section</link>.</para>
+
+<section id="generalelements"><title>General elements</title>
+<variablelist>
+<varlistentry>
+<term>&lt;document&gt;</term>
+<listitem>Needs to be present in each description.xml-file as the root-node. No special function. No attributes</listitem>
+</varlistentry>
+</variablelist>
+</section>
+
+<section id="interfaceelements"><title>Interface definitions</title>
+<variablelist>
+<varlistentry>
+<term>&lt;dialog&gt;</term>
+<listitem>Defines a dialog-type interface. Place the GUI-definition inside this tag. Use only once per file, as a direct child of the document-tag. At least one of "dialog" or "wizard" tags is required for a plugin. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Caption for the dialog</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;wizard&gt;</term>
+<listitem>Defines a wizard-type interface. Place the GUI-definition inside this tag. Use only once per file, as a direct child of the document-tag. At least one of "dialog" or "wizard" tags is required for a plugin. Accepts only &lt;page&gt; or &lt;embed&gt;-tags as direct children. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Caption for the wizard</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+</variablelist>
+</section>
+
+<section id="layoutelements"><title>Layout elements</title>
+<para>All elements in this section accept an attribute id="identifierstring". This attribute is optional for all elements. It can be used, for example, to hide/disable the entire layout element and all the elements contained therein (see <link linkend="logic">chaper GUI logic</link>). The id-string may not contain "." (dot) or ";" (semicolon), and should generally be limited to alphanumeric characters and the underscore ("_"). Only the additional attributes are listed.</para>
+<variablelist>
+<varlistentry>
+<term>&lt;page&gt;</term>
+<listitem>Defines a new page inside a wizard. Only allowed as a direct child of a &lt;wizard&gt; element.</listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;row&gt;</term>
+<listitem>All direct children of a "row" tag will be placed left-to-right.</listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;column&gt;</term>
+<listitem>All direct children of a "column" tag will be placed top-to-bottom.</listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;stretch&gt;</term>
+<listitem>By default, elements in the GUI take up all the space that's available. For instance, if you have two columns side by side, the left one is packed with elements, but the right one only contains a lonely &lt;radio&gt;, the &lt;radio&gt; control will expand vertically, even though it does not really need the available space, and it will look ugly. In this case you really want to add a "blank" below the &lt;radio&gt;. For this, use the &lt;stretch&gt; element. It will simply use up some space. Don't overuse this element, usually it's a good idea for GUI elements to get all the available space, only sometimes will the layout become spaced out. The &lt;stretch&gt; element does not take any arguments, not even an "id". Also you can place no children inside the &lt;stretch&gt; element (in other words, you'll only ever use it as "&lt;stretch/&gt;")</listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;frame&gt;</term>
+<listitem>Draws a frame/box around its direct children. Can be used to visually group related options. Layout inside a frame is top-to-bottom, unless you place a &lt;row&gt; inside. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Caption for the frame (optional)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;tabbook&gt;</term>
+<listitem>Organizes elements in a tabbook. Accepts only &lt;tab&gt;-tags as direct children.</listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;tab&gt;</term>
+<listitem>Defines a page in a tabbook. Place the GUI-definition for the tab inside this tag. May be used only as a direct child of a &lt;tabbook&gt; tag. A &lt;tabbook&gt; should have at least two defined tabs. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Caption for the tab page (required)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;text&gt;</term>
+<listitem>Shows the text enclosed in this tag in the GUI. Linebreaks are interpreted as hard linebreaks!</listitem>
+</varlistentry>
+</variablelist>
+</section>
+
+<section id="activeelements"><title>Active elements</title>
+<para>All elements in this section accept an attribute id="identifierstring". This attribute is required for all elements. Only the additional attributes are listed. The id-string may not contain "." (dots).</para>
+<variablelist>
+<varlistentry>
+<term>&lt;varselector&gt;</term>
+<listitem>Provides a list of availabe objects from which the user can select one or more. Requires one or more &lt;varslot&gt;s as a counterpart to be useful. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Label for the varselector (optional, defaults to "Select variable(s)")</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;varslot&gt;</term>
+<listitem>Used in conjunction with a "varselector" to allow the user to select one or more variables. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Label for the varslot (recommended, defaults to "Variable:")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;source&gt;</term>
+	<listitem>The varselector to fetch the selection from (required, unless you connect manually)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;required&gt;</term>
+	<listitem>Whether - for submitting the code - it is required that this varslot holds a valid value. See <link linkend="elementproperties">required-property</link> (optional, defaults to false)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;multi&gt;</term>
+	<listitem>Whether the varslot holds only one (default, "false"), or several objects</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min_vars&gt;</term>
+	<listitem>Only meaningful if multi="true": Minimum number of vars to be selected for the selection to be considered valid (optional, defaults to "1")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min_vars_if_any&gt;</term>
+	<listitem>Only meaningful if multi="true": Some varslots may be considered valid, if, for instance, the varslot is either empty, or holds at least two values. This specifies how many variables have to be selected if any at all (2 in the example). (optional, defaults to "1")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max_vars&gt;</term>
+	<listitem>Only meaningful if multi="true": Maximum number of variables to select (optional, defaults to "0", which means no maximum)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;classes&gt;</term>
+	<listitem>If you specify one or more R classnames (separated by spaces (" ")), here, the varslot will only accept objects belonging to those classes (otional, <emphasis>use with great care</emphasis>, the user should not be prevented from making valid choices, and R has <emphasis>a lot</emphasis> of different classes!)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;types&gt;</term>
+	<listitem>If you specify one or more variables types (separated by spaced (" ")), here, the varslot will only accept objects of those types. Valid types are "unknown", "number", "string", "factor", "invalid". (Optional, <emphasis>use with great care</emphasis>, the user should not be prevented from making valid choices, and rkward does not always know the type of a variable)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;num_dimensions&gt;</term>
+	<listitem>The number of dimensions, an object needs to have. "0" (the default) means, any number of dimensions is acceptable. (optional, defaults to "0")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min_length&gt;</term>
+	<listitem>The minimum length, an object needs to have in order to be acceptable. (optional, defaults to "0")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max_length&gt;</term>
+	<listitem>The maximum length, an object needs to have in order to be acceptable. (optional, defaults to the largest integer number representable on the system)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;radio&gt;</term>
+<listitem>Defines a group of radio-exclusive buttons (only one can be selected at a time). Requires at least two &lt;option&gt;-tags as direct children. No other tags are allowed as children. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Label for the radio control (recommended, defaults to "Select one:")</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;option&gt;</term>
+<listitem>Can only be used as a direct child of a &lt;radio&gt; element. Represents one selectable option in a radio control. The &lt;option&gt; elements do not take an "id" attribute. Only the &lt;radio&gt; needs one. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Label for the option (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;value&gt;</term>
+	<listitem>The string value the radio will return if this option is checked (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;checked&gt;</term>
+	<listitem>Whether the option should be checked by default "true" or "false". Only one button in a &lt;radio&gt; may be set to checked="true". If no button is set to checked, the first button in the radio will be checked automatically. (optional, default to "false")</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;checkbox&gt;</term>
+<listitem>Defines a checkbox, i.e. a single option that can either be set to on or off. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Label for the checkbox (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;value&gt;</term>
+	<listitem>The value the checkbox will return if checked (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;value_unchecked&gt;</term>
+	<listitem>The value that will be returned if the checkbox is not checked (optional, defauls to "", i.e. an empty string)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;checked&gt;</term>
+	<listitem>Whether the option should be checked by default "true" or "false" (optional, default to "false")</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;input&gt;</term>
+<listitem>Defines a free text input field. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Label for the input field (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;initial&gt;</term>
+	<listitem>Initial text of the text field (optional, defaults to "", i.e. an empty string)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;size&gt;</term>
+	<listitem>One of "small", "medium", or "large". "large" defines a multi-line input field, "small", and "medium" are single line fields (optional, defaults to "medium")</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;spinbox&gt;</term>
+<listitem>A spinbox in which the user can select a numeric value, using either direct keyboard input or small up/down arrows. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Label for the spinbox (recommend, default to "Enter value:")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min&gt;</term>
+	<listitem>The lowest value the user is allowed to enter in the spinbox (optional, defaults to the lowest value technically representable in the spinbox)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max&gt;</term>
+	<listitem>The largest value the user is allowed to enter in the spinbox (optional, defaults to the highest value technically representable in the spinbox)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;initial&gt;</term>
+	<listitem>The initial value shown in the spinbox (optional, defaults to "0")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;type&gt;</term>
+	<listitem>One of "real" or "integer". Whether the spinbox will accept real numbers or only integers (optional, defaults to "real")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;default_precision&gt;</term>
+	<listitem>Only meaningful if the spinbox is of type="real". Specifies the default number of decimal places shown in the spinbox (only this many trailing zeros will be shown). When the user presses the up/down arrows, this decimal place will be changed. The user may still be able to enter values with a higher precision, however (see below) (optional, defaults to "2")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max_precision&gt;</term>
+	<listitem>Unfortunately, spinboxes do not yet accept true floating point numbers, but only numbers of a fixed precision. This specifies, how many decimal places will be available as a maximum (optional, defaults to "4")</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;formula&gt;</term>
+<listitem>This advanced element allows the user to select a formula/set of interactions from selected variables. For instance for a GLM, this element can be used to allow the user to specify the interaction-terms in the model. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;fixed_factors&gt;</term>
+	<listitem>The id of the varslot holding the selected fixed factors (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;dependent&gt;</term>
+	<listitem>The id of the varslot holding the selected dependent variable (required)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;embed&gt;</term>
+<listitem>Embed a different plugin into this one (see <link linkend="embedding">chapter on embedding</link>). Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;component&gt;</term>
+	<listitem>The registered name of the component to embed (see <link linkend="pluginmap">chapter on registering components</link> (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;as_button&gt;</term>
+	<listitem>If set to "true", only a pushbutton will be placed in the embedding GUI, the embedded GUI will only be shown (in a separate window) when the pushbutton is pressed (optional, default is "false")</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem>Only meaningful if as_button="true": The label of the button (recommend, default is "Options")</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+</variablelist>
+</section>
+
+<section id="logicelements"><title>Logic section</title>
+<variablelist>
+<varlistentry>
+<term>&lt;logic&gt;</term>
+<listitem>The containing element for the logic section. All elements below are allowed only inside the &lt;logic&gt; element. Only one &lt;logic&gt; element is allowed per document, as a direct child of the &lt;document&gt; element. The logic section applies to both &lt;dialog&gt; and &lt;wizard&gt; GUIs in the same way.</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>&lt;external&gt;</term>
+<listitem>Creates a new (string) property that is supposed to be connected to an outside property if the plugin gets embedded. See <link linkend="embedding_incomplete">section on "incomplete" plugins</link>. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;id&gt;</term>
+	<listitem>The id of the new property (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;default&gt;</term>
+	<listitem>The default string value of the new property, i.e. the value used, if the property is not connected to an outside property (optional, defaults to an empty string)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>&lt;set&gt;</term>
+<listitem>Set a property to a fixed value (of course, if you additionally connect the property to some other property, the value does not remain fixed). For instance, if you embed a plugin, but want to hide some of its elements, you might set the visibility property of those elements to false. Useful esp. for embedded/embedding plugins. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;id&gt;</term>
+	<listitem>The id of the property to set (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;to&gt;</term>
+	<listitem>The string value to set the property to (required). Note: For boolean properties such as visibility, enabledness, you'll typically set the to attribute to either to="true" or to="false".</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>&lt;convert&gt;</term>
+<listitem>Create a new boolean properties that depends on the state of one or more different properties. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;id&gt;</term>
+	<listitem>The id of the new property (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;sources&gt;</term>
+	<listitem>The ids of the properties this property will depend on. One or more properties may be specified, separated by ";" (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;mode&gt;</term>
+	<listitem>The mode of conversion/operation. One of "equals", "notequals", "range", "and", "or". If in mode equals, the property will only be true, if the value of all of its sources equals the attribute standard (see below). If in at mode notequals, the property will only be true, if the value of all of its sources are different from the attribute standard (see below). If in mode range, the sources have to be numeric (integer or real). The property will only be true, if all sources are in the range specified by the attributes min and max (see below). If in mode and, the sources have to be boolean properties. The property will only be true, if all the sources are true simultaniously. If in mode or, the sources have to be boolean properties. The property will only be true, if at least one of the sources is true. (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;standard&gt;</term>
+	<listitem>Only meaningful in modes equals or notequals: the string value to compare against (required if in one of these modes)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min&gt;</term>
+	<listitem>Only meaningful in mode range: the minimum value to compare against (optional, defaults to the lowest floating point number representable on the machine)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max&gt;</term>
+	<listitem>Only meaningful in mode range: the maximum value to compare against (optional, defaults to the largest floating point number representable on the machine)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;require_true&gt;</term>
+	<listitem>If set to "true", the property will become required, and will only be considered valid, if its state is true/on. Hence, if the property is false, it will block the submit button (optional, defaults to "false". <emphasis>Caution:</emphasis> If you use this, make sure the user can easily detect what's wrong, such as by showing an explanatory &lt;text&gt;)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>&lt;connect&gt;</term>
+<listitem>Connects two properties. The client property will be changed whenever the governor property changes (but not the other way around!). Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;client&gt;</term>
+	<listitem>The id of the client property, i.e. the property that will be adjusted (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;governor&gt;</term>
+	<listitem>The id of the governor property, i.e. the property that will adjusts the client property. This may include a modifier (required)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;reconcile&gt;</term>
+	<listitem>If "true", the client property will make adjust the governor property on connection in such a way that the governor property will only accept values that are also acceptable by the client (e.g. suppose the governor is a numeric property with min value "0", and the client is a numeric property with min value "100". The min of both properties will be adjusted to 100, if reconcile="true"). Generally works only for properties of the same basic type (optional, default to "false")</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+</variablelist>
+</section>
+
+</section>	<!-- Elements in main XML -->
+
+<section id="elementproperties"><title>Properties of plugin elements</title>
+<para>All <link linkend="layoutelements">layout elements</link>, and all <link linkend="activeelements">active elements</link> hold the following properties, accessible via "id_of_element.name_of_property":
+</para>
+<variablelist>
+<varlistentry>
+<term>visible</term>
+<listitem>Whether the GUI element is visible or not (boolean)</listitem>
+</varlistentry>
+<varlistentry>
+<term>enabled</term>
+<listitem>Whether the GUI element is enabled or not (boolean)</listitem>
+</varlistentry>
+<varlistentry>
+<term>required</term>
+<listitem>Whether the GUI element is required (to hold a valid setting) or not. If you set an element to not enabled/not visible, you should also set it to not required! (boolean)</listitem>
+</varlistentry>
+</variablelist>
+<para>
+In addition to this, some elements have additional properties you can connect to. Most active elements also have a "default" property whose value will be returned on calls to getRK ("..."), if no specific property was named, as described below.
+</para>
+<variablelist>
+<varlistentry>
+<term>&lt;text&gt;</term>
+<listitem>Default property is text
+	<variablelist>
+	<varlistentry>
+	<term>text</term>
+	<listitem>The text displayed (text)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;varselector&gt;</term>
+<listitem>No default property
+	<variablelist>
+	<varlistentry>
+	<term>available</term>
+	<listitem>All objects available for selection. You probably do not want to use this. Used internally (RObject)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>selected</term>
+	<listitem>The objects currently selected. You probably do not want to use this. Used internally (RObject)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;varslot&gt;</term>
+<listitem>Default property is "available"
+	<variablelist>
+	<varlistentry>
+	<term>available</term>
+	<listitem>All objects held in the varslot (RObject)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>selected</term>
+	<listitem>Of the objects held in the varslot, those that are currently selected. You probably do not want to use this. Used internally (RObject)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>source</term>
+	<listitem>A copy of the objects selected in the corresponding varselector. You probably do not want to use this. Used internally (RObject)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;radio&gt;</term>
+<listitem>Default property is "string"
+	<variablelist>
+	<varlistentry>
+	<term>string</term>
+	<listitem>The value of the currently selected option (string)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>number</term>
+	<listitem>The number of the currently selected option (options are numbered top-to-bottom, starting at 0) (integer)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;checkbox&gt;</term>
+<listitem>Default property is "state"
+	<variablelist>
+	<varlistentry>
+	<term>state</term>
+	<listitem>State of the checkbox (on or off) (boolean)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;input&gt;</term>
+<listitem>Default property is "text"
+	<variablelist>
+	<varlistentry>
+	<term>text</term>
+	<listitem>Current text in the input field (string)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;spinbox&gt;</term>
+<listitem>Default property is either "int" or "real" depending on the spinbox's mode
+	<variablelist>
+	<varlistentry>
+	<term>int</term>
+	<listitem>Integer value held by the spinbox, or nearest integer, if in real mode (integer)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>real</term>
+	<listitem>Real value held by the spinbox (and integer, if in integer) (real)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;formula&gt;</term>
+<listitem>Default property is "model"
+	<variablelist>
+	<varlistentry>
+	<term>model</term>
+	<listitem>The current model string (string)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>table</term>
+	<listitem>The data.frame holding the required variables. If variables from only one data.frame are used, the name of that data.frame is returned. Otherwise a new data.frame is constructed as required (string)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>labels</term>
+	<listitem>If variables from multiple data.frames are involved, their names may get mangled (for instance, if both data.frames contain a variable named "x"). This returns a list with the mangled names as indices and the descriptive label as value (string)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>fixed_factors</term>
+	<listitem>The fixed factors. You probably do not want to use this. Used internally (RObject)</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>dependent</term>
+	<listitem>The dependent variable(s). You probably do not want to use this. Used internally (RObject)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;embed&gt;</term>
+<listitem>No default property
+	<variablelist>
+	<varlistentry>
+	<term>code</term>
+	<listitem>The code generated by the embedded plugin (code)</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+</variablelist>
+</section>
+
+<section id="pluginmapelements"><title>Elements for use in .pluginmap files</title>
+<variablelist>
+<varlistentry>
+<term>&lt;document&gt;</term>
+<listitem>Needs to be present in each .pluginmap file as the root-node (exactly once). Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>base_prefix</term>
+	<listitem>Filenames specified in the pluginmap file are assumed to be relative to the directory of the .pluginmap-file + the prefix you specify here. Useful, esp., if all your components are located below a single subdirectory.	</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>namespace</term>
+	<listitem>A namespace for the component ids. When looking up components for embedding, the components will beretrievable via a string "namespace::component_id". Set to "rkward" for now.</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;components&gt;</term>
+<listitem>Needs to be present exactly once as a direct child of the &lt;document&gt; element. Contains the individual &lt;component&gt;-elements described below. No attributes.</listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;component&gt;</term>
+<listitem>One or more &lt;component&gt; elements should be given as direct children of the &lt;components&gt; element (and only there). Registers a component/plugin with rkward. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>type</term>
+	<listitem>For future extension: The type of component/plugin. Always set to "standard" for now (the only type currently supported).</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>id</term>
+	<listitem>The id by which this component can be retrieved (for placing it in the menu (see below), or for embedding). See &lt;document/gt;-namespace above.</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>file</term>
+	<listitem>Required at least for components of type="standard": The filename of the XML file describing the GUI.</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>label</term>
+	<listitem>The label for this component, when placed in the menu hierarchy.</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;hierarchy&gt;</term>
+<listitem>Needs to be present exactly once as a direct child of the &lt;document&gt; element. Described where the components declared above should be placed in the menu hierarchy. Accepts only &lt;menu&gt; elements as direct children. No attributes.</listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;menu&gt;</term>
+<listitem>One or more &lt;menu&gt; elements should be given as direct children of the &lt;hierarchy&gt; element. Declares a new (sub-)menu. If a menu by the given id (see below) already exists, the two menus are merged. The &lt;menu&gt; element is allowed either as a direct child of the &lt;hierarchy&gt; element (top level menu), or as the direct child on any other &lt;menu&gt; element (sub-menu). Conversely, the &lt;menu&gt; element accepts other &lt;menu&gt; elements or &lt;entry&gt; elements as children. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>id</term>
+	<listitem>An identifier string of the menu. Useful, when menu-definitions are read from several .pluginmap-files, to make sure plugins can be placed in the same menu(s). Some menu-ids such as "file" refer to predefined menus (in this case the "File" menu). Be sure to check with existing .pluginmap-files to use consistent ids.</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>label</term>
+	<listitem>A label for the menu.</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>index</term>
+	<listitem>Useful, when menu-definitions are read from several .pluginmap-files, to have control over the order in which (sub-)menus are placed inside a hierarchy level. Note that the index is not absolute (since more than one .pluginmap file may be read, more than one element at this hierarchy level may have the same id), but you can safely assume that an element with index="4" will be placed somewhere below an element which index="3" and above one with index="5" (optional, default is "-1", for add at end).</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;entry&gt;</term>
+<listitem>A menu entry, i.e. a menu-option to invoke a plugin. May be used only as a direct child of a &lt;menu&gt; element, accepts no child elements. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>component</term>
+	<listitem>The id of the component that should be invoked, when this menu entry is activated.</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>index</term>
+	<listitem>See &lt;menu index="..."&gt; above.</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;include&gt;</term>
+<listitem>Include another .pluginmap file. The most important use case is to provide a "default" selection of plugins in the &kapp; distribution, even if these plugins are defined in several separate .pluginmap files (see all.pluginmap). &lt;include&gt;-elements are only allowed as direct children of the &lt;document&gt;-node. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>file</term>
+	<listitem>The filename of the .pluginmap to include. This is seen relative to the directory of the current .pluginmap file + the base_prefix (see above, &lt;document&gt;-element).</listitem>
+	</varlistentry>
+	</variablelist></listitem>
+</varlistentry>
+</variablelist>
+</section>
+</appendix>
+
+<appendix id="troubleshooting">
+<title>Troubleshooting during plugin development</title>
+<para>
+So you've read all the documentation, did everything right, and still can't get it to work? Don't worry, we'll work it out. First thing to do is: Run rkward in a terminal/console, and watch out for messages on the console. As a general rule of thumb, you should not see any output when your plugin gets invoked, or at any other time (other than the startup message). If there is one, it's likely related to your plugin. See if it gets you anywhere.
+</para>
+<para>
+If everything seems fine on the console, try to increase the debug-level with <command>rkward --debug-level 3</command> (you may also use debug-level 4, or even 5, but as this always generates <emphasis>a lot</emphasis> of output, try a lower level at first). Not all messages shown at higher debug levels neccessarily indicate a problem, but chance are, your problem shows up somewhere between the messages.
+</para>
+<para>
+If you still can't find out what's wrong, don't despair. We know this is complicated stuff, and - after all - possibly you've also come across a bug in &kapp;, and &kapp; needs to be fixed. Just write to the development mailing list, and tell us about the problem. We'll be happy to help you.
+</para>
+<para>
+Finally, even if you found out how to do it on your own, but found the documentation to be not-so-helpful or even wrong in some respects, please tell us on the mailing list as well, so we can fix/improve the documentation.
+</para>
+</appendix>
+
+&documentation.index;
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-minimize-attributes:nil
+sgml-general-insert-case:lower
+sgml-indent-step:0
+sgml-indent-data:nil
+End:
+-->
