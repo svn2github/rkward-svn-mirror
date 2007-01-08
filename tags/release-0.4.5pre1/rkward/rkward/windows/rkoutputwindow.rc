@@ -1,0 +1,17 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkward" version="0.4.3">
+	<MenuBar>
+		<Menu name="file">
+			<Action name="print_output"/>
+		</Menu>
+		<Menu name="edit">
+			<Action name="copy"/>
+			<Separator/>
+			<Action name="output_flush"/>
+		</Menu>
+		<Menu name="view">
+			<Separator/>
+			<Action name="output_refresh"/>
+		</Menu>
+	</MenuBar>
+</kpartgui>
