@@ -1,0 +1,254 @@
+The following list of TODO-items is NOT complete!
+Also, plans change frequently. If something is listed for a specific release, that's no more than a rough plan.
+All in all, this TODO list is mostly for internal purposes, and many parts may not necessarily be intellegible to anybody but the authors.
+
+Advertizing:
+	- start being a bit bolder about RKWard (descriptions, startup notification, etc.)
+
+Bugs:
+	- "cannot create html package index" when installing package as a regular user (due to R.home ("doc") not writable)
+	- There is definitely a memory leak in handling output!
+		- Produce lots and lots of output -> watch mem usage grow
+		- Probably the RKConsole is to blame (run outside console -> no significant increase)
+			- Maybe the kate-part needs to be reset (syntax parse tree) every once in a while?
+	- rnorm () and friends auto-print value only once. R_Visible is 0 on subsequent calls (what in the world is going on, here?)
+	- RKEditorDataFrame:
+		- sometimes the current cell indicator (the box around the current cell) gets lost.
+			- Navigation and editing is still fine
+			- seems to happen more often with larger data frames
+			- more precisely: seems to happen after scrolling
+			- no idea, why this happens
+
+Compilation / technical
+	- Incorporate FreeBSD patches http://www.freshports.org/math/rkward/files.php?message_id=200609172111.k8HLBiob081349@repoman.freebsd.org
+	- cleanup DISABLE_RKWINDOWCATCHER (either get rid of it, or do it right)
+
+UI-stuff
+	- find/create a set of menu icons (https://sourceforge.net/mailarchive/message.php?msg_id=37891606)
+	"First-run wizard"
+		- pre-install R packages
+	- Check for existence of php binary on startup, not only when loading a plugin
+	- RKEditorDataFrame
+		- undo/redo
+			- KDE4
+		- deletion of multiple columns in one step
+		- when pasting a large array, rows should not be added one by one. Suggested algorithm:
+			- if we find out we've already pasted 100 rows, first check, how many more are to come and add this many both to the variable and to the R workspace. Can potentially avoid *lots* of work
+	- Twintable/RKEditorDataFrame
+		- merge the two classes
+		- more efficient syncing: fetch only the values actually needed instead of the whole table. How?
+		- make configurable:
+			- invalid color (global and per variable)
+			- unused color (global and per variable)
+			- default alignment (per var type)
+			- default precision
+			- display of factor level labels (global and per variable)
+			- delay of factor-level popup
+		- highlighting of value ranges
+	- Create an editor for single vectors/factors, or rework RKEditorDataFrame to handle those as well
+	- Rework package management dialog
+		- the UI should probably be simplified somehow. But how? All in a single list with "filter"? Ask for ideas/look at other apps
+			- this will be very hard to do with the current Qt. We'd really need several checkboxes *within* a QListViewItem. Tackle this when/after porting to Qt4
+		- add option to remove packages
+		- smooth handling of updating packages installed in different repositories
+		- auto-updating functionality (every x days, every new session, never; see https://sourceforge.net/mailarchive/message.php?msg_id=37960665)
+	- RObjectListView
+		- use better icons to mark up the different base types
+		- double click action should be configurable: View, Edit, insert name into current script, insert name into console, nothing
+	- RKConsole:
+		- Console should start a command chain when submitting a batch of pasted commands
+		- Better yet, the commands might be autosplit in the backend. Need to think about how to design this correctly, though
+		- Allow pasting at other positions than line end
+		- Prevent cursor from venturing into lines other than the last line
+		- When inside a string, should offer tab-completion for system paths (will maybe have to wait for KDE4, when we get better clues, what context we are currently in)
+	- Script editor:
+		- new action "Run Toplevel expression" (see https://sourceforge.net/mailarchive/forum.php?thread_id=31463482&forum_id=12970)
+	- RKConsole / Script editor:
+		- highlight only valid function names
+	- RKHelpDlg:
+		- in the mid term, this should probably be renamed and moved to windows
+		- call .rk.get.installed.packages, and update package selection drop down on every show, but not on startup? Really? Maybe both.
+	- RKVarslot:
+		- allow "save as" selection mode (i.e. new object names, or selection of existing symbol) -> RKSaveObjectChooser
+	- RKVarselector:
+		- pop-up-able selectors (maybe more generic, not only for varselectors): Like a "Browse" button
+	- RKCommandLog:
+		- optionally keep a file log!
+	- hot-key/permanent icon to cancel current command / hold processing. Perhaps in the busy/idle indicator?
+	- find out how to save toolbar states properly in parts-GUI
+		- also setting the toolbar state for all windows with that toolbar
+	- David's usability items
+	- use RKGlobals::marginHint (), RKGlobals::spacingHint () everywhere
+	- from Ralf:
+		- show first few values of vectors/scalars in tool-tip in workspace browser
+	- Debugging functionality
+		- ideally the whole thing: setting breakpoints, etc.
+		- realistically, maybe we can override browser () or do_browser with something nicer
+	- Preview of plots
+		- Maybe use a button (along the submit / close / etc. buttons instead)?
+		- The preview window should be a specialized RKCaughtWindow
+			- It should show info on state (up to date / updating / error / etc).
+	- Graphics Device List window
+		- (see http://sourceforge.net/mailarchive/message.php?msg_id=37825223)
+		- par (no.readonly=TRUE) and par () to fetch available parameters and determine read-only state
+		- device list would only be fetched when opening the window, not kept up to date?
+		- access to graphics device plugins
+	- Help system
+		- find a good way to open R help pages in the same window
+		- open link in new tab, etc.
+
+Internal stuff:
+	- Look at package odfWeave, and find out, how to use this
+		- replace remaining direct HTML fragments in plugins with wrapper calls
+	- should we override bindingIsActive()?
+	RKVariable:
+		- True Support for Logicals
+		- In the current design, RKVariable would not handle storage mode changes from outside well at all
+		- use QIntDict instead of string-map for value-labels / factor levels? Qt4: QHash
+	- call toplevel handlers for user/console commands?
+	RCommandReceiver:
+		- add virtual rCommandStarted () function, so receivers can find out, when their command becomes active
+	REmbedInternal:
+		- probably we do not need na_double at all (just any NaN) => less confusion
+	Detecting object modifications inside R:
+		- left TODO:
+			- detection hole:
+				x is 1
+				user does
+				rm (x); x <- function () {}
+				(object list remains the same, watch was not active, but symbol changed)
+				- will need to put an extra notification inside .rk.watch.globalenv ()? Will that get run?
+	- RExpressionObject as an abstraction for R-Expressions (i.e. manually edited expressions).
+		- It will be possible to "store" these in the RObjectList and select them just like any other object
+		- RKVarslot will allow editing the selected value by hand (or just typing the name in)
+			- How to do this nicely UI wise?
+	- RKCancelDialog / RKErrorDialog:
+		- remove these classes. Port to use RKProgressControl instead
+	- RThread:
+		- Detection of commands that run for a suspiciously long time
+			- Show "do you want to cancel ..." option after configurable amount of time
+	- use R_DirtyImage to determine, whether workspace needs to be saved
+	- in REmbedInternal, add extractTemporaryStrings (), for strings that do not have to be copied
+	- Object editing / modification tracking:
+		- functions to set double/int/string-vectors directly. Use in paste-operations
+	- error-handling/raising in .rk.do.call
+	- I've changed the simple RInterface::issueCommand (QString, ...) command to return a pointer to the RCommand created. This will allow for lots of small cleanups. Do them.
+		- well, on second thought, it might be better to rely more on RCommand::id () instead of pointers. Why? The id is unique (until integer overflow). The pointer may be reused after a delete -> potential problem when trying to cancel command which is actually already deleted (and potentially other cases)
+		- let's set this back for a while
+	- give informative feedback on syntax errors (line numbers, etc.)!
+	- .rk.get.available.packages ()
+		- use external (file) storage for cache to save mem
+	- can the mutex be made non-recursive? I think so, but don't recall
+
+General code:
+	- use constBegin (), constEnd ()
+	- get rid of all the superflous dependencies: http://lists.debian.org/debian-devel/2005/12/msg00439.html
+	- use more QDicts instead of QMap<QString,...>s
+	- remove classes/files:
+		- RKGlobals
+			- static members should be moved to the respective classes. Much cleaner!
+
+R plugins:
+	- create grid() plugin
+	- create a (simple) color option plugin (~ 30 colors) for embedding
+	- a function rk.describe.alternative() for use in hypothesis test plugins
+	- use SVG device for graphics output
+	- provide context menu / other UI to export to different formats / edit
+	- PHP-backend:
+		- switch to KProcIO for easier logic
+		- http://de3.php.net/manual/en/function.call-user-func.php seems to be faster than eval
+		- find out why an error in the backend often leads to a subsequent crash
+	- plugins (general)
+		- ODS filter (try to find someone to implement one in R)
+	- formula-widget:
+		- use smart sorting, esp. of generated string
+		- add labels, add "up to level" option
+		- add constant term option
+	- multi-object option group:
+		- provide the set of enclosed options for each of the selected variables
+		- will provide dynamic properties based on which variables are selected in the source
+		- how to determine default values?
+
+Documentation:
+	- add an example to show rkward-specific commands (rk.print, rk.graph)
+
+API documentation:
+	- add page containing a rough overview of general architecture
+	- RCommandStack
+
+Configuration:
+	- additional console options:
+		- color highlighting for warnings/errors (once we can identify them reliably)
+	- additional R engine options:
+		- stack size (commandline arg --map-ppsize)
+		- disable html help
+	- new dataeditor options:
+		- see comments on RKEditorDataFrame
+
+
+################## Some internal notes below ##############
+
+################## menu structure file/workspace ###########
+File
+	New
+		Dataset
+		Script File
+	Open R Script File
+	Open Recent (Script File)
+	Save/Load R Objects
+		Save
+			...
+		Load
+			...
+	Save
+	Save As
+	Reload
+	Print
+	Quit
+
+Workspace
+	Open Workspace
+	Open Recent (Workspace)
+	Save Workspace
+	Save Workspace As
+	Configure Packages (redundant)
+
+How should this be changed? Maybe:
+
+File
+	New
+		Dataset
+		Script File
+	Open R Script File
+	Open Recent (Script File)
+	Open Workspace
+	Open Recent (Workspace)
+	Import (previously Load R Objects)
+	Export (previously Save R Objects)
+	Save
+	Save As
+	Save Workspace
+	Save Workspace As
+	Reload
+	Print
+	Quit
+
+
+################## cryptic notes ######################
+
+- printutils.c->481 Rvprintf: can we get at the standard out-connection and give it a fake vprintf (or better write?!) and fake fflush?
+	- see also: connections.c line 3246ff InitConnections
+	- seems ok now. But maybe we could still use this to catch immediate warning messages (which go to R_Consolefile)?
+
+tryCatch (message ("a"), error=function (x) {print ("e"); x$message}, warning=function (y) {print ("w"); conditionMessage(y)}, message=function (z) {print ("m"); conditionCall (z)})
+withCallingHandlers ({message ("a"); stop ("b");}, error=function (x) {print ("e"); x$message}, warning=function (y) {print ("w"); conditionMessage(y)}, message=function (z) {print ("c"); conditionCall (z)})
+
+Not quite correct yet:
+	.Internal (.addCondHands (c ("error"), list (function (x) {print ("e"); print (conditionMessage (x))}), parent.frame (), NULL, TRUE))
+
+.Internal (.addCondHands (c ("warning"), list (function (x) {print ("w"); print (conditionCall (x))}), globalenv (), NULL, TRUE))
+
+condition handlers seem to be reset after an error!
+condition handlers do not seem to carry over two separate calls of R_tryEval ().
+
+http://slashdot.org/article.pl?sid=05/06/24/149231&tid=121&tid=188&tid=95&tid=1

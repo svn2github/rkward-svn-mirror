@@ -1,0 +1,37 @@
+<!DOCTYPE rkplugin>
+<!--This is the simple "Plot Poisson probabilities" plugin--><document>
+	<code file="plot_poisson_distribution.php" />
+	<dialog label="Plot Poisson probabilities" >
+		<tabbook>
+			<tab label="Plot Poisson probabilities" >
+				<row>
+					<column>
+						<row>
+							<frame label="Range" >
+								<spinbox type="integer" min = "0" id="min" initial="0" label="Lower quantile" />
+								<spinbox type="integer" min = "0" id="max" initial="12" label="Upper quantile" />
+							</frame>
+						</row>
+						<row>
+							<spinbox type="real" id="mean" min="0" initial="5" label="Mean" />
+						</row>
+					</column>
+					<column>
+						<radio id="function" label="Choose type of function plot" >
+							<option value="dpois" label="Plot density function" />
+							<option value="ppois" label="Plot distribution" />
+						</radio>
+						<checkbox id="log" label="Logarithmic" value="1" value_unchecked="0"/>
+						<checkbox id="lower" label="Lower Tail" value="1" value_unchecked="0" checked="true"/>
+						<stretch/>
+						<preview id="preview"/>
+					</column>
+				</row>
+			</tab>
+		</tabbook>
+	</dialog>
+	<logic>
+		<convert id="dodist" mode="equals" sources="function.string" standard="ppois" />
+		<connect client="lower.enabled" governor="dodist" />
+	</logic>
+</document>
