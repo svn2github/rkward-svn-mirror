@@ -1,0 +1,56 @@
+<!DOCTYPE rkplugin>
+<!--This is the simple "Plot negative binomial probabilities" plugin-->
+<document>
+	<code file="plot_negbinomial_distribution.php" />
+	<help file="plot_negbinomial_distribution.rkh" />
+	<logic>
+		<convert id="dodist" mode="equals" sources="function.string" standard="pnbinom" />
+		<connect client="lower.enabled" governor="dodist" />
+		<convert id="useprob" mode="equals" sources="param.string" standard="pprob" />
+		<connect client="prob.enabled" governor="useprob" />
+		<convert id="usemu" mode="equals" sources="param.string" standard="pmu" />
+		<connect client="mu.enabled" governor="usemu" />
+		<set id="plotoptions.allow_log" to="false"/>
+		<set id="plotoptions.default_pointtype" to="p"/>
+	</logic>
+	<dialog label="Plot negative binomial probabilities" >
+		<tabbook>
+			<tab label="Plot negative binomial probabilities" >
+				<row>
+					<column>
+						<frame label="Range" >
+							<spinbox type="integer" min = "0" id="min" initial="0" label="Lower quantile" />
+							<spinbox type="integer" min = "0" id="max" initial="24" label="Upper quantile" />
+						</frame>
+						<frame label="Parameters">
+							<spinbox default_precision="0" type="real" id="size" min="0.01" initial="12" label="Target number of successful trials" />
+							<row>
+							<column>
+							<spinbox default_precision="2" type="real" id="prob" initial="0.75" min="0" max="1" label="Probability of success on each trial" />
+							<spinbox default_precision="2" type="real" id="mu" initial="4" min="0.01" label="Mean (alternate parameter, mu)" />
+						</column>
+						<column>
+						<radio id="param" label="Choose the type of Parameterization" >
+							<option value="pprob" label="Success probability" />
+							<option value="pmu" label="Mean (mu)" />
+						</radio>
+						</column>
+					</row>
+						</frame>
+					</column>
+					<column>
+						<radio id="function" label="Choose type of function plot" >
+							<option value="dnbinom" label="Plot density function" />
+							<option value="pnbinom" label="Plot distribution" />
+						</radio>
+						<checkbox id="log" label="Logarithmic" value="1" value_unchecked="0"/>
+						<checkbox id="lower" label="Lower Tail" value="1" value_unchecked="0" checked="true"/>
+						<stretch/>
+						<preview id="preview" label="Preview"/>
+						<embed id="plotoptions" component="rkward::plot_options" as_button="true" label="Plot Options" />
+					</column>
+				</row>
+			</tab>
+		</tabbook>
+	</dialog>
+</document>

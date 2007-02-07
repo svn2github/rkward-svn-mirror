@@ -1,0 +1,11 @@
+<!DOCTYPE rkpluginmap>
+
+<document base_prefix="x11device/" namespace="rkward">
+	<components>
+	</components>
+
+	<context id="x11">
+		<menu id="device" label="Device" index="1">
+		</menu>
+	</context>
+</document>
