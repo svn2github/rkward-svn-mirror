@@ -1,0 +1,84 @@
+<!DOCTYPE rkplugin>
+<document> 
+	<code file="import_csv.php"/>
+	<help file="import_csv.rkh"/>
+	<logic>
+		<external id="filename" />
+		<connect governor="filename" client="file.selection"/>
+
+
+		<connect client="rowname.enabled" governor="isrow.state" />
+
+		<convert id="userow" mode="equals" sources="rowname.string" standard="rowcol" />
+		<convert id="customizerow" mode="equals" sources="rowname.string" standard="custoRow" />
+		<convert id="customizerow2" mode="and" sources="isrow.state;customizerow" standard="custoRow" />
+		<connect client="nomrow.enabled" governor="userow" />
+		<connect client="nomrow.required" governor="userow" />
+		<connect client="rownames.enabled" governor="customizerow" />
+		<connect client="rownames.required" governor="customizerow" />
+
+		<convert id="customizecol" mode="equals" sources="colname.string" standard="custoCol" />
+		<connect client="colnames.enabled" governor="customizecol" />
+		<connect client="colnames.required" governor="customizecol" />
+		<convert id="customizeclasses" mode="equals" sources="colclass.string" standard="custoClass" />
+		<connect client="custoClasses.enabled" governor="customizeclasses" />
+		<connect client="custoClasses.required" governor="customizeclasses" />
+	</logic>
+	<dialog label="Import CSV data" >
+		<tabbook>
+			<tab id="tab_general" label="General" >
+				<browser size="small" id="file" label="File name" />
+				<saveobject id="name" initial="my.csv.data" label="Object to save to"/>
+				<checkbox id="header" value="TRUE" value_unchecked="FALSE" checked="true" label="First row contains column names"/>
+				<row>
+					<radio id="dec" label="Decimal point character" >
+						<option value="'.'" label="'.'" />
+						<option value="','" label="','" />
+					</radio>
+					<radio id="sep" label="Field separator character" >
+						<option value="'\t'" label="Tab" />
+						<option value="';'" label="';'" />
+						<option value="','" label="','" />
+						<option value="' '" label="Space" />
+					</radio>
+				</row>
+			</tab>
+			<tab id="tab_rows" label="Rows" >
+				<checkbox value_unchecked="false" checked="false" value="true" id="isrow" label="Customize row names" />
+				<radio id="rowname" label="Rows names" >
+					<option value="NULL" label="Number" />
+					<option value="rowcol" label="As specified in column x:" />
+					<option value="custoRow" label="Use a vector" />
+				</radio>
+				<input size="small" id="nomrow" initial="1" label="Column number or variable name" />
+				<input id="rownames" label="Vector of row names (quoted)" />
+			</tab>
+			<tab id="tab_columns"  label="Columns" >
+				<radio id="colname" label="Column names" >
+					<option value="" label="Default" />
+					<option value="custoCol" label="Use a character vector" />
+				</radio>
+				<input id="colnames" label="Vector of column names (quoted)" />
+				<radio id="colclass" label="Classes of columns" >
+					<option value="" label="Default" />
+					<option value="custoClass" label="Use a character vector" />
+				</radio>
+				<input id="custoClasses" label="Vector of column classes (quoted)" />
+			</tab>
+			<tab id="tab_further_options" label="Further Options" >
+				<row>
+					<input size="small" initial="0" id="skip" label="Skip x lines at the start of the file" />
+					<input size="small" initial="-1" id="nrows" label="Max number of lines to read (-1 for no limit)" />
+				</row>
+				<row>
+					<input size="small" initial="NA" id="na" label="Character for missing values" />
+					<input size="small" initial="#" id="commentchar" label="Character for comments" />
+				</row>
+				<checkbox id="fill" checked="false" value="TRUE" value_unchecked="FALSE" label="Fill the rows if unequal length" />
+				<checkbox value_unchecked="FALSE" checked="true" value="TRUE" id="checkname" label="Check syntax of the variables names" />
+				<checkbox value_unchecked="FALSE" checked="false" value="TRUE" id="stripwhite" label="Strip white values" />
+				<checkbox value_unchecked="FALSE" checked="true" value="TRUE" id="blanklinesskip" label="Skip blank lines" />
+			</tab>
+		</tabbook>
+	</dialog>
+</document>
