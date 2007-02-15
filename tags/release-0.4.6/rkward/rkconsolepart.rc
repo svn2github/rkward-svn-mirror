@@ -1,0 +1,44 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkward" version="0.4.5">
+	<MenuBar>
+		<Menu name="edit">
+			<Action name="rkconsole_copy"></Action>
+			<Action name="rkconsole_copy_literal"></Action>
+			<Action name="rkconsole_paste"></Action>
+			<Separator/>
+			<Action name="rkconsole_clear"></Action>
+		</Menu>
+		<Menu name="run"><text>&amp;Run</text>
+			<Merge/>
+			<Separator/>
+			<Action name="run_selection"/>
+			<Action name="interrupt"/>
+		</Menu>
+		<Menu name="settings">
+			<Action name="rkconsole_configure"></Action>
+		</Menu>
+		<Menu name="help"><text>&amp;Help</text>
+			<Action name="function_reference"></Action>
+		</Menu>
+	</MenuBar>
+	<ToolBar fullWidth="true" name="runToolBar">
+		<Action name="run_selection"/>
+		<Action name="interrupt"/>
+		<Separator/>
+		<Merge/>
+	</ToolBar>
+	<Menu name="rkconsole_context_menu">
+		<Action name="rkconsole_copy"></Action>
+		<Action name="rkconsole_copy_literal"></Action>
+		<Action name="rkconsole_paste"></Action>
+		<Separator/>
+		<Action name="function_reference"></Action>
+		<Separator/>
+		<Action name="run_selection"/>
+		<Action name="interrupt"></Action>
+		<Separator/>
+		<Action name="rkconsole_clear"></Action>
+		<Separator/>
+		<Action name="rkconsole_configure"></Action>
+	</Menu>
+</kpartgui>

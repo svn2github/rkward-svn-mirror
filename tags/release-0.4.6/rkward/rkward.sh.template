@@ -1,0 +1,38 @@
+#!/bin/sh
+# Shell wrapper for rkward executable.
+
+## make sure, we always run in a tty. Otherwise R would go into non-interactive mode and behaves strangely.
+if tty -s; then
+  :
+else
+  konsole -e $0 "$@"
+  exit
+fi
+
+R_HOME_DIR=###R_HOME_DIR###
+export R_binary="$R_HOME_DIR/bin/R"
+
+## Location of R may have moved, so check
+if test -x "${R_binary}"; then
+  :
+else
+  error "R binary ('${R_binary}') not found. Most likely your installation of R has moved to a new location. Please rebuild rkward."
+fi
+
+## Apparently on some systems an embedded R gets outsmarted somehow, and LC_NUMERIC is set to some dangerous value for the whole app (via SCIM)
+## To prevent this, set it here, explicitely. R does not work with wrong settings of LC_NUMERIC.
+
+## First, however, need to unset LC_ALL, if set. Instead we set LANG, so the default will be the same, where not overridden
+if [ -z "$LC_ALL" ]; then
+  :
+else
+  export LANG="$LC_ALL"
+  unset LC_ALL
+  echo "Warning: unsetting LC_ALL"
+fi
+
+## set LC_NUMERIC to "C"
+export LC_NUMERIC="C"
+
+## Start rkward. Running through R CMD to set all the relevant R enviroment variables
+exec $R_binary CMD $0.bin "$@"
