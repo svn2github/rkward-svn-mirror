@@ -1,0 +1,52 @@
+<!DOCTYPE rkhelp>
+<document>
+	<title>RKWard Shortcut keys</title>
+	<summary>
+	You can control RKWard in many situations without using a mouse device, using only the keyboard.
+
+	Most shortcuts are not yet configurable (this will be added in a future release), but you can configure most shortcuts of the script editor. To do so, open a script editor window, then choose 'Settings->Configure editor->Short cuts' from the menu.
+	</summary>
+	<section title="RKWard Default Shortcut keys" id="default_shortcut_keys">
+		<table>
+			<tr colspan="2"><td><b>File Menu</b></td></tr>
+			<tr><td>Create new script</td><td>Ctrl + N</td></tr>
+			<tr><td>Print</td><td>Ctrl + P</td></tr>
+			<tr><td>Quit RKWard</td><td>Shift + Q</td></tr>
+			<tr><td>Open existing Script</td><td>Ctrl + O</td></tr>
+
+			<tr colspan="2"><td><b>Edit Menu</b></td></tr>
+			<tr><td>Copy</td><td>Ctrl + C</td></tr>
+			<tr><td>Find</td><td>Ctrl + F</td></tr>
+			<tr><td>Find Previous</td><td>Shift + F3</td></tr>
+			<tr><td>Find Next</td><td>F3</td></tr>
+			<tr><td>Select All</td><td>Ctrl + A</td></tr>
+
+			<tr colspan="2"><td><b>View Menu</b></td></tr>
+			<tr><td>Decrease font size</td><td>Ctrl + -</td></tr>
+			<tr><td>Increase font size</td><td>Ctrl + +</td></tr>
+			<tr><td>Show Document Information</td><td>Ctrl + I</td></tr>
+			<tr><td>View Source</td><td>Ctrl + U</td></tr>
+
+			<tr colspan="2"><td><b>Workspace Menu</b></td></tr>
+			<tr><td>Open Workspace</td><td>Ctrl + O</td></tr>
+			<tr><td>Save Workspace</td><td>Ctrl + S</td></tr>
+
+			<tr colspan="2"><td><b>Windows Menu</b></td></tr>
+			<tr><td>Close Window</td><td>Ctrl + W</td></tr>
+			<tr><td>Previous Window</td><td>Alt + &lt; or Alt + ,</td></tr>
+			<tr><td>Next Window</td><td>Alt + > or Alt + .</td></tr>
+			<tr><td>Left Window</td><td>Ctrl + &lt; or Ctrl + ,</td></tr>
+			<tr><td>Right Window</td><td>Ctrl + > or Ctrl + .</td></tr>
+			<tr><td>Activate Document view</td><td>Alt + 0</td></tr>
+			<tr><td>Show/Hide Workspace Browser</td><td>Alt + 1</td></tr>
+			<tr><td>Show/Hide Command Log</td><td>Alt + 2</td></tr>
+			<tr><td>Show/Hide Pending Jobs</td><td>Alt + 3</td></tr>
+			<tr><td>Show/Hide Console</td><td>Alt + 4</td></tr>
+			<tr><td>Show/Hide R Help Search</td><td>Alt + 5</td></tr>
+
+			<tr colspan="2"><td><b>Help Menu</b></td></tr>
+			<tr><td>Start Help</td><td>F1</td></tr>
+			<tr><td>What's this</td><td>Shift + F1</td></tr>
+		</table>
+	</section>
+</document>
