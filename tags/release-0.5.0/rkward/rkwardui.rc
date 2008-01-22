@@ -1,0 +1,85 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkward" version="0.5.0">
+<MenuBar>
+	<Menu name="file"><text>&amp;File</text>
+		<Menu name="new_data"><text>&amp;New</text>
+			<Action name="new_data_frame"/>
+			<Action name="new_command_editor"/>
+		</Menu>
+		<Action name="file_openy"/>
+		<Action name="file_open_recenty"/>
+		<Separator/>
+		<Menu name="import"><text>&amp;Import</text>
+			<Action name="import_data"/>
+			<Separator/>
+			<Merge/>
+		</Menu>
+		<Merge/>
+		<Separator/>
+		<Action name="file_quitx"/>
+	</Menu>
+
+	<Menu name="workspace"><text>&amp;Workspace</text>
+		<Action name="file_openx"/>
+		<Action name="file_open_recentx"/>
+		<Action name="file_savex"/>
+		<Action name="file_save_asx"/>
+	</Menu>
+
+	<!-- These menus are actually defined in KParts. We also declare them here, to avoid menus jumping around -->
+	<Menu name="edit"><text>&amp;Edit</text>
+		<Action name="edit_menu_dummy"/>
+		<Merge/>
+	</Menu>
+	<Menu name="view"><text>&amp;View</text>
+		<Action name="view_menu_dummy"/>
+		<Merge/>
+	</Menu>
+	<Menu name="run"><text>&amp;Run</text>
+		<Action name="run_menu_dummy"/>
+		<Merge/>
+	</Menu>
+	
+	<Merge name="rkwardcomponents" />
+
+	<Menu name="window"><text>&amp;Windows</text>
+		<Merge/>
+		<Action name="window_close"/>
+		<Action name="window_close_all"/>
+		<Action name="close_all_editors"/>
+		<Separator/>
+		<Menu name="window_activate"><text>&amp;Activate</text>
+			<Action name="prev_window"/>
+			<Action name="next_window"/>
+			<Separator/>
+			<Action name="left_window"/>
+			<Action name="right_window"/>
+			<Separator/>
+			<Merge/>
+		</Menu>
+		<Separator/>
+		<Action name="window_detach"/>
+	</Menu>
+	
+	<Menu name="settings"><text>&amp;Settings</text>
+		<Action name="file_load_libs"/>
+		<Action name="configure"/>
+	</Menu>
+
+	<Menu name="help"><text>&amp;Help</text>
+		<Merge/>
+	</Menu>
+
+</MenuBar>
+<ToolBar fullWidth="true" name="mainToolBar">
+		<Action name="new_data_frame"/>
+		<Action name="new_command_editor"/>
+		<Action name="file_openy"/>
+		<Action name="file_open_recenty"/>
+		<Separator/>
+		<Action name="prev_window"/>
+		<Action name="next_window"/>
+</ToolBar>
+<ToolBar fullWidth="true" name="runToolBar">
+</ToolBar>
+</kpartgui>
