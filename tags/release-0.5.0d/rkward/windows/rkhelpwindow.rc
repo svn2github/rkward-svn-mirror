@@ -1,0 +1,21 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkward" version="0.5.0">
+	<MenuBar>
+		<Menu name="file"><text>&amp;File</text>
+			<Action name="print_help"/>
+		</Menu>
+		<Menu name="edit"><text>&amp;Edit</text>
+			<Action name="copy"/>
+		</Menu>
+		<Menu name="run"><text>&amp;Run</text>
+			<Action name="run_selection"/>
+		</Menu>
+		<Merge/>
+	</MenuBar>
+	<ToolBar fullWidth="true" name="mdiToolBar">
+		<Action name="help_back"/>
+		<Action name="help_forward"/>
+		<Separator/>
+		<Action name="run_selection"/>
+	</ToolBar>
+</kpartgui>
