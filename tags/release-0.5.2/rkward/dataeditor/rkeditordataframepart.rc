@@ -1,0 +1,25 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkeditordataframepart" version="50">
+	<MenuBar>
+		<Menu name="edit"><text>&amp;Edit</text>
+			<Action name="cut"/>
+			<Action name="copy"/>
+			<Action name="paste"/>
+			<Action name="paste_to_selection"/>
+			<Action name="paste_to_table"/>
+			<Separator/>
+			<Merge/> 
+		</Menu>
+<!--		<Menu name="windows"><text>&amp;Windows</text>
+			<Action name="window_close"/>
+		</Menu>-->
+	</MenuBar>
+	<ToolBar fullWidth="true" name="mdiToolBar">
+		<Action name="cut"/>
+		<Action name="copy"/>
+		<Action name="paste"/>
+		<Separator/>
+		<Action name="paste_to_selection"/>
+		<Action name="paste_to_table"/>
+	</ToolBar>
+</kpartgui>
