@@ -1,0 +1,47 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkward" version="53">
+	<MenuBar>
+		<Menu name="file"><text>&amp;File</text>
+			<Action name="file_print"/>
+			<Separator group="print_merge" />
+			<Action name="file_export_html"/>
+		</Menu>
+		<Menu name="edit"><text>&amp;Edit</text>
+			<Action name="rkconsole_copy" group="edit_paste_merge"/>
+			<Action name="rkconsole_copy_literal" group="edit_paste_merge"/>
+			<Action name="rkconsole_paste" group="edit_paste_merge"/>
+			<DefineGroup name="edit_paste_merge" append="edit_paste_merge"/>
+			<Separator/>
+			<Action name="rkconsole_clear"/>
+		</Menu>
+		<Menu name="view"><text>&amp;View</text>
+			<Action name="view_dynamic_word_wrap" />
+			<Action name="view_inc_font_sizes" />
+			<Action name="view_dec_font_sizes" />
+		</Menu>
+		<Menu name="run"><text>&amp;Run</text>
+			<Action name="interrupt" group="postrun_actions_merge"/>
+		</Menu>
+		<Menu name="settings"><text>&amp;Settings</text>
+			<Action name="rkconsole_configure"></Action>
+		</Menu>
+	</MenuBar>
+	<ToolBar fullWidth="true" name="mdiToolBar">
+		<Action name="interrupt" group="postrun_actions_merge"/>
+	</ToolBar>
+	<Menu name="rkconsole_context_menu">
+		<Action name="rkconsole_copy"/>
+		<Action name="rkconsole_copy_literal"/>
+		<Action name="rkconsole_paste"/>
+		<DefineGroup name="edit_paste_merge" />
+		<Separator/>
+		<DefineGroup name="rkconsole_context_merge1"/>
+		<Action name="interrupt"/>
+		<Separator/>
+		<DefineGroup name="rkconsole_context_merge2"/>
+		<Separator/>
+		<Action name="rkconsole_clear"/>
+		<Separator/>
+		<Action name="rkconsole_configure"/>
+	</Menu>
+</kpartgui>
