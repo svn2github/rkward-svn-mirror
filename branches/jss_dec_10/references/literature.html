@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<title>JabRef References output</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+<!--
+// QuickSearch script for JabRef HTML export 
+// Version: 2.0
+//
+// Copyright (c) 2006-2008, Mark Schenk
+//
+// This software is distributed under a Creative Commons Attribution 3.0 License
+// http://creativecommons.org/licenses/by/3.0/
+
+// Some features:
+// + allows RegExp searches
+//   e.g. to search for entries between 1980 and 1989, type:  198[0-9]
+//   e.g. for any entry ending with 'symmetry', type:  symmetry$
+//   e.g. for all reftypes that are books: ^book$, or ^article$
+//   e.g. for entries by either John or Doe, type john|doe
+
+// Speed optimisation introduced some esoteric problems with certain RegExp searches
+// e.g. if the previous search is 200[-7] and the next search is 200[4-7] then the search doesn't work properly until the next 'keyup'
+// hence the searchOpt can be turned off for RegExp adepts
+var searchOpt = true;
+
+if (window.addEventListener) {
+	window.addEventListener("load",initSearch,false); }
+else if (window.attachEvent) {
+	window.attachEvent("onload", initSearch); }
+
+function initSearch() {
+	// basic object detection
+	if(!document.getElementById || !document.getElementsByTagName) { return; }
+	if (!document.getElementById('qstable')||!document.getElementById('qs')) { return; }
+
+	// find QS table and appropriate rows
+	searchTable = document.getElementById('qstable');
+	var allRows = searchTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+	// split all rows into entryRows and infoRows (e.g. abstract, review, bibtex)
+	entryRows = new Array();
+	infoRows = new Array();
+
+	for (var i=0, k=0, j=0; i<allRows.length;i++) {
+		if (allRows[i].className.indexOf('entry') != -1) {
+			entryRows[j++] = allRows[i];
+		} else {
+			infoRows[k++] = allRows[i];		
+		}
+	}
+
+	//number of entries and rows
+	numRows = allRows.length;
+	numEntries = entryRows.length;
+	numInfo = infoRows.length;
+
+	//find the query field
+	qsfield = document.getElementById('qsfield');
+
+	// previous search term; used for speed optimisation
+	prevSearch = '';
+
+	//find statistics location
+	stats = document.getElementById('stat');
+	setStatistics(-1);
+
+	// shows the searchfield
+	document.getElementById('qs').style.display = 'block';
+	document.getElementById('qsfield').onkeyup = testEvent;
+}
+
+function quickSearch(tInput){
+
+	 if (tInput.value.length == 0) {
+		showAll();
+		setStatistics(-1);
+		qsfield.className = '';
+		return;
+	} else {
+		// only search for valid RegExp
+		try {
+			var searchText = new RegExp(tInput.value,"i")
+			closeAllInfo();
+			qsfield.className = '';
+		}
+		catch(err) {
+			prevSearch = tInput.value;
+			qsfield.className = 'invalidsearch';
+			return;
+		}
+	}
+	
+	// count number of hits
+	var hits = 0;
+
+	// start looping through all entry rows
+	for (var i = 0; cRow = entryRows[i]; i++){
+
+		// only show search the cells if it isn't already hidden OR if the search term is getting shorter, then search all
+		// some further optimisation is possible: if the search string is getting shorter, and the row is already visible, skip it. Future work.
+		if(!searchOpt || cRow.className.indexOf('noshow')==-1 || tInput.value.length <= prevSearch.length){
+			var found = false; 
+
+			var inCells = cRow.getElementsByTagName('td');
+			var numCols = inCells.length;
+				
+			for (var j=0; j<numCols; j++) {
+				cCell = inCells[j];
+				var t = cCell.innerText?cCell.innerText:getTextContent(cCell);
+				if (t.search(searchText) != -1){ 
+					found=true; 
+					break;
+				} 
+			}
+			
+			if(found) {
+				cRow.className = 'entry show';
+				hits++;
+			} else {
+				cRow.className = 'entry noshow';
+			}
+		}
+	}
+
+	// update statistics
+	setStatistics(hits)
+	
+	// set previous search value
+	prevSearch = tInput.value;
+}
+
+function setStatistics (hits) {
+	if(hits < 0) { hits=numEntries; }
+	if(stats) { stats.firstChild.data = hits + '/' + numEntries}
+}
+
+function getTextContent(node) {
+	// Function written by Arve Bersvendsen
+	// http://www.virtuelvis.com
+	
+	if (node.nodeType == 3) {
+	return node.nodeValue;
+	} // text node
+	if (node.nodeType == 1) { // element node
+	var text = [];
+	for (var chld = node.firstChild;chld;chld=chld.nextSibling) {
+		text.push(getTextContent(chld));
+	}
+	return text.join("");
+	} return ""; // some other node, won't contain text nodes.
+}
+
+function showAll(){
+	// first close all abstracts, reviews, etc.
+	closeAllInfo();
+
+	for (var i = 0; i < numEntries; i++){
+		entryRows[i].className = 'entry show'; 
+	}
+}
+
+function closeAllInfo(){
+	for (var i=0; i < numInfo; i++){
+		if (infoRows[i].className.indexOf('noshow') ==-1) {
+			infoRows[i].className = infoRows[i].className + ' noshow';
+		}
+	}
+}
+
+function testEvent(e){
+	if (!e) var e = window.event;
+	quickSearch(this);
+}
+
+function clearQS() {
+	qsfield.value = '';
+	quickSearch(qsfield);
+}
+
+function redoQS(){
+	showAll();
+	quickSearch(qsfield);
+}
+-->
+</script>
+<style type="text/css">
+body { background-color: white; font-family: "Trebuchet MS", Arial, sans-serif; font-size: 12px; line-height: 1.2; padding: 1em; color: #2E2E2E; }
+
+#qs { width: auto; border-style: solid; border-color: gray; border-width: 1px 1px 0px 1px; padding: 0.5em 0.5em; display:none;  }
+#qs form { padding: 0px; margin: 0px; }
+#qs form p { padding: 0px; margin: 0px; }
+
+.invalidsearch { background-color: red; }
+
+table { border: 1px gray solid; width: 100%; empty-cells: show; }
+th, td { border: 1px gray solid; padding: 0.5em; vertical-align: top;  }
+td { text-align: left; vertical-align: top; }
+th { background-color: #EFEFEF; }
+
+td a { color: navy; text-decoration: none; }
+td a:hover  { text-decoration: underline; }
+
+tr.noshow { display: none;}
+
+@media print {
+	p.infolinks, #qssettings, #qs { display: none !important; }
+	table { border-width: 0px; }
+	tr { page-break-inside: avoid; }
+	tr > * + * + * + * + * {display: none; }
+	thead tr::before { content: "Reference"; border: 1px gray solid; padding: 0.5em; vertical-align: top; font-weight: bold; text-align: center; display: table-cell; background-color: #EFEFEF; }
+	tr[id]::before { content: attr(id); display: table-cell; border: 1px gray solid; padding: 0.5em; vertical-align: top; font-style: italic; }
+}
+</style>
+</head>
+<body>
+
+<div id="qs"><form action=""><p>QuickSearch: <input type="text" name="qsfield" id="qsfield" autocomplete="off" title="Allows plain text as well as RegExp searches" /><input type="button" onclick="clearQS()" value="clear" />&nbsp; Number of matching entries: <span id="stat">0</span>.</p></form></div>
+<table id="qstable" border="1">
+<thead><tr><th width="20%">Author</th><th width="30%">Title</th><th width="5%">Year</th><th width="30%">Journal/Proceedings</th><th width="10%">Reftype</th><th width="5%">DOI/URL</th></tr></thead>
+<tbody><tr id="BD2005" class="entry">
+	<td>BD, R.</td>
+	<td>Packages and their Management in R 2.1.0</td>
+	<td>2005</td>
+	<td>R News(1), pp. 8-11&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://CRAN.R-project.org/doc/Rnews/">URL</a>&nbsp;</td>
+</tr>
+<tr id="BD2005a" class="entry">
+	<td>BD, R.</td>
+	<td>Internationalization Features of R 2.1.0</td>
+	<td>2005</td>
+	<td>R News(1), pp. 2-7&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://CRAN.R-project.org/doc/Rnews/">URL</a>&nbsp;</td>
+</tr>
+<tr id="BD2004" class="entry">
+	<td>BD, R.</td>
+	<td>Lazy Loading and Packages in R 2.0.0</td>
+	<td>2004</td>
+	<td>R News(2), pp. 2-4&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://CRAN.R-project.org/doc/Rnews/">URL</a>&nbsp;</td>
+</tr>
+<tr id="D2003" class="entry">
+	<td>D, E.</td>
+	<td>Quantian: A Scientiﬁc Computing Environment</td>
+	<td>2003</td>
+	<td>Proceedings of DSC 2003, pp. 1-7&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://www.ci.tuwien.ac.at/Conferences/DSC-2003/">URL</a>&nbsp;</td>
+</tr>
+<tr id="E2003" class="entry">
+	<td>E, L.</td>
+	<td>The R2HTML Package - Formatting HTML output on the ﬂy or by using a template scheme</td>
+	<td>2003</td>
+	<td>R News<br/>Vol. 3(3), pp. 33-36&nbsp;</td>
+	<td>article</td>
+	<td>&nbsp;</td>
+</tr>
+<tr id="F2002" class="entry">
+	<td>F, L.</td>
+	<td>Sweave: dynamic generation of statistical reports using literate data analysis</td>
+	<td>2002</td>
+	<td>Proceedings in Computational Statistics, pp. 575–580&nbsp;</td>
+	<td>article</td>
+	<td>&nbsp;</td>
+</tr>
+<tr id="Young_2004" class="entry">
+	<td>F, Y.</td>
+	<td>ViSta, the Visual Statistic System</td>
+	<td>2004</td>
+	<td>&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://www.visualstats.org">URL</a>&nbsp;</td>
+</tr>
+<tr id="J2008" class="entry">
+	<td>J, F.</td>
+	<td>Editorial</td>
+	<td>2008</td>
+	<td>R News(2), pp. 1-2&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://CRAN.R-project.org/doc/Rnews/">URL</a>&nbsp;</td>
+</tr>
+<tr id="J2007" class="entry">
+	<td>J, F.</td>
+	<td>Extending the R Commander by “Plug-In” Packages</td>
+	<td>2007</td>
+	<td>R News(3), pp. 46-52&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://CRAN.R-project.org/doc/Rnews/">URL</a>&nbsp;</td>
+</tr>
+<tr id="K2009" class="entry">
+	<td>K, F.</td>
+	<td>Producing Open Source Software: How to Run a Successful Free Software Project</td>
+	<td>2009</td>
+	<td>, pp. 10-190&nbsp;</td>
+	<td>article</td>
+	<td>&nbsp;</td>
+</tr>
+<tr id="Ihaka_Gentlemen_1993" class="entry">
+	<td>R, I. &amp; R, G.</td>
+	<td>A Free Software Project - A Brief History</td>
+	<td></td>
+	<td>&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://cran.r-project.org/doc/html/interface98-paper/paper_2.html">URL</a>&nbsp;</td>
+</tr>
+<tr id="R2007" class="entry">
+	<td>R, N. &amp; L, W.</td>
+	<td>Rwui: A Web Application to Create User Friendly Web Interfaces for R Scripts</td>
+	<td>2007</td>
+	<td>R News(2), pp. 32-35&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://CRAN.R-project.org/doc/Rnews/">URL</a>&nbsp;</td>
+</tr>
+<tr id="Schlittgen_2009" class="entry">
+	<td>R, S.</td>
+	<td>Das Statistiklabor - R leicht gemacht</td>
+	<td>2009</td>
+	<td>&nbsp;</td>
+	<td>book</td>
+	<td><a href="http://www.statistiklabor.de/">URL</a>&nbsp;</td>
+</tr>
+<tr id="RaffelsbergerW2008" class="entry">
+	<td>Raffelsberger W, Krause Y, M.L.K.D.M.A.B.L. &amp; O, P.</td>
+	<td>RReportGenerator: automatic reports from routine statistical analysis using R</td>
+	<td>2008</td>
+	<td>BIOINFORMATICS<br/>Vol. 24(2), pp. 276-278&nbsp;</td>
+	<td>article</td>
+	<td><a href="Vol. 24 no. 2 2008, pages 276–278 doi:10.1093/bioinformatics/btm556">DOI</a> &nbsp;</td>
+</tr>
+<tr id="RossiB2010" class="entry">
+	<td>Rossi B, R.B. &amp; G, S.</td>
+	<td>Download Patterns and Releases in Open Source Software Projects: A Perfect Symbiosis?</td>
+	<td>2010</td>
+	<td><br/>Vol. 319/2010, pp. 252-267&nbsp;</td>
+	<td>book</td>
+	<td><a href="http://dx.doi.org/10.1007/978-3-642-13244-5_20">DOI</a> &nbsp;</td>
+</tr>
+<tr id="Team2001" class="entry">
+	<td>Team, R.C.</td>
+	<td>What is R?</td>
+	<td>2001</td>
+	<td>R News(1), pp. 2-3&nbsp;</td>
+	<td>article</td>
+	<td><a href="http://cran.r-project.org/doc/Rnews/">URL</a>&nbsp;</td>
+</tr>
+<tr id="Team2009" class="entry">
+	<td>Team, R.D.C.</td>
+	<td>R: Language and Environment for Statistical Computing. R Foundation for Statistical Computing</td>
+	<td>2009</td>
+	<td>&nbsp;</td>
+	<td>article</td>
+	<td><a href="http: //www.R-project.org/">URL</a>&nbsp;</td>
+</tr>
+<tr id="Team2004" class="entry">
+	<td>Team, R.D.C.</td>
+	<td>R Data Import/Export</td>
+	<td>2004</td>
+	<td>&nbsp;</td>
+	<td>manual</td>
+	<td>&nbsp;</td>
+</tr>
+<tr id="U2003" class="entry">
+	<td>U, L.</td>
+	<td>R Help Desk - Package Management</td>
+	<td>2003</td>
+	<td>R News<br/>Vol. 3(3), pp. 37-39&nbsp;</td>
+	<td>article</td>
+	<td>&nbsp;</td>
+</tr>
+<tr id="Y2005" class="entry">
+	<td>Y, Z. &amp; J, D.</td>
+	<td>Open source software reliability model: an empirical approach</td>
+	<td>2005</td>
+	<td>ACM, pp. 67-72&nbsp;</td>
+	<td>article</td>
+	<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+ <small>Created by <a href="http://jabref.sourceforge.net">JabRef</a> on 02/07/2010.</small>
+</p>
+
+</body>
+</html>
+
+<!-- File generated by JabRef; Export Filter written by Mark Schenk -->
