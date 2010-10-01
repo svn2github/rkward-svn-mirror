@@ -1,0 +1,67 @@
+ADD_SUBDIRECTORY( dataeditor )
+ADD_SUBDIRECTORY( settings )
+ADD_SUBDIRECTORY( plugin )
+ADD_SUBDIRECTORY( agents )
+ADD_SUBDIRECTORY( rbackend )
+ADD_SUBDIRECTORY( dialogs )
+ADD_SUBDIRECTORY( scriptbackends )
+ADD_SUBDIRECTORY( misc )
+ADD_SUBDIRECTORY( core )
+ADD_SUBDIRECTORY( icons )
+IF(WIN32)
+	ADD_SUBDIRECTORY( qwinhost )
+	LIST(APPEND RKWARD_ADDLIBS qwinhost)
+ELSE(WIN32)
+	LIST(APPEND RKWARD_ADDLIBS ${X11_X11_LIB})
+ENDIF(WIN32)
+ADD_SUBDIRECTORY( windows )
+ADD_SUBDIRECTORY( syntax )
+
+INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${X11_X11_INCLUDE_PATH} )
+
+SET(RKWard_Sources
+	rkward.cpp
+	main.cpp
+	rkglobals.cpp
+	robjectviewer.cpp
+	rkconsole.cpp
+	rkwardapplication.cpp
+)
+
+# auto-gen sources
+#QT4_AUTOMOC(${RKWard_Sources})	# not needed here, as KDE4_ADD_EXECUTABLE mocs the sources in this dir.
+
+# somehow the needed libdirs for R do not get passed down automatically
+GET_DIRECTORY_PROPERTY(R_SHAREDLIBDIR DIRECTORY rbackend LINK_DIRECTORIES)
+LINK_DIRECTORIES(${R_SHAREDLIBDIR})
+
+KDE4_ADD_EXECUTABLE(rkward.bin ${RKWard_Sources})
+
+# wrapper script
+GET_DIRECTORY_PROPERTY(R_EXECUTABLE DIRECTORY rbackend DEFINITION R_EXECUTABLE)
+IF(WIN32)
+	SET(RKWARD_WRAPPER_TEMPLATE rkward.bat.template)
+	SET(RKWARD_WRAPPER_SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/rkward.bat)
+ELSE(WIN32)
+	SET(RKWARD_WRAPPER_TEMPLATE rkward.sh.template)
+	SET(RKWARD_WRAPPER_SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/rkward)
+ENDIF(WIN32)
+CONFIGURE_FILE(
+	${RKWARD_WRAPPER_TEMPLATE}
+	${RKWARD_WRAPPER_SCRIPT}
+	@ONLY)
+ADD_DEPENDENCIES(rkward.bin ${RKWARD_WRAPPER_SCRIPT})
+
+TARGET_LINK_LIBRARIES(rkward.bin ${KDE4_KDECORE_LIBS} windows ${RKWARD_ADDLIBS} agents dialogs plugin settings dataeditor core scriptbackends rbackend misc ktexteditor ${KDE4_KHTML_LIBS} ${KDE4_KFILE_LIBS} ${KDE4_KDEUI_LIBS} ${KDE4_KROSSCORE_LIBS} ${QT_QTSCRIPT_LIBRARY})
+
+########### install files ###############
+
+INSTALL(DIRECTORY plugins/ pages DESTINATION ${DATA_INSTALL_DIR}/rkward
+	PATTERN .svn EXCLUDE)
+
+INSTALL(FILES   resource.ver rkwardui.rc rkconsolepart.rc DESTINATION ${DATA_INSTALL_DIR}/rkward )
+INSTALL(TARGETS rkward.bin DESTINATION ${BIN_INSTALL_DIR})
+INSTALL(PROGRAMS ${RKWARD_WRAPPER_SCRIPT} DESTINATION ${BIN_INSTALL_DIR})
+
+INSTALL(FILES rkward.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+
