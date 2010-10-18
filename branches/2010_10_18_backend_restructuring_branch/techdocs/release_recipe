@@ -1,0 +1,5 @@
+Since RKWard 0.5.0 and the use of cmake, creating a new source .tar.gz is as easy as:
+
+./makedist.sh VERSION
+
+in the toplevel source directory. Be sure to keep your sources clean, when producing official releases, tough. (If in doubt, get a clean SVN-checkout, and use that).
