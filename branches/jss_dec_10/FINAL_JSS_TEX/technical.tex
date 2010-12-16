@@ -42,11 +42,16 @@ information on the object).
 
 A further side-effect of the asynchronous threaded design is that there is
 inherently a rather clear separation between GUI code and code making direct use
-of the \proglang{R} API. In the current development version, the evaluation
+of the \proglang{R} API (see also Figure~\ref{fig:design_sketch)}). In the current development version, the evaluation
 of \proglang{R} commands has even been moved into a separate process. In the somewhat longer term it could even
 be possible to run GUI and \proglang{R} engine on different computers.
 
-%% TODO: Add figure (and reference it)
+\begin{figure}[htp]
+ \centering
+ \includegraphics{../figures/design_sketch.png}
+ \caption{Sketch of the technical design of RKWard. Only a few central components are visualized.}
+ \label{fig:design_sketch}
+\end{figure}
 
 \subsection{Object modification detection}
 \label{sec:technical_omd}
@@ -117,7 +122,7 @@ progress despite limited resources. Most importantly, the \proglang{KDE} librari
 full featured text editor \citep{CullmannND} as a component which can be
 seamlessly integrated into a hosting application using the KParts technology
 \citep{Faure2000}. Additionally, KPart provides HTML browsing capabilities in a
-similarly integrated way. The availability of kword \citep{KWord} as an
+similarly integrated way. The availability of KWord \citep{KWord} as an
 embeddable KPart might prove useful in future versions of RKWard, when better
 integration with office-suites will be sought.
 
@@ -203,7 +208,6 @@ statistical analysis.
 Plugins consist of four parts \citep[see Section~\ref{sec:example_plugin} for an example; for a complete
 manual, see][]{Friedrichsmeier2010}:
 
-%% TODO: Make these bullets!
 \begin{itemize}
     \item
     An XML file, called a ``plugin map,'' is used to declare one or more plugins, each
@@ -227,7 +231,7 @@ manual, see][]{Friedrichsmeier2010}:
     \item
     A separate \proglang{ECMAScript}-file is used to translate GUI settings into \proglang{R}
     code\footnote{
-        In earlier versions of RKWard, \proglang{PHP} (PHP: Hypertext Preprocessor) was used
+        In earlier versions of RKWard, \proglang{PHP} was used
         as a scripting engine, and \proglang{PHP}-interpreters were run in a separate process.
         Usage of \proglang{PHP} was abandoned in RKWard version 0.5.3.
     }. This \proglang{ECMAScript} file is evaluated asynchronously in a separate thread. RKWard
