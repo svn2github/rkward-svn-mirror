@@ -34,39 +34,50 @@ addition, many features, such as the integrated data editor, or the plot preview
 feature will be useful to R novices and R experts alike in their everyday work
 (see section \ref{Default Graphical User Interface Elements}).
 
-While RKWard tries to support users wishing to learn R, it is specifically not
-designed as a teaching tool (such as \pkg{Rcmdr} or \pkg{TeachingDemos}), but as a
-productive tool. This means that dialogs for statistical procedures in RKWard do
-not necessarily show a 1:1 correspondence to the underlying steps in R, but are
-rather oriented at statistical tasks. At the same time, RKWard provides a high
-level of transparency about the steps that are needed to perform any supported
-task in R. RKWard tries to make it easy for the user to see complete codes for
-all GUI actions. In doing so RKWard accepts relatively verbose generated code,
-deliberately, and in particular it does not attempt to wrap complex sequences of
-data manipulation or analysis into custom high-level R functions. We believe the
-task of providing such high-level functions is logically independent of the
-development of a GUI frontend, and should best be solved in dedicated R
-packages, where needed. Rather, RKWard limits itself to generate R code from GUI
-settings. This allows to make better use of the modular design of R, avoids
+%% TODO: TF: I have edited this section (and the following) a bit more. Please take a look.
+RKWard provides a high level of transparency about the steps that are needed to
+perform any supported task in R, in order to make it easy for the user to see
+complete code for all GUI actions. In doing so RKWard accepts relatively verbose
+generated code, deliberately. In particular, RKWard limits itself to generate R
+code from GUI settings. It avoids wrapping complex sequences of data
+manipulation or analysis into custom high-level R functions. The task of
+providing high-level functions is logically independent of the development the
+GUI frontend, and should best be solved in dedicated R packages, where needed.
+This approach allows to make better use of the modular design of R, avoids
 locking in users to a specific GUI solution, and allows them more options for
-customizing generated code patterns. Further, RKWard does not impose artificial
-limitations on how users can work with the application. For example allowing to
-use only one data.frame at a time is or to use data from several frames is
-intentionally supported.
+customizing generated code patterns.
 
-Finally, RKWard is designed to allow users to create custom GUI dialogs easily
-(see sections \ref{technical_plugins} and \ref{example_plugins}).
+While RKWard tries to support users wishing to learn R, it is specifically not
+designed as a teaching tool (such as \pkg{Rcmdr} or \pkg{TeachingDemos}), but as
+a productive tool. Dialogs for statistical procedures in RKWard do not
+necessarily show a 1:1 correspondence to the underlying steps in R, but are
+rather oriented at statistical tasks. Furthermore, RKWard does not impose
+artificial limitations on how users can work with the application. For example,
+the user is not limited to using only one \code{data.frame} or one model at a
+time, in RKWard. RKWard is designed to allow users to create custom GUI dialogs
+easily (see sections \ref{technical_plugins} and \ref{example_plugins}).
 
+%% TODO: TF: I've removed the reference to ``Beta''-status. It's just an arbitrary estimate without a real definition, anyway.
+%% Please take a look at the wording I have added, instead.
 RKWard is licensed under the terms of the GNU General Public License Version 2
 or later. This means the RKWard code itself is GPL v 2 or 3 but effectively
 distributable only under GPL v 2 due to R code. Some documentation templates are
-GFDL licensed. The current project status of the core application is tagged as
-beta (K2009). However, from experience RKWard is reliably usable in productive
-scenarios. The source code, selected binaries and documentation is hosted at
-SourceForge (http://sourceforge.net/). Milestones of the RKWards development are
-demonstrated in Figure \ref{development_overview}.
+GFDL licensed. While the project remains in constant development, a growing
+number of users employs RKWard in productive scenarios. The source code,
+selected binaries and documentation is hosted at SourceForge
+(http://sourceforge.net/). Milestones of the RKWards development are
+demonstrated in Figure~\ref{fig:timeline}.
 
-In this paper we will first give an overview over the main GUI elements and features
-of RKWard. Next some technical aspects of the implementation will be dicussed. The paper
-concludes with two examples: One user centered example of a simple RKWard session, and
-an example, targetted at developers, for creating a simple plugin extension to RKWard.
+\begin{figure}[htp]
+ \centering
+ \includegraphics{../figures/timeline.png}
+ \caption{Timeline of important development milestones and changes in RKWard.
+          Time is presented on an arbitrary scale.}
+ \label{fig:timeline}
+\end{figure}
+
+In this paper we will first give an overview over the main GUI elements and
+features of RKWard. Next some technical aspects of the implementation will be
+dicussed, comparing them briefly to competing GUI solutions, where appropriate.
+The paper concludes with an example of a simple RKWard session. Additionally,
+we show an example for creating a simple plugin extension to RKWard.
