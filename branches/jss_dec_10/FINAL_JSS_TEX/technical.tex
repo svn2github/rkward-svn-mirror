@@ -1,17 +1,19 @@
-\section[technical]{Technical Design}
+\section{Technical Design}
+\label{sec:technical}
 In this section we will give a compact overview over key aspects of RKWards
 technical design. We will give slightly more attention to the details of the
 plugin framework used in RKWard, since this is central to the extensibility of
 RKWard.
 
-\subsection[technical_asynchronous]{Asynchronous command execution}
+\subsection{Asynchronous command execution}
+\label{sec:technical_asynchronous}
 One central design decision in the implementation of RKWard is that the
 interface to the \proglang{R} engine operates asynchronous. The intention is to
 remain the application usable to a high degree, even during the computation of
 time-consuming analyses. For instance while waiting for the estimation of a
 complex model to complete, the user should be able to continue to use the GUI to
 prepare the next analysis. Asynchronous command execution is also a prerequisite
-for a implementation of the plot-preview feature (see Section~\ref{usage_plotpreview}). Commands
+for a implementation of the plot-preview feature (see Section~\ref{sec:usage_plotpreview}). Commands
 generated from plugins or user actions are placed in queue and are evaluated in
 a separate thread in the order they were submitted\footnote{
     It is possible, and in some cases necessary to enforce a different order of command execution in
@@ -21,11 +23,11 @@ a separate thread in the order they were submitted\footnote{
 }. The asynchronous design implies that RKWard avoids to rely on the
 \proglang{R} engine during interactive use. This is one of several reasons for
 the use of \proglang{ECMAScript} in plugins, instead of scripting using
-\proglang{R} (see Sections~\ref{technical_toolkit} and \ref{technical_plugins}).
+\proglang{R} (see Sections~\ref{sec:technical_toolkit} and \ref{sec:technical_plugins}).
 A further implication is that RKWard avoids quering information about the
 existence and properties of objects in \proglang{R}, interactively. Rather
 RKWard keeps a representation of \proglang{R} objects and their basic properties
-(e.g. class and dimensions), which is used for the workspace browser (Section~\ref{usage_browser}),
+(e.g. class and dimensions), which is used for the workspace browser (Section~\ref{sec:usage_browser}),
 object name completion, function argument hinting and
 other occasions. The object representation includes objects in all environments
 on the search path, and any objects contained within these environments in a
@@ -44,7 +46,10 @@ of the \proglang{R} API. In the current development version, the evaluation
 of \proglang{R} commands has even been moved into a separate process. In the somewhat longer term it could even
 be possible to run GUI and \proglang{R} engine on different computers.
 
-\subsection[technical_omd]{Object modification detection}
+%% TODO: Add figure (and reference it)
+
+\subsection{Object modification detection}
+\label{sec:technical_omd}
 RKWard allows the user to run arbitrary commands in \proglang{R} at any time, even while
 editing a \code{data.frame} or while selecting objects for analysis in a GUI dialog. Any user
 command could potentially add, modify, or remove objects in \proglang{R}. RKWard tries to
@@ -52,7 +57,7 @@ detect such changes in order to always display accurate information in the
 workspace browser, object selection lists, and object views. Beyond that,
 detecting any changes is particularly important with respect to objects which
 are currently opened for editing in the data editor (which provides an illusion
-of in-place editing, see Section~\ref{usage_dataeditor}). Here, it is necessary to synchronize
+of in-place editing, see Section~\ref{sec:usage_dataeditor}). Here, it is necessary to synchronize
 the data between \proglang{R} and the GUI in both directions.
 
 For simplicity and performance, object modification detection is only
@@ -98,7 +103,8 @@ way to detect changes for most types of \proglang{R} objects, with comparatively
 and performance overhead. Special handling will be needed for environments and
 active bindings.
 
-\subsection[technical_toolkit]{Choice of toolkit and implementation languages}
+\subsection{Choice of toolkit and implementation languages}
+\label{sec:technical_toolkit}
 In addition to \proglang{R}, RKWard is based on the \proglang{KDE} libraries, which are in turn based
 on \proglang{Qt}, and implemented mostly in \proglang{C++}. Compared to many competing libraries,
 this constitutes a rather heavy dependency. Moreover, the \proglang{KDE} libraries are
@@ -122,7 +128,7 @@ of RKWard is the ``XMLGUI''-technology
 the various components of RKWard.
 
 Plugins in RKWard rely on \proglang{XML} (Extensible Markup Language)\footnote{\url{http://www.w3.org/XML/}}
-and \proglang{ECMAScript}\footnote{\url{http://www.ecmascript.org/}} (see Section~\ref{technical_plugins}). \proglang{XML} is not
+and \proglang{ECMAScript}\footnote{\url{http://www.ecmascript.org/}} (see Section~\ref{sec:technical_plugins}). \proglang{XML} is not
 only well suited to describe the layout of the GUI of plugins, but simple
 functional logic can also be represented \citep{Visne2009}. \proglang{ECMAScript} was
 chosen for the generation of \proglang{R} commands within plugins in particular due to its
@@ -134,7 +140,8 @@ concatenation of text strings. While \proglang{R} provides support for this, con
 strings with the \code{+}-operator, as available in \proglang{ECMAScript}, allows for a much
 more readable way to perform such text concatenation.
 
-\subsection[technical_graphics]{Onscreen graphics windows}
+\subsection{Onscreen graphics windows}
+\label{sec:technical_graphics}
 Contrary to the approach used in \pkg{JGR} \citep{HelbigTheus2005}, RKWard does
 not technically provide a custom on-screen graphics device. RKWard detects when
 new graphics windows are created via calls to \code{X11()} or \code{windows()}. These windows
@@ -174,7 +181,8 @@ the hooks. These call strings are displayed as a drop-down menu on the toolbar
 for non-sequential browsing (see Figure~\ref{fig:plot_history}) providing a very intuitive browsing
 interface unlike the implementation for windows or quartz devices.
 
-\subsection[technical_plugins]{Plugin infrastructure}
+\subsection{Plugin infrastructure}
+\label{sec:technical_plugins}
 One of the earliest features of RKWard was the extensibility by plugins.
 Basically, plugins in RKWard provide complete GUI-dialogs, or re-useable
 GUI-components, which accept user settings, and translate those user settings
@@ -190,8 +198,9 @@ RKWard provides a modest GUI driven tool set for statistical analysis,
 especially for Item response theory (IRT), distributions and descriptive
 statistical analysis. 
 
-\subsubsection[technical_plugins_defining]{Defining a plugin}
-Plugins consist of four parts \citep[see Section~\ref{example_plugin} for an example; for a complete
+\subsubsection{Defining a plugin}
+\label{sec:technical_plugins_defining}
+Plugins consist of four parts \citep[see Section~\ref{sec:example_plugin} for an example; for a complete
 manual, see][]{Friedrichsmeier2010}:
 
 %% TODO: Make these bullets!
@@ -237,7 +246,8 @@ manual, see][]{Friedrichsmeier2010}:
 
 Basically the source code of these elements can be changed without a requirement to recompile.
 
-\subsubsection[technical_plugins_embedding]{Embedding and reuse of plugins}
+\subsubsection{Embedding and reuse of plugins}
+\label{sec:technical_plugins_embedding}
 RKWard supports several mechanisms for modularization and re-use of
 functionality in plugins. File inclusion is one very simple but effective
 mechanism, which can be used in the \proglang{ECMAScript} files but is also supported in
@@ -254,7 +264,8 @@ hiding irrelevant options). The generated code portions can be fetched from the
 code. Other examples of embedded plugins are options for histograms, barplots,
 and ECDF plots (which in turn embed the generic plot options plugin).
 
-\subsubsection[technical_plugins_consistency]{Enforcing a consistent interface}
+\subsubsection{Enforcing a consistent interface}
+\label{sec:technical_plugins_consistency}
 RKWard tries to make it easy to create a consistent interface in all plugins.
 GUI-wise this is supported by providing high-level GUI elements, and embeddable
 clients. Also, the standard-elements of each dialog (``Submit'', and
@@ -271,7 +282,7 @@ printed using \code{rk.print()}, which is just a thin wrapper around the
 \code{HTML()}-function of the \pkg{R2HTML}-package \citep{Lecoutre2003} in the current
 implementation. The use of custom formatting with \proglang{HTML} is possible, but
 discouraged. Standard elements such as a horizontal separator, and the run-again
-link (see Section~\ref{usage_output}) are inserted automatically, without the need to define
+link (see Section~\ref{sec:usage_output}) are inserted automatically, without the need to define
 them for each plugin.
 
 Regarding the style of the generated \proglang{R} code, enforcing consistency is harder,
@@ -289,7 +300,8 @@ are
   those computations, transparently.
 \end{itemize}
 
-\subsubsection[technical_plugins_dependencies]{Handling of \proglang{R} package dependencies}
+\subsubsection{Handling of R package dependencies}
+\label{sec:technical_plugins_dependencies}
 A wide range of plugins for diverse functionality is present in RKWard,
 including plots (e.g. boxplot) or standard tests (e.g. Student's t-Test)\footnote{
   At the time of this writing, there are 164 user-accessible plugins in RKWard.
@@ -298,7 +310,7 @@ including plots (e.g. boxplot) or standard tests (e.g. Student's t-Test)\footnot
 of the plugins depend on \proglang{R} packages other than the recommended \proglang{R} base packages.
 Examples herein are the calculation of kurtosis, skewness or the exact Wilcoxon
 test. Installation of additional packages is handled automatically by RKWard
-(see Section~\ref{usage_packages}).
+(see Section~\ref{sec:usage_packages}).
 
 RKWard avoids loading all these packages pro-actively, as \pkg{Rcmdr} does. Rather,
 plugins which depend on certain package simply include an appropriate call to
@@ -309,8 +321,9 @@ RKWard is terminated or a certain package is manually unloaded (\code{detach()})
 
 Dependencies between (embedded) plugins are handled using the \code{<require>}-tag in the plugin map.
 
-\subsection[technical_processes]{Development process}
-\subsubsection[technical_processes_plugins]{RKWard core and external plugins}
+\subsection{Development process}
+\subsubsection{RKWard core and external plugins}
+\label{sec:technical_processes_plugins}
 Newly developed plugins are placed in a dedicated plugin map called
 under\_development.pluginmap. Plugins in this map are not visible to the user by
 default, but need to be enabled manually. Once the author(s) of a plugin
@@ -324,7 +337,8 @@ The current development version adds support for downloading additional sets of
 plugins from the Internet, which are not officially included or supported by the
 RKWard developers.
 
-\subsubsection[technical_processes_automatedtesting]{Automated testing}
+\subsubsection{Automated testing}
+\label{sec:technical_processes_automatedtesting}
 A second requirement for new plugins is that each plugin must be accompanied by
 at least one automated test. The automated testing framework in RKWard consists
 of a set of \proglang{R} scripts which allow to run a plugin with specific GUI settings,
@@ -339,7 +353,8 @@ The automated testing framework is also useful in testing some aspects of the
 application which are not implemented as plugins, but this is currently limited
 to very few basic tests.
 
-\subsection[technical_internationalization]{Internationalization}
+\subsection{Internationalization}
+\label{sec:technical_internationalization}
 Currently strings in the main application are translated to varying extents in
 Czech (cs), Catalan (ca), Spanish (es), German (de), Chinese (zh\_CN), Turkish
 (tr), Polish (pl), Italian (it), French (fr), Greek (el), and Danish (da).
