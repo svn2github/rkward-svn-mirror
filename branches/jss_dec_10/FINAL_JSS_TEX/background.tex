@@ -1,53 +1,53 @@
 \section[Background and motivation]{Background and motivation}
 In mid 1993 Ihaka and Gentleman published initial efforts on the computing
-language and programming environment R on the s-news mailing list. Ambitions for
-this project aimed to develop an S-like language but without inheriting memory
+language and programming environment \proglang{R} on the s-news mailing list. Ambitions for
+this project aimed to develop an \proglang{S}-like language but without inheriting memory
 and performance issues. The source code of R was finally released in 1995 and
 development has since evolved under the umbrella of the R Development Core Team
 since mid 1997 \citep{RDCT2001, RDCT2010, Ihaka_Gentlemen_1993}.
-R does not include an advanced cross-platform GUI as known from other
-statistical software packages. However, R includes tools for building GUIs
+\proglang{R} does not include an advanced cross-platform GUI (Graphical User Interface) as known from other
+statistical software packages. However, \proglang{R} includes tools for building GUIs
 mainly based on Tlc/Tk \citep{Dalgaard2001, Dalgaard2002}. Since then a
 plethora of R GUIs have emerged (see \url{http://www.sciviews.org/_rgui/} for a
 comprehensive list). In 2005 John Fox released version 1.0 of R Commander which
-can be considered a milestone in R GUI development; this was the first GUI
+can be considered a milestone in \proglang{R} GUI development; this was the first GUI
 implementation which was able to deliver the experience of statistical tests,
-plots and data manipulation easily accessible for R novices as well as advanced
+plots and data manipulation easily accessible for \proglang{R} novices as well as advanced
 users. However, John Fox stated that R Commander's target was to provide
 functionality for basic-statistical courses though functionality increased over
 time beyond this \citep{Fox2005}. In November 2002 Thomas Friedrichsmeier
 started the RKWard open-source software project with the goal to create an
-implementation of an R GUI based on KDE and Qt technologies.
+implementation of an \proglang{R} GUI based on \proglang{KDE} and \proglang{Qt} technologies.
 
-The scope of RKWard is deliberately broad, targeting both R novices and experts.
+The scope of RKWard is deliberately broad, targeting both \proglang{R} novices and experts.
 Regarding the first group, the aim is to allow any person with knowledge on
 statistical procedures to start using RKWard for their everyday work,
-immediately, without having to learn anything about the R programming language,
+immediately, without having to learn anything about the \proglang{R} programming language,
 first. At the same time RKWard tries to support users who want to learn and
-exploit the full flexibility of the R language for automating or customizing
-analyses. At the other end of the learning curve, RKWard provides advanced IDE
-features to R experts to assist in the development of R scripts. Yet, the idea
-is that R experts, too will benefit from the availability task-oriented GUI
+exploit the full flexibility of the \proglang{R} language for automating or customizing
+analyses. At the other end of the learning curve, RKWard provides advanced IDE (Integrated Development Environment)
+features to \proglang{R} experts to assist in the development of \proglang{R} scripts. Yet, the idea
+is that \proglang{R} experts, too will benefit from the availability task-oriented GUI
 dialogs from time to time, such as when exploring an unfamiliar type of analysis
 or by allowing to implement routinely performed tasks as a GUI element. In
 addition, many features, such as the integrated data editor, or the plot preview
-feature will be useful to R novices and R experts alike in their everyday work
+feature will be useful to \proglang{R} novices and \proglang{R} experts alike in their everyday work
 (see section \ref{Default Graphical User Interface Elements}).
 
 %% TODO: TF: I have edited this section (and the following) a bit more. Please take a look.
 RKWard provides a high level of transparency about the steps that are needed to
-perform any supported task in R, in order to make it easy for the user to see
+perform any supported task in \proglang{R}, in order to make it easy for the user to see
 complete code for all GUI actions. In doing so RKWard accepts relatively verbose
 generated code, deliberately. In particular, RKWard limits itself to generate R
 code from GUI settings. It avoids wrapping complex sequences of data
-manipulation or analysis into custom high-level R functions. The task of
+manipulation or analysis into custom high-level \proglang{R} functions. The task of
 providing high-level functions is logically independent of the development the
-GUI frontend, and should best be solved in dedicated R packages, where needed.
-This approach allows to make better use of the modular design of R, avoids
+GUI frontend, and should best be solved in dedicated \proglang{R} packages, where needed.
+This approach allows to make better use of the modular design of \proglang{R}, avoids
 locking in users to a specific GUI solution, and allows them more options for
 customizing generated code patterns.
 
-While RKWard tries to support users wishing to learn R, it is specifically not
+While RKWard tries to support users wishing to learn \proglang{R}, it is specifically not
 designed as a teaching tool (such as \pkg{Rcmdr} or \pkg{TeachingDemos}), but as
 a productive tool. Dialogs for statistical procedures in RKWard do not
 necessarily show a 1:1 correspondence to the underlying steps in R, but are
@@ -59,14 +59,14 @@ easily (see sections \ref{technical_plugins} and \ref{example_plugins}).
 
 %% TODO: TF: I've removed the reference to ``Beta''-status. It's just an arbitrary estimate without a real definition, anyway.
 %% Please take a look at the wording I have added, instead.
-RKWard is licensed under the terms of the GNU General Public License Version 2
-or later. This means the RKWard code itself is GPL v 2 or 3 but effectively
-distributable only under GPL v 2 due to R code. Some documentation templates are
-GFDL licensed. While the project remains in constant development, a growing
+RKWard is licensed under the terms of the GNU GPL (General Public License) Version 2
+or later. However, due to its dependencies, RKWard binaries are effctively
+distributable only under the terms of the GPL v 2. Some documentation templates are
+GFDL (GNU Free Documentation License) licensed. While the project remains in constant development, a growing
 number of users employs RKWard in productive scenarios. The source code,
 selected binaries and documentation is hosted at SourceForge
-(http://sourceforge.net/). Milestones of the RKWards development are
-demonstrated in Figure~\ref{fig:timeline}.
+(http://sourceforge.net/). Some key milestones of the development of RKWard are
+visualized in Figure~\ref{fig:timeline}.
 
 \begin{figure}[htp]
  \centering
