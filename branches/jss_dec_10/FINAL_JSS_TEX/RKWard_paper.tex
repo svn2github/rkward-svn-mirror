@@ -17,7 +17,7 @@
 
 %% an abstract and keywords
 \Abstract{
-  R is a free, open-source implementation of the S statistical computing
+  R is a free, open-source implementation of the  \proglang{S} statistical computing
 language and programming environment. The current status of R is a
 command line driven interface with no advanced standard Graphical User
 Interface (GUI) but it includes tools for building such. Over the past
@@ -25,17 +25,17 @@ years proprietary and non-proprietary GUI solutions, based on internal
 or external tool kits, with different scopes and technological concepts
 have emerged. In this paper we discuss RKWard which aims to be both a
 comprehensive cross-platform GUI and Integrated Development Environment
-(IDE) for R. RKWard is based on the KDE software libraries. Statistical
+(IDE) for \proglang{R}. RKWard is based on the \proglang{KDE} software libraries. Statistical
 procedures and plots are implemented using an extendable plugin
-architecture based on ECMA script (JavaScript), R, and XML. RKWard
+architecture based on \proglang{ECMAScript} (\proglang{JavaScript}), \proglang{R}, and \proglang{XML}. RKWard
 provides an excellent tool to manage different types of data objects;
 even allowing for seamless editing of certain types. The objective of
-RKWard is to provide a portable and extensible R interface for both
+RKWard is to provide a portable and extensible \proglang{R} interface for both
 basic and advanced statistical and graphical analysis while not
-compromising on flexibility and modularity of the R programming
+compromising on flexibility and modularity of the \proglang{R} programming
 environment itself.
 }
-\Keywords{GUI, IDE, R, plugin, cross-platform}
+\Keywords{GUI, IDE, \proglang{R}, plugin, cross-platform}
 \Plainkeywords{keywords, comma-separated, not capitalized, Java} %% without formatting
 %% at least one keyword must be supplied
 
@@ -100,8 +100,10 @@ environment itself.
 \include{background}
 %%\include{usage}
 \include{technical}
-%%\include{example_session}
+\include{example_session}
 \include{example_plugin}
+\include{installing_starting_RKWard}
+\include{conclusion_summary_acknowledgments}
 
 \bibliography{sources}
 \end{document}
