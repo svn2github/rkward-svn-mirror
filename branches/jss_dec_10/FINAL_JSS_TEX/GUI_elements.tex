@@ -4,11 +4,11 @@ This section gives an overview of the main user interface elements and features 
 For a use-case oriented example of an RKWard session, see Section~\ref{sec:using_RKWard}.
 
 The default layout of the main application window is divided into five
-parts, as depicted in figure \ref{seq:refFigure1}. While many aspects
+parts, as depicted in Figure~\ref{fig:main_window}. While many aspects
 of the GUI can be customized by the user, for simplicity we will
 describe the default appearance of RKWard in the present section. The
-top of the window is occupied by menu bar and toolbar (figure
-\ref{seq:refFigure1}A). The content of both bars is partially context
+top of the window is occupied by menu bar and toolbar (Figure~
+\ref{fig:main_window}A). The content of both bars is partially context
 sensitive, e.g., the Edit menu will offer
 one set of actions when the current document window is a data editor,
 and another set of actions for an \proglang{R} script
@@ -26,13 +26,20 @@ current working directory, and a multi purpose region which is used to
 display additional information on some menu items and other GUI
 elements, when hovering the mouse pointer over them.
 
-The central area is divided into a document view area (figure
-\ref{seq:refFigure1}C) and two panel subwindows (figure
-\ref{seq:refFigure1}B and D). The panels can be resized or moved to
+The central area is divided into a document view area
+(Figure~\ref{fig:main_window}C) and two panel subwindows
+(Figure~\ref{fig:main_window}B and D). The panels can be resized or moved to
 another edge of the central area, independently. All panels can be
 toggled by mouse or keyboard shortcuts. When a panel is closed, the
 document view area (see below) is automatically re-sized to take up the
 free space.
+
+\begin{figure}[htp]
+ \centering
+ \includegraphics[width=15.5cm]{../figures/main_window.png}
+ \caption{RKWard main window. Panels B and D can be resized or collapsed.}
+ \label{fig:main_window}
+\end{figure}
 
 The left panel contains the file browser (see Section~\ref{sec:further_tool_windows}) and the
 workspace browser (see Section~\ref{sec:workspace_browser_object_viewer}), by default. The
@@ -167,7 +174,7 @@ predefined shortcuts for submitting the current line, the current
 selection, predefined blocks, or the entire document to the
 \proglang{R} engine for evaluation. The editor further
 offers object-name completion and function argument hinting (figure
-\ref{seq:refFigure2}A and B) based on the objects which are present in
+\ref{fig:code_hinting}A and B) based on the objects which are present in
 the \proglang{R} workspace\footnote{The object-name
 completion and function argument hinting features in RKWard predate the
 inclusion of similar features into the core
@@ -178,7 +185,21 @@ Paste Special action, which allows to
 paste clipboard contents (for example from a separate spreadsheet
 application) as single string, vector, or matrix, in a form suitable
 for inclusion in an \proglang{R} script, optionally
-transforming it before pasting (figure \ref{seq:refFigure3}).
+transforming it before pasting (figure \ref{fig:special_paste}).
+
+\begin{figure}[htp]
+ \centering
+ \includegraphics{../figures/code_hinting.png}
+ \caption{Code hinting features of the script editor.}
+ \label{fig:code_hinting}
+\end{figure}
+
+\begin{figure}[htp]
+ \centering
+ \includegraphics{../figures/special_paste.png}
+ \caption{Special paste dialog. This allows to paste tabular data from the clipboard, direclty to an \proglang{R} script..}
+ \label{fig:special_paste}
+\end{figure}
 
 Code editor windows can be created by opening an existing
 \proglang{R} script file from the file browser, the
@@ -241,7 +262,16 @@ In the context of the data editor it may be interesting to note that
 RKWard allows to work with multiple objects simultaneously, rather than
 limiting actions to a single active \code{data.frame} as in e.g. \pkg{Rcmdr} or
 \pkg{DeduceR}. Correspondingly more than one data editor window can be opened
-at the same time (figure \ref{seq:refFigure4}).
+at the same time (figure \ref{fig:data_editors}).
+
+\begin{figure}[htp]
+ \centering
+ \includegraphics{../figures/data_editors.png}
+ \caption{RKWard allows to work with several \code{data.frame}s at the same time. A) One \code{data.frame} is opened for editing in the 
+ main window. B) A second \code{data.frame} is opened in a detached window. C) \proglang{R}'s standard data editing features are also
+ usable within an RKWard session.}
+ \label{fig:data_editors}
+\end{figure}
 
 \subsection{Handling, manipulating and analyzing data}
 \label{sec:analyzing_data}
@@ -317,7 +347,7 @@ including GUI dialogs for exporting the current plot to a number of
 different file formats, or adding a grid to an existing plot (will not
 work for all types of plot). Further, a history mechanism is provided,
 which stores most created plots, automatically, and allows to navigate
-back to earlier plots (figure \ref{seq:refFigure5}). The maximum number
+back to earlier plots (figure \ref{fig:plot_history}). The maximum number
 of plots to record, as well as the maximum size of each individual plot
 is configurable from the settings menu. The plot history is shared
 between different instances of the on{}-screen device, yet they behave
@@ -326,6 +356,14 @@ plot, any modification (including deletion) to the plot on one device
 renders its instances on other devices as "new" and hence can be added
 back to the plot history. In addition, duplicating or closing a device
 window records any unsaved plots to the history.
+
+\begin{figure}[htp]
+ \centering
+ \includegraphics{../figures/plot_history_cropped.png}
+ \caption{Onscreen graphics device window in RKWard. The plot history is available as a drop-down list, allowing to
+ jump directly to a previous plot.}
+ \label{fig:plot_history}
+\end{figure}
 
 Also, RKWard provides different plot types (available from the Plots
 menu) with GUI dialogs. For those that are, RKWard supports plot
@@ -358,7 +396,7 @@ handling feature, which allows to invoke the same feature again, with
 identical parameters\footnote{In case not all parameters could be
 applied, since some of the \proglang{R} objectsf in
 question are no longer available, the user will be notified.} (see
-figure \ref{seq:refFigure6}). Thus, the Run
+figure \ref{fig:results_output}). Thus, the Run
 Again feature combines the documentation of the result
 with a mostly automated way to conduct the same analysis again, on new
 data, providing benefits similar to the automated report generation as
@@ -366,6 +404,15 @@ available for example from RreportGenerator
 \citep{RaffelsbergerW2008} which generates automatic
 reports from routine statistical analysis in bioinformatical
 applications.
+
+\begin{figure}[htp]
+ \centering
+ \includegraphics{../figures/results_output_cropped.png}
+ \caption{Sample contents of the output window. Standard elements of plugin output include
+ a standardized header, and a ``Run again''-link, which allows to repeat the analysis with
+ identical or similar parameters.}
+ \label{fig:results_output}
+\end{figure}
 
 The formatting of the output is kept to a minimum, and in particular,
 RKWard is very reluctant to round numerical results for the sake of a
