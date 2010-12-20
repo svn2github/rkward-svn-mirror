@@ -3,7 +3,25 @@
 In this article we have introduced the RKWard GUI to \proglang{R}. RKWard provides features ranging
 from easy to use dialogs for common statistical procedures, targetted at \proglang{R} novices, to advanced
 IDE features targetted at \proglang{R} experts.
-
+The RKWard development 
+does not focus on \proglang{R} package development, except those internally 
+required for RKWard, but keeps it at the \proglang{R} community. This design brings the intrinsic 
+benefit of highly accurate results since calculations entirely rely on \proglang{R} code. 
+Comparison of the commonly used spreadsheet applications 
+regarding estimation, random number generation and statistical distributions revealed serious 
+limitations. \proglang{R} in contrast was found to be a reliable and accurate statistical 
+software package \citep{Almiron2009, Almiron2010}.
+\proglang{R} scripts which are routinely in use or require complex steps can be programmed as GUI 
+elements in RKWard. Due to its plugin architecture RKWard provides the basis 
+for a highly customizable \proglang{R}-GUI. We show that the plugin development can take place 
+independently without changes in the core application or compilation of binaries. 
+Current developments also targets plugin development via external canals like 
+GHNS (Get Hot New Stuff)\footnote{\url{http://ghns.freedesktop.org/}} independently of the 
+RKWard plugin development. 
+Basically all \statistical \proglang{R} functions can be provided with GUIs.
+The exclusive use of standard-complient formats (e.g. \proglang{HTML}, PNG) 
+and sole use of \proglang{R} formats (\proglang{R} Data Files \citep{RDCT2010c}) 
+guarantees cross-platform interoperability.
 Future versions of RKWard will continue to add value for both groups of users. Planned features include
 an enhanced interface for debugging \proglang{R} code, support for editing more types of data, and the
 ability to connect the RKWard GUI to a remote \proglang{R} engine. Perhaps most importantly, RKWard will

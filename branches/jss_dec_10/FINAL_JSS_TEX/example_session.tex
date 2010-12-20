@@ -18,9 +18,12 @@ selection of the data by a common point and click interface (Figure~\ref{fig:imp
 example ``comma'' and ``period'' were chosen via ``Quick mode'' as field
 separator character and decimal point character respectively.
 
+The corresponding \proglang{R} code would read as:
+
 \code{read.csv(file=/media/software/experiment.txt, 
 na.strings = NA, nrows = -1, skip = 0,
 check.names = TRUE, strip.white = FALSE, blank.lines.skip = TRUE)}
+
 
 Checking the ``Edit Object'' box will automatically open a data editor tab
 showing the imported data (Figure~\ref{fig:import_data}B).
