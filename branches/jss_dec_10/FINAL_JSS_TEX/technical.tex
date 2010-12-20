@@ -49,7 +49,11 @@ be possible to run GUI and \proglang{R} engine on different computers.
 \begin{figure}[htp]
  \centering
  \includegraphics{../figures/design_sketch.pdf}
- \caption{Sketch of the technical design of RKWard. Only a few central components are visualized.}
+ \caption{Technical design of RKWard. Only a few central components are visualized.
+Plugins are defined by the RKWard developers or by the user.
+RKWard takes care of correct \proglang{R} script processing (e.g. loading of packages, data loading) as defined by the plugin.
+The asynchronous threaded design (Section~\ref{sec:technical_asynchronous}) do not require R and RKWard to run on the same Computer.
+For example one RKWard developer runs \proglang{R} on a RHEL\footnote{\url{http://www.redhat.com/rhel/}} (With Red Hat Enterprise Linux) server, whereas RKWard runs on a Debian\footnote{\url{http://www.debian.org/releases/unstable/}} unstable client.}
  \label{fig:design_sketch}
 \end{figure}
 
