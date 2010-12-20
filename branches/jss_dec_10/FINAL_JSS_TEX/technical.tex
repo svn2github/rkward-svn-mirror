@@ -286,7 +286,7 @@ printed using \code{rk.print()}, which is just a thin wrapper around the
 \code{HTML()}-function of the \pkg{R2HTML}-package \citep{Lecoutre2003} in the current
 implementation. The use of custom formatting with \proglang{HTML} is possible, but
 discouraged. Standard elements such as a horizontal separator, and the run-again
-link (see Section~\ref{sec:usage_output}) are inserted automatically, without the need to define
+link (see Section~\ref{sec:results_output}) are inserted automatically, without the need to define
 them for each plugin.
 
 Regarding the style of the generated \proglang{R} code, enforcing consistency is harder,
@@ -314,7 +314,7 @@ including plots (e.g. boxplot) or standard tests (e.g. Student's t-Test)\footnot
 of the plugins depend on \proglang{R} packages other than the recommended \proglang{R} base packages.
 Examples herein are the calculation of kurtosis, skewness or the exact Wilcoxon
 test. Installation of additional packages is handled automatically by RKWard
-(see Section~\ref{sec:usage_packages}).
+(see Section~\ref{sec:package_management}).
 
 RKWard avoids loading all these packages pro-actively, as \pkg{Rcmdr} does. Rather,
 plugins which depend on certain package simply include an appropriate call to

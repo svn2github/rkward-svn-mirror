@@ -1,5 +1,8 @@
 \section{Main elements of the user interface}
 \label{sec:user_interface}
+This section gives an overview of the main user interface elements and features of RKWard.
+For a use-case oriented example of an RKWard session, see Section~\ref{sec:using_RKWard}.
+
 The default layout of the main application window is divided into five
 parts, as depicted in figure \ref{seq:refFigure1}. While many aspects
 of the GUI can be customized by the user, for simplicity we will
@@ -15,7 +18,7 @@ current context. The menu bar of the main window is also the central
 access point to most data import, manipulation, analysis and
 visualization features (see Section~\ref{sec:analyzing_data}) for which RKWard provides a GUI
 interface.
-1
+
 A status bar is shown at the bottom of the window. This contains (from
 right to left) an indication of the status of the
 \proglang{R} engine (busy or idle), a display of the
@@ -40,7 +43,8 @@ log (Section~\ref{sec:further_tool_windows}), Pending Jobs (Section~\ref{sec:fur
 The remainder of the central area is a single row TDI (Tab document
 interface) for different documents. Currently, the supported types of
 documents are results output (Section~\ref{sec:results_output}), spreadsheet-like data editors
-(Section~\ref{sec:spreadsheet}), help pages (Section~\ref{sec:help_system}), script editors (Section~\ref{sec:code_editor}), object summaries (Section XXX), and also
+(Section~\ref{sec:spreadsheet}), help pages (Section~\ref{sec:help_system}), script editors (Section~\ref{sec:code_editor}),
+object summaries (Section \ref{sec:workspace_browser_object_viewer}), and also
 \proglang{R} onscreen graphics devices (Section~\ref{sec:technical_graphics}). Early uses of TDIs date back to 1988 and are
 widely applied nowadays \citep{Hopkins2005, MDN2010,
 KimLutteroth2010}. The order of tabs can be conveniently re-arranged
@@ -72,7 +76,7 @@ configured via Settings/Configure Toolbars. Further, it is possible to add and r
 of data manipulation and analysis features from the GUI using
 Settings/Configure RKWard/Plugins.
 
-\subsection{Using the R Console}
+\subsection{Using the R console}
 \label{sec:using_R_console}
 For users with knowledge of \proglang{R}, RKWard provides direct access to the
 embedded \proglang{R} engine in the
@@ -84,7 +88,7 @@ differences, e.g. with respect to the command history-feature in
 like \proglang{R} running in a terminal.
 
 The \proglang{R} Console in RKWard provides many of the
-features which are also available in the code editor (see section ).
+features which are also available in the code editor (see Section~\ref{sec:code_editor}).
 Most prominently, it also supports syntax highlighting and code
 folding, function argument hinting, object-name completion, and pasting
 vector or matrix data directly from the clipboard.
@@ -101,7 +105,7 @@ instead.
 The workspace browser allows to view
 and manipulate \proglang{R} objects, somewhat similar
 to a regular file-system browser. This includes both user objects
-(data, functions) in the .GlobalEnv, and in other environments on the
+(data, functions) in the \code{.GlobalEnv}, and in other environments on the
 \proglang{R} search path (typically
 \proglang{R} package environments). Objects are shown
 in a hierarchical tree structure. For instance, an object of class
@@ -112,7 +116,7 @@ The basic type of each object is visualized by different icons. Further
 information on each object can be obtained by hovering the mouse
 pointer over the respective icon. This will display a tooltip window,
 including information such as dimensionality or function arguments,
-depending on the type of object. Objects inside the .GlobalEnv can be
+depending on the type of object. Objects inside the \code{.GlobalEnv} can be
 removed, renamed, and edited from the context menu.
 
 Literally hundreds or even thousands of objects are present in a typical
@@ -120,7 +124,8 @@ Literally hundreds or even thousands of objects are present in a typical
 first, therefore the workspace browser offers to show only a certain
 subset of objects, e.g. only functions or only data objects, including
 or excluding hidden objects (with names
-starting with a "."), or showing only the contents of .GlobalEnv as
+starting with a 
+``.''), or showing only the contents of \code{.GlobalEnv} as
 opposed to all environments on the search path.
 
 Several actions are available from the context menu (by right-clicking
@@ -128,9 +133,9 @@ on one of the objects), however some of these actions are only
 available for some types of objects. These allow to search the
 \proglang{R} help for information on that object, to
 open a window with detailed information about the object, to delete, rename or copy the object to a new symbol name, or to
-copy it to the .GlobalEnv. Further the context menu allows to open
-supported types of objects for editing (see section ; currently, only
-data.frames can be edited, and only when inside the .GlobalEnv). 
+copy it to the \code{.GlobalEnv}. Further the context menu allows to open
+supported types of objects for editing (see Section~\ref{sec:spreadsheet}; currently, only
+\code{data.frame}s can be edited, and only when inside the \code{.GlobalEnv}). 
 
 An object list similar to the workspace browser (but showing only the
 globalenv() by default) is also used at several places for the
@@ -188,20 +193,20 @@ commands.
 Historically, one of the earliest
 features of RKWard is a built-in spreadsheet-like data editor.
 Currently editing of \proglang{R} objects from type
-data.frame is possible. In contrast to the data.frame editing shipped
+\code{data.frame} is possible. In contrast to the \code{data.frame} editing shipped
 with the \proglang{R} core distribution, this editor
-gives the illusion of "in-place" editing of data. New data.frames can
+gives the illusion of "in-place" editing of data. New \code{data.frame}s can
 be created and opened from the GUI, or existing objects can be opened
 for editing from the workspace browser. For opening objects from
 \proglang{R} code, the function
 \code{rk.edit()} can be used.
 
-Meta-data on each column of a data.frame (i.e. name of the column, data
+Meta-data on each column of a \code{data.frame} (i.e. name of the column, data
 type, and potentially data labels) are shown in the upper portion of
 the data editor, and can be manipulated there, while the data itself is
 shown in the lower portion. The upper portion can be hidden using a
 slider, to make more room for the display and editing of data.
-Similarly, and editable column showing the row names of the data.frame
+Similarly, and editable column showing the row names of the \code{data.frame}
 can be shown or hidden separately from the data.
 
 Factor levels can be edited by double-clicking on the
@@ -234,8 +239,8 @@ viewer by setting it to read-only mode.
 
 In the context of the data editor it may be interesting to note that
 RKWard allows to work with multiple objects simultaneously, rather than
-limiting actions to a single active data.frame as in e.g. Rcmdr or
-DeduceR. Correspondingly more than one data editor window can be opened
+limiting actions to a single active \code{data.frame} as in e.g. \pkg{Rcmdr} or
+\pkg{DeduceR}. Correspondingly more than one data editor window can be opened
 at the same time (figure \ref{seq:refFigure4}).
 
 \subsection{Handling, manipulating and analyzing data}
@@ -257,7 +262,7 @@ to import data from several sources (see below) or to save and load
 basic recipe for most of the functionality provided by RKWard, and
 accordingly, this functionality can be presented in a standardized
 fashion\footnote{Internally, this functionality is implemented as
-plugins. See section Fehler: Referenz nicht gefunden for details.}. For
+plugins. See Section~\ref{sec:technical_plugins} for details.}. For
 the purpose of the present article, we will present the standard
 elements of the data handling functions at the example of importing CSV
 (comma-separated values) data.
@@ -267,9 +272,9 @@ files, Stata files, and "delimited text" data. Technically RKWard
 relies on \proglang{R} packages for certain set of
 data which were already described elsewhere
 \citep{Murdoch2002}. Of course further formats can
-also be imported using copy and paste (see sections  and ), or by
+also be imported using copy and paste (see Sections~\ref{sec:code_editor} and \ref{sec:spreadsheet}), or by
 manually entering appropriate \proglang{R} commands in
-the \proglang{R} Console (section XXX). To import CSV
+the \proglang{R} Console (Section~\ref{sec:using_R_console}). To import CSV
 data, select File/Import format/Import Text/CSV
 data from the menu. This will open a dialog as shown in
 figure XXX. The central area of this dialog is concerned with setting
@@ -296,7 +301,7 @@ of the dialog.
 Most data handling functions will produce some output, which will be
 sent to the output window. From there it is possible to repeat the
 action by clicking on the Run Again link
-(see section ).
+(see Section~\ref{sec:results_output}).
 
 \subsection{Graphics window and plot previews}
 \label{sec:plot_previews}
@@ -329,10 +334,9 @@ the respective dialog is checked, a device window will be opened, which
 shows the plot as it would be created with the current settings. The
 preview is updated automatically as the user makes changes, allowing to
 see the effect of each setting, directly\footnote{The preview is
-updated asynchronously to keep the GUI responsive. See section Fehler:
-Referenz nicht gefunden for details.}. For example, the CLT plugins
-under the Distributions menu can be very helpful to dynamically "show"
-the convergence while teaching. Such "preview plots" are not added to
+updated asynchronously to keep the GUI responsive; see Section~\ref{sec:technical_graphics}.}. For example, the CLT plugins
+under the Distributions menu can be very helpful to dynamically ``show''
+the convergence while teaching. Such ``preview plots'' are not added to
 the history.
 
 \subsection{Results output}
@@ -342,7 +346,7 @@ While all basic mechanisms of
 capturing and documenting \proglang{R} output can also
 be used in RKWard, RKWard provides a dedicated output file and output
 window for the documentation of results. All GUI-driven data handling
-functions (see section ) write their output to this file. It is also
+functions (see Section~\ref{sec:analyzing_data}) write their output to this file. It is also
 possible to write to the output from \proglang{R}
 scripts by using a number of dedicated \proglang{R}
 functions. For the GUI-driven data handling functions, the output is
@@ -367,9 +371,8 @@ The formatting of the output is kept to a minimum, and in particular,
 RKWard is very reluctant to round numerical results for the sake of a
 pretty output. Rather the focus is on making the results easily
 accessible to further processing, typically in a dedicated word
-processor. As stated before, RKWards output is based on
-\proglang{HTML} (HyperText Markup Language), using the
-\pkg{R2HTML} package, and the raw
+processor. Output is based on
+\proglang{HTML} (hypertext markup language), and the raw
 \proglang{HTML} file and any images can be directly
 retrieved from a dedicated folder
 (\~{}/.rkward, by default). It is also
@@ -377,14 +380,13 @@ possible to select and copy sections of the output directly from the
 output window, and to paste them into office applications as
 \proglang{HTML} code. In future releases RKWard will
 try to integrate with existing office suites, and it is possible that
-this will also mean changing to a different file format such as Open
-Document Format (ODF), and technologies such as sweave and odfWeave
+this will also mean changing to a different file format such as ODF (open
+document format, and technologies such as \pkg{sweave} and \pkg{odfWeave}
 \citep{Leisch2002, Kuhn2006}.
 
 Images contained in the output are stored as
 PNG\footnote{\url{http://www.libpng.org/pub/png/}} by
-default, but
-JPG\footnote{\url{http://www.jpeg.org/index.html}} and
+default, but JPG\footnote{\url{http://www.jpeg.org/index.html}} and
 SVG\footnote{\url{http://www.w3.org/Graphics/SVG/}}
 can also be used as the output format. Similarly, the size of the
 images can be configured by the user. It is expected that SVG will
@@ -394,6 +396,7 @@ rendered by older supported versions of the
 \proglang{KDE} libraries.
 
 \subsection{Package management}
+\label{sec:package_management}
 The number of \proglang{R} packages available from CRAN (the comprehensive \proglang{R} archive
 network), Omegahat and Bioconductor has grown exponentially since \proglang{R} v. 1.3
 (2001) to \proglang{R} v. 2.7 (2008) \citep{Fox2008, Ligges2003, Visne2009}. RKWard
