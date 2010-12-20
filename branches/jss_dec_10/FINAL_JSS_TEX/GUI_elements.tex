@@ -1,0 +1,468 @@
+\section{User Interface Elements of the Main RKWard Window}
+\label{sec:user_interface}
+The default layout of the main application window is divided into five
+parts, as depicted in figure \ref{seq:refFigure1}. While many aspects
+of the GUI can be customized by the user, for simplicity we will
+describe the default appearance of RKWard in the present section. The
+top of the window is occupied by menu bar and toolbar (figure
+\ref{seq:refFigure1}A). The content of both bars is partially context
+sensitive, e.g., the Edit menu will offer
+one set of actions when the current document window is a data editor,
+and another set of actions for an \proglang{R} script
+editor window. To ease orientation, all top level menus remain
+persistent, even if no actions are available for that menu in the
+current context. The menu bar of the main window is also the central
+access point to most data import, manipulation, analysis and
+visualization features (see Section~\ref{sec:analyzing_data}) for which RKWard provides a GUI
+interface.
+
+A status bar is shown at the bottom of the window. This contains (from
+right to left) an indication of the status of the
+\proglang{R} engine (busy or idle), a display of the
+current working directory, and a multi purpose region which is used to
+display additional information on some menu items and other GUI
+elements, when hovering the mouse pointer over them.
+
+The central area is divided into a document view area (figure
+\ref{seq:refFigure1}C) and two panel subwindows (figure
+\ref{seq:refFigure1}B and D). The panels can be resized or moved to
+another edge of the central area, independently. All panels can be
+toggled by mouse or keyboard shortcuts. When a panel is closed, the
+document view area (see below) is automatically re-sized to take up the
+free space.
+
+The left panel contains the file browser (see Section~\ref{sec:further_tool_windows}) and the
+workspace browser (see Section~\ref{sec:workspace_browser_object_viewer}), by default. The
+bottom panel contains the tool windows, namely, Command
+log (Section~\ref{sec:further_tool_windows}), Pending Jobs (Section~\ref{sec:further_tool_windows}), \proglang{R} Console
+(Section~\ref{sec:using_R_console}), and Help Search (Section~\ref{sec:help_system}).
+
+The remainder of the central area is a single row TDI (Tab document
+interface) for different documents. Currently, the supported types of
+documents are results output (Section~\ref{sec:results_output}), spreadsheet-like data editors
+(Section~\ref{sec:}), help pages (Section~\ref{sec:help_system}), script editors (Section~\ref{sec:code_editor}), object summaries (Section XXX), and also
+\proglang{R} onscreen graphics devices (Section~\ref{sec:technical_graphics}). Early uses of TDIs date back to 1988 and are
+widely applied nowadays \citep{Hopkins2005, MDN2010,
+KimLutteroth2010}. The order of tabs can be conveniently re-arranged
+using drag and drop.
+
+Both document windows, and tool views, can be detached from the main
+window as independent windows managed by the window manager, and also
+re-attached. This feature allows to work with multiple documents, e.g.,
+scripts or data editors at the same time, conveniently. On{}-screen
+graphics device windows are created detached by default, but can also
+be attached to the document view area of the main window.
+
+Windows can be shown (or activated) using a mouse device with point and
+click, as well as using a series of keyboard shortcuts (defined by
+default) for switching between the different tool and document windows.
+Key bindings can be configured from the GUI via "Settings/Configure
+Shortcuts". However, for technical reasons, only the shortcuts of those
+components currently active will be listed. Thus, for example, to
+configure data editor shortcuts one has to open a data editor first and
+then to select "Settings/Configure Shortcuts". Since RKWard relies on
+\proglang{KDE} SC editor component as editor component
+shortcuts for the script editor (Section~\ref{sec:code_editor}) are managed separately using
+"Settings/Configure Editor/Shortcuts". On most systems, it is also
+possible to configure shortcuts by right-clicking on the respective
+menu item.
+
+The choice of actions which are available on the tool bar can be
+configured via Settings/Configure Toolbars. Further, it is possible to add and remove sets
+of data manipulation and analysis features from the GUI using
+Settings/Configure RKWard/Plugins.
+
+\subsection{Using the \proglang{R} Console}
+\label{sec:using_R_console}
+For users with knowledge of \proglang{R}, RKWard provides direct access to the
+embedded \proglang{R} engine in the
+\proglang{R} Console tool window. It is important to note that technically this is an
+emulation of \proglang{R} running in a console
+session, not a real \proglang{R} session. This leads to a few subtle
+differences, e.g. with respect to the command history-feature in
+\proglang{R}. For most purposes, the \proglang{R} Console in RKWard can be used exactly
+like \proglang{R} running in a terminal.
+
+The \proglang{R} Console in RKWard provides many of the
+features which are also available in the code editor (see section ).
+Most prominently, it also supports syntax highlighting and code
+folding, function argument hinting, object-name completion, and pasting
+vector or matrix data directly from the clipboard.
+
+By default, any code that is submitted to the
+\proglang{R} engine from the code-editor or from help
+pages is sent through the \proglang{R} Console,
+however, it can also be configured to the submitted in the background,
+instead.
+
+\subsection{Workspace browser and Object Viewer}
+\label{sec:workspace_browser_object_viewer}
+
+The workspace browser allows to view
+and manipulate \proglang{R} objects, somewhat similar
+to a regular file-system browser. This includes both user objects
+(data, functions) in the .GlobalEnv, and in other environments on the
+\proglang{R} search path (typically
+\proglang{R} package environments). Objects are shown
+in a hierarchical tree structure. For instance, an object of class
+list can be expanded to show the objects
+contained inside the list, by clicking on a
++-symbol to the left of the object name.
+The basic type of each object is visualized by different icons. Further
+information on each object can be obtained by hovering the mouse
+pointer over the respective icon. This will display a tooltip window,
+including information such as dimensionality or function arguments,
+depending on the type of object. Objects inside the .GlobalEnv can be
+removed, renamed, and edited from the context menu.
+
+Literally hundreds or even thousands of objects are present in a typical
+\proglang{R} session. This can be overwhelming at
+first, therefore the workspace browser offers to show only a certain
+subset of objects, e.g. only functions or only data objects, including
+or excluding hidden objects (with names
+starting with a "."), or showing only the contents of .GlobalEnv as
+opposed to all environments on the search path.
+
+\subsection{Workspace browser and Object Viewer actions}
+\label{sec:workspace_browser_object_viewer_actions}
+
+Several actions are available from the context menu (by right-clicking
+on one of the objects), however some of these actions are only
+available for some types of objects. These allow to search the
+\proglang{R} help for information on that object, to
+open a window with detailed information about the object (see section
+XXX), to delete, rename or copy the object to a new symbol name, or to
+copy it to the .GlobalEnv. Further the context menu allows to open
+supported types of objects for editing (see section ; currently, only
+data.frames can be edited, and only when inside the .GlobalEnv). 
+
+An object list similar to the workspace browser (but showing only the
+globalenv() by default) is also used at several places for the
+selection of objects to work with, e.g. in an analysis (see Section~\ref{sec:analyzing_data})
+plugin.
+
+\subsection{Object Viewer Window}
+\label{sec:object_viewer_window}
+
+Selecting View from the workspace
+browsers context menu opens a new window in the
+document area, which contains the basic information on the object. In
+addition this window has tabs which shows the output of
+\code{print()}, and \code{summary()}.
+
+\subsection{Code Editor}
+\label{sec:code_editor}
+
+RKWard comes with an advanced
+\proglang{R} script editor, based on the
+\proglang{KDE} Advanced Text Editor component
+(\url{http://kate-editor.org/}). Features of the
+editor include syntax highlighting on screen and in printouts (for
+\proglang{R} and many other script types), code
+folding, block-wise indentation adjustments or commenting, automatic
+brackets, search and replace with plain text or regular expressions,
+and many more. The editor automatically saves snapshots of the
+currently edited files in configurable intervals.
+
+For interaction with \proglang{R}, the editor offers
+predefined shortcuts for submitting the current line, the current
+selection, predefined blocks, or the entire document to the
+\proglang{R} engine for evaluation. The editor further
+offers object-name completion and function argument hinting (figure
+\ref{seq:refFigure2}A and B) based on the objects which are present in
+the \proglang{R} workspace\footnote{The object-name
+completion and function argument hinting features in RKWard predate the
+inclusion of similar features into the core
+\proglang{R} distribution. For this reason, they are
+technically based on different mechanisms.}. A further feature specific
+to the \proglang{R} language is the
+Paste Special action, which allows to
+paste clipboard contents (for example from a separate spreadsheet
+application) as single string, vector, or matrix, in a form suitable
+for inclusion in an \proglang{R} script, optionally
+transforming it before pasting (figure \ref{seq:refFigure3}).
+
+Code editor windows can be created by opening an existing
+\proglang{R} script file from the file browser, the
+File-menu, or by creating a new empty script. The script editor can
+also be invoked from \proglang{R}, e.g. using the
+\code{file.edit()}, \code{file.show()} or \code{fix()}
+commands.
+
+\subsection{Spreadsheet-like data editor}
+\label{sec:spreadsheet}
+
+Historically, one of the earliest
+features of RKWard is a built-in spreadsheet-like data editor.
+Currently editing of \proglang{R} objects from type
+data.frame is possible. In contrast to the data.frame editing shipped
+with the \proglang{R} core distribution, this editor
+gives the illusion of "in-place" editing of data. New data.frames can
+be created and opened from the GUI, or existing objects can be opened
+for editing from the workspace browser. For opening objects from
+\proglang{R} code, the function
+\code{rk.edit()} can be used.
+
+Meta-data on each column of a data.frame (i.e. name of the column, data
+type, and potentially data labels) are shown in the upper portion of
+the data editor, and can be manipulated there, while the data itself is
+shown in the lower portion. The upper portion can be hidden using a
+slider, to make more room for the display and editing of data.
+Similarly, and editable column showing the row names of the data.frame
+can be shown or hidden separately from the data.
+
+Factor levels can be edited by double-clicking on the
+Levels row of the meta information of a
+column of type factor. Levels can also be assigned to other types of
+variables, but only for consecutive integer values. These levels will
+be displayed instead of the underlying value, if applicable. Each
+column can also be assigned an arbitrary descriptive
+Label, which is stored in
+\proglang{R} as an attribute of the column.
+
+Contrary to many other editors, the data editor in RKWard does not
+automatically convert columns to a different type. For instance, if a
+non-numeric string is entered into a row of a numeric column, the data
+type of the column remains numeric, and the entered value is
+highlighted in red. Internally, the invalid cell becomes an NA value.
+The entered value is stored separately, in an attribute of the column.
+The rationale for this approach is that it offers protection against
+accidental, and possibly undetected conversion of the data type. The
+user can manually convert the storage mode of a column by simply
+selecting a different data type.
+
+The data editor supports insertion and deletion of rows or columns at an
+arbitrary position. Rows and columns can also be added at the bottom or
+right by simply entering data into the trailing row / column shown in
+gray. Copy and paste is supported, where the area affected by paste
+operations can optionally be constrained to the selected region, or to
+the dimensions of the table. The data editor can also be used as a data
+viewer by setting it to read-only mode.
+
+In the context of the data editor it may be interesting to note that
+RKWard allows to work with multiple objects simultaneously, rather than
+limiting actions to a single active data.frame as in e.g. Rcmdr or
+DeduceR. Correspondingly more than one data editor window can be opened
+at the same time (figure \ref{seq:refFigure4}).
+
+\subsection{Handling, Manipulating and Analyzing Data}
+\label{sec:analyzing_data}
+
+Dealing with data, i.e. importing, transforming, filtering, analyzing, and visualizing data is the core
+strength of \proglang{R}, and one central goal of
+RKWard is to make much of this functionality available to a broader
+audience by providing it in the form of easy to use GUI dialogs. Since
+the data handling functionality itself is provided by
+\proglang{R}, and its numerous add-on packages, this
+can basically be accomplished by defining GUI dialogs, generating
+\proglang{R} code according to the settings made in
+the GUI, and evaluating the generated code in the
+\proglang{R} engine. Note: RKWard does not have its
+own file format for data import and export on purpose. It is possible
+to import data from several sources (see below) or to save and load
+\proglang{R} sessions. This general pattern is the
+basic recipe for most of the functionality provided by RKWard, and
+accordingly, this functionality can be presented in a standardized
+fashion\footnote{Internally, this functionality is implemented as
+plugins. See section Fehler: Referenz nicht gefunden for details.}. For
+the purpose of the present article, we will present the standard
+elements of the data handling functions at the example of importing CSV
+(comma-separated values) data.
+
+At the time of this writing, RKWard provides support for importing SPSS
+files, Stata files, and "delimited text" data. Technically RKWard
+relies on \proglang{R} packages for certain set of
+data which were already described elsewhere
+\citep{Murdoch2002}. Of course further formats can
+also be imported using copy and paste (see sections  and ), or by
+manually entering appropriate \proglang{R} commands in
+the \proglang{R} Console (section XXX). To import CSV
+data, select File/Import format/Import Text/CSV
+data from the menu. This will open a dialog as shown in
+figure XXX. The central area of this dialog is concerned with setting
+the options to control the import. Here, the input field for
+File name is highlighted to indicate that
+it is required to specify a file, before the dialog can proceed.
+Further options are available from tabbed pages of the central area.
+
+The right-hand area (figure XXX-B) is common to all data handling
+dialogs. Here, the Submit button is used
+to start the import action. It will become enabled once all required
+settings have been made, i.e. in this case, a file name has been
+selected. The Close button will close the
+dialog without taking any action.
+
+The bottom area (figure XXX-C) shows the \proglang{R}
+code which corresponds to the current settings, and which will be run
+upon pressing the Submit button. The
+display is updated dynamically, as the user changes settings, allowing
+to see the effect of each change. The code display can be hidden using
+the Code button in the right-hand section
+of the dialog.
+
+Most data handling functions will produce some output, which will be
+sent to the output window. From there it is possible to repeat the
+action by clicking on the Run Again link
+(see section ).
+
+\subsection{Graphics Window and Plot Previews}
+\label{sec:plot_previews}
+
+For plotting, RKWard relies on the graphics capabilities provided by
+\proglang{R}. All \proglang{R}
+devices, including onscreen devices can be used in the regular way.
+However, for the X11() and windows() devices, RKWard will add a menu
+bar and toolbar to the device windows (on the windows platform
+replacing the menu bar regularly provided by the device window). Menu
+bar and toolbar offer access to a number of different functions,
+including GUI dialogs for exporting the current plot to a number of
+different file formats, or adding a grid to an existing plot (will not
+work for all types of plot). Further, a history mechanism is provided,
+which stores most created plots, automatically, and allows to navigate
+back to earlier plots (figure \ref{seq:refFigure5}). The maximum number
+of plots to record, as well as the maximum size of each individual plot
+is configurable from the settings menu. The plot history is shared
+between different instances of the on{}-screen device, yet they behave
+independently. For example, if multiple devices are displaying the same
+plot, any modification (including deletion) to the plot on one device
+renders its instances on other devices as "new" and hence can be added
+back to the plot history. In addition, duplicating or closing a device
+window records any unsaved plots to the history.
+
+Also, RKWard provides different plot types (available from the Plots
+menu) with GUI dialogs. For those that are, RKWard supports plot
+preview feature. If the preview button of
+the respective dialog is checked, a device window will be opened, which
+shows the plot as it would be created with the current settings. The
+preview is updated automatically as the user makes changes, allowing to
+see the effect of each setting, directly\footnote{The preview is
+updated asynchronously to keep the GUI responsive. See section Fehler:
+Referenz nicht gefunden for details.}. For example, the CLT plugins
+under the Distributions menu can be very helpful to dynamically "show"
+the convergence while teaching. Such "preview plots" are not added to
+the history.
+
+\subsection{Results output}
+\label{sec:results_output}
+
+While all basic mechanisms of
+capturing and documenting \proglang{R} output can also
+be used in RKWard, RKWard provides a dedicated output file and output
+window for the documentation of results. All GUI-driven data handling
+functions (see section ) write their output to this file. It is also
+possible to write to the output from \proglang{R}
+scripts by using a number of dedicated \proglang{R}
+functions. For the GUI-driven data handling functions, the output is
+standardized to include the name of the feature, the date and time of
+the execution of the feature, and other basic parameters (if
+applicable). Further, a clickable Run
+Again-link is rendered below the output of each data
+handling feature, which allows to invoke the same feature again, with
+identical parameters\footnote{In case not all parameters could be
+applied, since some of the \proglang{R} objects in
+question are no longer available, the user will be notified.} (see
+figure \ref{seq:refFigure6}). Thus, the Run
+Again feature combines the documentation of the result
+with a mostly automated way to conduct the same analysis again, on new
+data, providing benefits similar to the automated report generation as
+available for example from RreportGenerator
+\citep{RaffelsbergerW2008} which generates automatic
+reports from routine statistical analysis in bioinformatical
+applications.
+
+The formatting of the output is kept to a minimum, and in particular,
+RKWard is very reluctant to round numerical results for the sake of a
+pretty output. Rather the focus is on making the results easily
+accessible to further processing, typically in a dedicated word
+processor. As stated before, RKWards output is based on
+\proglang{HTML} (HyperText Markup Language), using the
+\pkg{R2HTML} package, and the raw
+\proglang{HTML} file and any images can be directly
+retrieved from a dedicated folder
+(\~{}/.rkward, by default). It is also
+possible to select and copy sections of the output directly from the
+output window, and to paste them into office applications as
+\proglang{HTML} code. In future releases RKWard will
+try to integrate with existing office suites, and it is possible that
+this will also mean changing to a different file format such as Open
+Document Format (ODF), and technologies such as sweave and odfWeave
+\citep{Leisch2002, Kuhn2006}.
+
+Images contained in the output are stored as
+PNG\footnote{\url{http://www.libpng.org/pub/png/}} by
+default, but
+JPG\footnote{\url{http://www.jpeg.org/index.html}} and
+SVG\footnote{\url{http://www.w3.org/Graphics/SVG/}}
+can also be used as the output format. Similarly, the size of the
+images can be configured by the user. It is expected that SVG will
+become the default output format, eventually, but currently some SVG
+files produced by \proglang{R} are not properly
+rendered by older supported versions of the
+\proglang{KDE} libraries.
+
+
+\subsection{Further Tool Windows}
+\label{sec:further_tool_windows}
+
+The file browser tool window can be
+used to open supported file types (e.g. \proglang{R}
+scripts, \proglang{HTML} files) inside the main RKWard
+window. For unsupported file types (such as PDF), the
+systems default external applications can be used.
+
+The command log window contains a log of the commands that have been
+evaluated by the \proglang{R} engine, and any output
+produced by these commands. By default, the log shows only commands
+which have been entered by the user, or directly correspond to user
+actions, but it can be configured to include commands which are run for
+application internal purposes such as keeping the workspace browser up
+to date.
+
+Commands can be submitted while the \proglang{R} engine
+has not yet started, or while another lengthy calculation is still
+performing. In this case commands are placed into a queue, first, and
+executed as soon as the \proglang{R} engine becomes
+available. The pending jobs windows (not
+shown) lists current \proglang{R} commands waiting for
+evaluation by the \proglang{R} engine. While this
+window is mostly of interest to application developers for diagnostic
+purposes, it can also be used to interrupt selected commands.
+
+\subsection{Help system}
+\label{sec:help_system}
+Help on \proglang{R}
+or RKWard can be browsed inside an arbitrary number of document
+windows. These allow to browse \proglang{R} manuals in
+\proglang{HTML} form, help pages on
+\proglang{R} functions and packages, help pages on
+RKWard in general, and help pages on specific GUI dialogs within
+\proglang{R}. All types of help can be browsed in the
+same document window, and can be cross-linked. For example help pages for
+RKWard GUI dialogs will typically link to documentation for both
+related RKWard dialogs, and the underlying
+\proglang{R} functions.
+
+The help system can be invoked from several action in the
+Help menu. Help on RKWard dialogs can be
+accessed from the dialog itself using the
+Help button. Help pages on RKWard dialogs
+also allow starting the respective dialog by click on a link near the
+top of the page. Help on \proglang{R} specific
+\proglang{R} functions can be invoked from the context
+menu of the workspace browser, by pressing F2 (Function
+reference) while the cursor is on a function name in the
+code editor or the \proglang{R} console, or by using
+the \proglang{R} \code{help()}
+command. In addition a tool view is provided as an interface to the
+\code{help.search()} command in
+\proglang{R}. This allows to search all installed, all
+loaded, or specific \proglang{R} packages for a
+specified topic.
+
+The help browser window is based on the \proglang{KDE}
+\proglang{HTML} viewer component, and supports
+features like increasing / decreasing the font size, or searching text
+within a help page. \proglang{R} code inside a help
+page can be sent to the \proglang{R} engine for
+evaluation by selecting it, and pressing F8 (Run/Run
+Selection).
