@@ -41,7 +41,13 @@ perform any supported task in \proglang{R}, in order to make it easy for the use
 complete code for all GUI actions. In doing so RKWard accepts relatively verbose
 generated code, deliberately. In particular, RKWard limits itself to generate R
 code from GUI settings. It avoids wrapping complex sequences of data
-manipulation or analysis into custom high-level \proglang{R} functions. The task of
+manipulation or analysis into custom high-level \proglang{R} functions. This distinguishes RKWard from 
+other \proglang{R} GUIs like Red-R\footnote{\url{http://www.red-r.org/}.
+Red-R is a GUI for \proglang{R} which uses the concept of data-flow
+programming \citep{Sutherland1966} to allow the
+user a visual programming without deep knowledge of
+\proglang{R}.} which specifically aims to hide the
+programming complexety. The task of
 providing high-level functions is logically independent of the development the
 GUI frontend, and should best be solved in dedicated \proglang{R} packages, where needed.
 This approach allows to make better use of the modular design of \proglang{R}, avoids
