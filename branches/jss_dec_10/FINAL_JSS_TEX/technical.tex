@@ -13,7 +13,7 @@ remain the application usable to a high degree, even during the computation of
 time-consuming analyses. For instance while waiting for the estimation of a
 complex model to complete, the user should be able to continue to use the GUI to
 prepare the next analysis. Asynchronous command execution is also a prerequisite
-for a implementation of the plot-preview feature (see Section~\ref{sec:usage_plotpreview}). Commands
+for a implementation of the plot-preview feature (see Section~\ref{sec:plot_previews}). Commands
 generated from plugins or user actions are placed in queue and are evaluated in
 a separate thread in the order they were submitted\footnote{
     It is possible, and in some cases necessary to enforce a different order of command execution in
@@ -27,7 +27,7 @@ the use of \proglang{ECMAScript} in plugins, instead of scripting using
 A further implication is that RKWard avoids quering information about the
 existence and properties of objects in \proglang{R}, interactively. Rather
 RKWard keeps a representation of \proglang{R} objects and their basic properties
-(e.g. class and dimensions), which is used for the workspace browser (Section~\ref{sec:usage_browser}),
+(e.g. class and dimensions), which is used for the workspace browser (Section~\ref{sec:workspace_browser_object_viewer}),
 object name completion, function argument hinting and
 other occasions. The object representation includes objects in all environments
 on the search path, and any objects contained within these environments in a
@@ -62,7 +62,7 @@ detect such changes in order to always display accurate information in the
 workspace browser, object selection lists, and object views. Beyond that,
 detecting any changes is particularly important with respect to objects which
 are currently opened for editing in the data editor (which provides an illusion
-of in-place editing, see Section~\ref{sec:usage_dataeditor}). Here, it is necessary to synchronize
+of in-place editing, see Section~\ref{sec:spreadsheet}). Here, it is necessary to synchronize
 the data between \proglang{R} and the GUI in both directions.
 
 For simplicity and performance, object modification detection is only
@@ -183,7 +183,7 @@ on \code{plot.new()} which stores and retrieves the existing plot, essentially, 
 
 The actual plotting calls are tracked using appropriate \code{sys.call()} commands in
 the hooks. These call strings are displayed as a drop-down menu on the toolbar
-for non-sequential browsing (see Figure~\ref{fig:plot_history}) providing a very intuitive browsing
+for non-sequential browsing (see Figure~\ref{fig:refFigure5}) providing a very intuitive browsing
 interface unlike the implementation for windows or quartz devices.
 
 \subsection{Plugin infrastructure}
