@@ -90,29 +90,6 @@ configured via ``Settings->Configure Toolbars``. Further, it is possible to add 
 of data manipulation and analysis features from the GUI using
 ''Settings->Configure RKWard/Plugins``.
 
-\subsection{Using the R console}
-\label{sec:using_R_console}
-For users with knowledge of \proglang{R}, RKWard provides direct access to the
-embedded \proglang{R} engine in the
-\proglang{R} Console tool window. It is important to note that technically this is an
-emulation of \proglang{R} running in a console
-session, not a real \proglang{R} session. This leads to a few subtle
-differences, e.g. with respect to the command history-feature in
-\proglang{R}. For most purposes, the \proglang{R} Console in RKWard can be used exactly
-like \proglang{R} running in a terminal.
-
-The \proglang{R} Console in RKWard provides many of the
-features which are also available in the code editor (see Section~\ref{sec:code_editor}).
-Most prominently, it also supports syntax highlighting and code
-folding, function argument hinting, object-name completion, and pasting
-vector or matrix data directly from the clipboard.
-
-By default, any code that is submitted to the
-\proglang{R} engine from the code-editor or from help
-pages is sent through the \proglang{R} Console,
-however, it can also be configured to the submitted in the background,
-instead.
-
 \subsection{Workspace browser and object viewer}
 \label{sec:workspace_browser_object_viewer}
 
@@ -197,8 +174,8 @@ transforming it before pasting (figure \ref{fig:special_paste}).
 \begin{figure}[htp]
  \centering
  \includegraphics{../figures/code_hinting.png}
- \caption{Code hinting features of the script editor. The script editor is able to hint A) \proglang{R} functions
-and B) arguments.}
+ \caption{Code hinting features of the script editor. The script editor is able to hint A) \proglang{R} object names
+and B) function arguments.}
  \label{fig:code_hinting}
 \end{figure}
 
@@ -221,6 +198,29 @@ File-menu, or by creating a new empty script. The script editor can
 also be invoked from \proglang{R}, e.g. using the
 \code{file.edit()}, \code{file.show()} or \code{fix()}
 commands.
+
+\subsection{Using the R console}
+\label{sec:using_R_console}
+For users with knowledge of \proglang{R}, RKWard provides direct access to the
+embedded \proglang{R} engine in the
+\proglang{R} Console tool window. It is important to note that technically this is an
+emulation of \proglang{R} running in a console
+session, not a real \proglang{R} session. This leads to a few subtle
+differences, e.g. with respect to the command history-feature in
+\proglang{R}. For most purposes, the \proglang{R} Console in RKWard can be used exactly
+like \proglang{R} running in a terminal.
+
+The \proglang{R} Console in RKWard provides many of the
+features which are also available in the code editor (see Section~\ref{sec:code_editor}).
+Most prominently, it also supports syntax highlighting and code
+folding, function argument hinting, object-name completion, and pasting
+vector or matrix data directly from the clipboard.
+
+By default, any code that is submitted to the
+\proglang{R} engine from the code-editor or from help
+pages is sent through the \proglang{R} Console,
+however, it can also be configured to the submitted in the background,
+instead.
 
 \subsection{Spreadsheet-like data editor}
 \label{sec:spreadsheet}
