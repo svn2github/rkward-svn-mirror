@@ -37,7 +37,14 @@ free space.
 \begin{figure}[htp]
  \centering
  \includegraphics[width=15.5cm]{../figures/main_window.png}
- \caption{RKWard main window. Panels B and D can be resized or collapsed.}
+ \caption{Default RKWard main window after start up. 
+A) Menu bar, B) navigator element, C) editor, output, 
+and data management. D) embedded \proglang{R} console. 
+E) In addition to the menu bar at the top A) toolbar buttons 
+on the bottom of the main window give quick access to the command log, 
+running jobs, an \proglang{R} console, and the \proglang{R} help. 
+RKWard main window. Panels B) and D) can be resized or collapsed. The navigator element B)
+presents detailed information (e.g. type, class) about objects and their properties.}
  \label{fig:main_window}
 \end{figure}
 
@@ -190,14 +197,17 @@ transforming it before pasting (figure \ref{fig:special_paste}).
 \begin{figure}[htp]
  \centering
  \includegraphics{../figures/code_hinting.png}
- \caption{Code hinting features of the script editor.}
+ \caption{Code hinting features of the script editor. The script editor is able to hint A) \proglang{R} functions
+and B) arguments.}
  \label{fig:code_hinting}
 \end{figure}
 
 \begin{figure}[htp]
  \centering
- \includegraphics{../figures/special_paste.png}
- \caption{Special paste dialog. This allows to paste tabular data from the clipboard, direclty to an \proglang{R} script..}
+ \includegraphics[width=8cm]{../figures/special_paste.png}
+ \caption{Special paste dialog. This tool allows to paste data (e.g. tabular, text) from the clipboard, directly to an 
+\proglang{R} script and therefore accelerates the work process with data from different sources 
+like spread-sheet applications. To our knowledge approach is unique among the currently existing \proglang{R} GUIs.}
  \label{fig:special_paste}
 \end{figure}
 
@@ -259,17 +269,18 @@ the dimensions of the table. The data editor can also be used as a data
 viewer by setting it to read-only mode.
 
 In the context of the data editor it may be interesting to note that
-RKWard allows to work with multiple objects simultaneously, rather than
+RKWard supports the work with multiple objects simultaneously, rather than
 limiting actions to a single active \code{data.frame} as in e.g. \pkg{Rcmdr} or
 \pkg{DeduceR}. Correspondingly more than one data editor window can be opened
-at the same time (figure \ref{fig:data_editors}).
+at the same time (figure \ref{fig:data_editors}) by this non-modal interface design.
 
 \begin{figure}[htp]
  \centering
  \includegraphics{../figures/data_editors.png}
- \caption{RKWard allows to work with several \code{data.frame}s at the same time. A) One \code{data.frame} is opened for editing in the 
- main window. B) A second \code{data.frame} is opened in a detached window. C) \proglang{R}'s standard data editing features are also
- usable within an RKWard session.}
+ \caption{RKWard with several \code{data.frame}s in use at the same time. A) One \code{data.frame} is opened for editing in the 
+ main window. B) A second \code{data.frame} is opened as detached window. C) \proglang{R}'s standard data editing features 
+(e.g. \code{fix()},\code{edit()}) are also usable within an RKWard session. 
+In this example \code{fix(DNase)} was invoked from the console (arrow).}
  \label{fig:data_editors}
 \end{figure}
 
