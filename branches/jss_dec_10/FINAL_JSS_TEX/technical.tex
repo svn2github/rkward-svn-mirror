@@ -50,7 +50,7 @@ be possible to run GUI and \proglang{R} engine on different computers.
  \centering
  \includegraphics{../figures/design_sketch.pdf}
  \caption{Technical design of RKWard. Only a few central components are visualized.
- All communication with the R engine is passed through a single interface living in the main application thread. The R engine itself
+ All communication with the \proglang{R} engine is passed through a single interface living in the main application thread. The \proglang{R} engine itself
  runs in a separate thread (or in a separate process). 
  Separate threads are also used to generate \proglang{R} code from plugins.
 }
@@ -125,7 +125,7 @@ many high level features which have allowed RKWard development to make quick
 progress despite limited resources. Most importantly, the \proglang{KDE} libraries provide a
 full featured text editor \citep{CullmannND} as a component which can be
 seamlessly integrated into a hosting application using the KParts technology
-\citep{Faure2000}. Additionally, KPart provides HTML browsing capabilities in a
+\citep{Faure2000}. Additionally, KPart provides \proglang{HTML} browsing capabilities in a
 similarly integrated way. The availability of KWord \citep{KWord} as an
 embeddable KPart might prove useful in future versions of RKWard, when better
 integration with office-suites will be sought.
@@ -214,16 +214,16 @@ manual, see][]{Friedrichsmeier2010}:
 
 \begin{itemize}
     \item
-    An XML file, called a ``plugin map,'' is used to declare one or more plugins, each
+    An \proglang{XML} file, called a ``plugin map,'' is used to declare one or more plugins, each
     with a unique identifier. For most plugins, the plugin map also defines the
     placement in the menu hierarchy. Plugin maps are meant to represent groups of
     plugins. Users can disable/enable such groups of plugins in order to reduce the
     complexity of the menu hierarchy.
 
     \item
-    A second XML file describes the plugin itself. Most importantly this includes
+    A second \proglang{XML} file describes the plugin itself. Most importantly this includes
     the definition of the GUI-layout and GUI-behavior. High level GUI-elements can
-    be defined with simple XML-tags. Layout is based on ``rows'' and ''columns'',
+    be defined with simple \proglang{XML}-tags. Layout is based on ``rows'' and ''columns'',
     instead of pixel-counts. In most cases this allows for a sensible resizing
     behavior. RKWard supports single-page dialogs, and multi-page wizards, however,
     most plugins define only a single-page UI. GUI behavior is can be programmed by
