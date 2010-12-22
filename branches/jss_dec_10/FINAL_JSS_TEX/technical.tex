@@ -209,13 +209,15 @@ statistical analysis.
 
 \subsubsection{Defining a plugin}
 \label{sec:technical_plugins_defining}
-Plugins consist of four parts \citep[see Section~\ref{sec:example_plugin} for an example; for a complete
-manual, see][]{Friedrichsmeier2010} (Figure ~\ref{fig:plugin_structure}):
+Plugins consist of four parts as visualized in Figure~\ref{fig:plugin_structure} 
+\citep[see Section~\ref{sec:example_plugin} for an example; for a complete
+manual, see][]{Friedrichsmeier2010}:
 
 \begin{figure}[htp]
  \centering
  \includegraphics[width=8cm]{../figures/plugin_structure.pdf}
- \caption{Plugin structure of RKWard.}
+ \caption{Plugin structure of RKWard. One or more plugins are declared in a ``plugin map''. Each plugin is defined by
+ two \proglang{XML} files, and one \proglang{ECMAScript} file.}
  \label{fig:plugin_structure}
 \end{figure}
 
