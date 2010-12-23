@@ -200,11 +200,7 @@ into \proglang{R} code\footnote{
     kate part supports extensions via plugins and user scripts. At this point we
     will focus only on plugins generating \proglang{R} code.
 }. Thus, the plugin framework is basically a tool set used to define
-GUIs for the automatic generation of \proglang{R} code. Plugins provide users in many cases 
-with reasonable default values, force to use a certain input (factor, integer) or usage 
-(e.g. Section~\ref{sec:defining_dialog_ui}) in a given context 
-in order to protect them from errors. An example which shows the difference between code interanally used by 
-RKWard and presented to the user is shown in Section~\ref{sec:generating_r_code_from_ui_settings}.
+GUIs for the automatic generation of \proglang{R} code.
 
 Much of the functionality in RKWard is currently implemented as plugins. For example, import of different file
 formats relying on the foreign package is achieved by this approach. Similarly,
@@ -323,6 +319,11 @@ are
   Do not hide any relevant computations from the user by performing them in the
   \proglang{ECMAScript}. Rather, generate \proglang{R} code which will perform
   those computations, transparently.
+
+  \item
+  Plugins can be restricted to accept only certain types of data (such as only one-dimensional numeric data).
+  Use such restrictions where appropriate to the user avoid errors, but be very careful not to add
+  too much restrictions.
 \end{itemize}
 
 \subsubsection{Handling of R package dependencies}
