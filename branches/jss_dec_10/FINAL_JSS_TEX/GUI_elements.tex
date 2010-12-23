@@ -36,7 +36,7 @@ free space.
 
 \begin{figure}[htp]
  \centering
- \includegraphics[width=15.5cm]{../figures/main_window.png}
+ \includegraphics[width=15.446cm,height=10.949cm]{../figures/main_window.png}
  \caption{Default RKWard main window after start up. 
 A) Menu bar, B) navigator element, C) editor, output, 
 and data management. D) embedded \proglang{R} console. 
@@ -181,13 +181,10 @@ and B) function arguments.}
 
 \begin{figure}[htp]
  \centering
- \includegraphics[width=8cm]{../figures/special_paste.png}
+ \includegraphics[width=8.042cm,heigth=8.143cm]{../figures/special_paste.png}
  \caption{Special paste dialog. This tool allows to paste data (e.g. tabular, text) from the clipboard, directly to an 
  \proglang{R} script and therefore accelerates the work process with data from different sources 
  like spread-sheet applications.
-%% TF: Yes, to my knowledge, too, it is unique. But I think the feature description can really stand for itself.
-%% Let's not compare against other GUIs *too* often.
-% To our knowledge approach is unique among the currently existing \proglang{R} GUIs.
 }
  \label{fig:special_paste}
 \end{figure}
@@ -322,22 +319,22 @@ manually entering appropriate \proglang{R} commands in
 the \proglang{R} Console (Section~\ref{sec:using_R_console}). To import CSV
 data, select ``File->Import format->Import Text->CSV''
 data from the menu. This will open a dialog as shown in
-figure XXX. The central area of this dialog is concerned with setting
+Figure~\ref{fig:import_data}A. The central area of this dialog is concerned with setting
 the options to control the import. Here, the input field for
 File name is highlighted to indicate that
 it is required to specify a file, before the dialog can proceed.
 Further options are available from tabbed pages of the central area.
 
-The right-hand area (figure XXX-B) is common to all data handling
+The right-hand area is common to all data handling
 dialogs. Here, the Submit button is used
 to start the import action. It will become enabled once all required
 settings have been made, i.e. in this case, a file name has been
 selected. The Close button will close the
 dialog without taking any action.
 
-The bottom area (figure XXX-C) shows the \proglang{R}
-code which corresponds to the current settings, and which will be run
-upon pressing the Submit button. The
+The bottom optionally presents the \proglang{R}
+code (not shown) which corresponds to the current settings, and which will be run
+upon pressing the Submit button (see Section~\ref{sec:importing_data} for generated \proglang{R} code). The
 display is updated dynamically, as the user changes settings, allowing
 to see the effect of each change. The code display can be hidden using
 the Code button in the right-hand section
@@ -375,8 +372,12 @@ window records any unsaved plots to the history.
 \begin{figure}[htp]
  \centering
  \includegraphics{../figures/plot_history_cropped.png}
- \caption{Onscreen graphics device window in RKWard. The plot history is available as a drop-down list, allowing to
- jump directly to a previous plot.}
+ \caption{Onscreen graphics device window in RKWard. The plot history is 
+  available as a drop-down list, allowing to jump directly to a previous 
+  plot. In this example five different plots were performed on the same data 
+  set of a random sample (\code{rnorm()}). The plot can be 
+  selectively exported as described in Figure~\ref{fig:boxplot2} via ``Device->Export...''.
+}
  \label{fig:plot_history}
 \end{figure}
 
@@ -400,7 +401,11 @@ capturing and documenting \proglang{R} output can also
 be used in RKWard, RKWard provides a dedicated output file and output
 window for the documentation of results. All GUI-driven data handling
 functions (see Section~\ref{sec:analyzing_data}) write their output to this file. 
-The output is presented as journal view. Therefore all results are presented
+The same applies to error messages in case a plugin fails to perform the task.
+The output is presented as journal view\footnote{Note: The view of the output can be adjusted in
+to a desired font size for easy reading from the menu. Images contained in the output will not get resized. 
+Since the output is based on \proglan{HTML} it is also possible to view the source code 
+(see below).}. Therefore all results are presented
 sequentially with the most current performed task on the bottom.
 It is also possible to write to the output from \proglang{R}
 scripts by using a number of dedicated \proglang{R}
@@ -411,7 +416,7 @@ applicable). Further, a clickable Run
 Again-link is rendered below the output of each data
 handling feature, which allows to invoke the same feature again, with
 identical parameters\footnote{In case not all parameters could be
-applied, since some of the \proglang{R} objectsf in
+applied, since some of the \proglang{R} objects in
 question are no longer available, the user will be notified.} (see
 figure \ref{fig:results_output}). Thus, the Run
 Again feature combines the documentation of the result
@@ -424,7 +429,7 @@ applications.
 
 \begin{figure}[htp]
  \centering
- \includegraphics{../figures/results_output_cropped.png}
+ \includegraphics[width=15.5cm]{../figures/results_output_cropped.png}
  \caption{Sample contents of the output window. Standard elements of plugin output include
  a standardized header, and a ``Run again''-link, which allows to repeat the analysis with
  identical or similar parameters.}
@@ -519,7 +524,9 @@ windows. These allow to browse \proglang{R} manuals in
 \proglang{HTML} form, help pages on
 \proglang{R} functions and packages, help pages on
 RKWard in general, and help pages on specific GUI dialogs within
-\proglang{R}. All types of help can be browsed in the
+RKWard\footnote{For technical backgound of RKWard GUI help pages 
+please refer to Section~\ref{sec:technical_plugins_defining}}. 
+All types of help can be browsed in the
 same document window, and can be cross-linked. For example help pages for
 RKWard GUI dialogs will typically link to documentation for both
 related RKWard dialogs, and the underlying

@@ -2,7 +2,7 @@
 \label{sec:technical}
 In this section we will give a compact overview over key aspects of RKWards
 technical design. We will give slightly more attention to the details of the
-plugin framework used in RKWard, since this is central to the extensibility of
+plugin framework (Section~\ref{sec:technical_plugins}) used in RKWard, since this is central to the extensibility of
 RKWard.
 
 \subsection{Asynchronous command execution}
@@ -10,7 +10,7 @@ RKWard.
 One central design decision in the implementation of RKWard is that the
 interface to the \proglang{R} engine operates asynchronous. The intention is to
 remain the application usable to a high degree, even during the computation of
-time-consuming analyses. For instance while waiting for the estimation of a
+time-consuming analysis. For instance while waiting for the estimation of a
 complex model to complete, the user should be able to continue to use the GUI to
 prepare the next analysis. Asynchronous command execution is also a prerequisite
 for a implementation of the plot-preview feature (see Section~\ref{sec:plot_previews}). Commands
@@ -24,7 +24,7 @@ a separate thread in the order they were submitted\footnote{
 \proglang{R} engine during interactive use. This is one of several reasons for
 the use of \proglang{ECMAScript} in plugins, instead of scripting using
 \proglang{R} (see Sections~\ref{sec:technical_toolkit} and \ref{sec:technical_plugins}).
-A further implication is that RKWard avoids quering information about the
+A further implication is that RKWard avoids querying information about the
 existence and properties of objects in \proglang{R}, interactively. Rather
 RKWard keeps a representation of \proglang{R} objects and their basic properties
 (e.g. class and dimensions), which is used for the workspace browser (Section~\ref{sec:workspace_browser_object_viewer}),
@@ -200,12 +200,17 @@ into \proglang{R} code\footnote{
     kate part supports extensions via plugins and user scripts. At this point we
     will focus only on plugins generating R code.
 }. Thus, the plugin framework is basically a tool set used to define
-GUIs for the automatic generation of \proglang{R} code. Much of the functionality in RKWard
-is currently implemented as plugins. For example, import of different file
+GUIs for the automatic generation of \proglang{R} code. Plugins provide users in many cases 
+with reasonable default values, force to use a certain input (factor, integer) or usage 
+(e.g. Section~\ref{sec:defining_dialog_ui}) in a given context 
+in order to protect them from errors. An example which shows the difference between code interanally used by 
+RKWard and presented to the user is shown in Section~\ref{sec:generating_r_code_from_ui_settings}.
+
+Much of the functionality in RKWard is currently implemented as plugins. For example, import of different file
 formats relying on the foreign package is achieved by this approach. Similarly,
 RKWard provides a modest GUI driven tool set for statistical analysis,
 especially for Item response theory (IRT), distributions and descriptive
-statistical analysis. 
+statistical analysis.
 
 \subsubsection{Defining a plugin}
 \label{sec:technical_plugins_defining}
@@ -223,14 +228,16 @@ manual, see][]{Friedrichsmeier2010}:
 
 \begin{itemize}
     \item
-    An \proglang{XML} file, called a ``plugin map,'' is used to declare one or more plugins, each
+    An \proglang{XML} file (Section~\ref{sec:defining_menu_hierarchy}), 
+    called a ``\textbf{plugin map}'', is used to declare one or more plugins, each
     with a unique identifier. For most plugins, the plugin map also defines the
     placement in the menu hierarchy. Plugin maps are meant to represent groups of
     plugins. Users can disable/enable such groups of plugins in order to reduce the
     complexity of the menu hierarchy.
 
     \item
-    A second \proglang{XML} file describes the plugin itself. Most importantly this includes
+    A second \proglang{XML} file describes the \textbf{plugin GUI layout} itself (Section~\ref{sec:defining_dialog_ui}). 
+    Most importantly this includes
     the definition of the GUI-layout and GUI-behavior. High level GUI-elements can
     be defined with simple \proglang{XML}-tags. Layout is based on ``rows'' and ''columns'',
     instead of pixel-counts. In most cases this allows for a sensible resizing
@@ -242,7 +249,8 @@ manual, see][]{Friedrichsmeier2010}:
     behavior using \proglang{ECMAScript} is also supported.
 
     \item
-    A separate \proglang{ECMAScript}-file is used to translate GUI settings into \proglang{R}
+    A separate \textbf{\proglang{ECMAScript}-file} (Section~\ref{sec:generating_r_code_from_ui_settings}) 
+    is used to translate GUI settings into \proglang{R}
     code\footnote{
         In earlier versions of RKWard, \proglang{PHP} was used
         as a scripting engine, and \proglang{PHP}-interpreters were run in a separate process.
@@ -254,7 +262,7 @@ manual, see][]{Friedrichsmeier2010}:
     without the danger of overwriting user data.
 
     \item
-    A third \proglang{XML} file defines a help page. This help page usually links to the \proglang{R} help
+    A third \proglang{XML} file defines a \textbf{help page}. This help page usually links to the \proglang{R} help
     pages of the central functions/concepts used by the plugin. Compared to \proglang{R} help
     pages, the plugin help pages try to give more hands-on advice on using the
     plugin. Plugins can be invoked from their help page by clicking on a link near
