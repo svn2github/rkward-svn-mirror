@@ -9,10 +9,13 @@ a simple dialog for a t-test. For brevity, the help-file is omitted.
 \label{sec:defining_menu_hierarchy}
 A so called ``.pluginmap'' file declares each plugin, and - if appropriate - defines where it should
 be placed in the menu hierarchy. Usually each .pluginmap-file declares many plugins. In this example
-we only show one. Since the files are editable with a text editor it is possible for the user to adjust
-the menus as desired.
+we only show one.
+%% TF: Well, I don't think this is really a feature to advertize. We don't actually support this,
+%% and any changes would be overwritten by the next update.
+%Since the files are editable with a text editor it is possible for the user to adjust
+%the menus as desired.
 In this example we describe the definition entry for a two variable t-test (see Figure~\ref{fig:ttest-gui-example}). 
-The pluginmap (<!DOCTYPE rkpluginmap>) gives a unique identifier ("id"), the location of the GUI description ("file") and the label. The menu
+The pluginmap (\code{<!DOCTYPE rkpluginmap>}) gives a unique identifier ("id"), the location of the GUI description ("file") and the label. The menu
 is defined in a hierarchical structure (see code example below). Moreover the position within the menu can be defined.
 This might be required if menus should not be ordered in alphabetical order.
 
@@ -55,9 +58,10 @@ The main \proglang{XML} file of each plugin defines the layout and behavior of t
 GUI behavior can also be scripted in \proglang{ECMAScript}. In this example, the logic is defined in \proglang{XML} (the ``Assume equal variances'' checkbox
 is only enabled for paired sample tests).
 
-The \proglang{XML} defines the t-test plugin (<!DOCTYPE rkplugin>) to be organized in two tabs (Figure~\ref{fig:t_test}A) asking for the variables
+The \proglang{XML} defines the t-test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs (Figure~\ref{fig:t_test}A) asking for the variables
 to analyze in the first tab and optionally in the second tab for specific settings like the confidence level (default 0.95). Note that this \proglang{XML} file
-also invokes the \proglang{XML} help file. The plugin was defined to require two variables (<varslot .../>). If not provided RKWard does not perform the test. 
+also invokes the \proglang{XML} help file. Two variables can be selected (\code{<varslot .../>}). These are set to be ``required'', i.e.
+the ``Submit'' button will remain disabled until the user has made a valid selection for both.
 
 
 \begin{Code}
