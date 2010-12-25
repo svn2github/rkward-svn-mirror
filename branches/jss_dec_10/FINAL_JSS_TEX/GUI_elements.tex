@@ -1,3 +1,4 @@
+% !TEX root = RKWard_paper.tex
 \section{Main elements of the user interface}
 \label{sec:user_interface}
 This section gives an overview of the main user interface elements and features of RKWard.
@@ -9,9 +10,9 @@ of the GUI can be customized by the user, for simplicity we will
 describe the default appearance of RKWard in the present section. The
 top of the window is occupied by menu bar and toolbar (Figure~
 \ref{fig:main_window}A). The content of both bars is partially context
-sensitive, e.\,g. the Edit menu will offer
+sensitive, e.\,g., the Edit menu will offer
 one set of actions when the current document window is a data editor,
-and another set of actions for an \proglang{R} script
+and another set of actions for a \proglang{R} script
 editor window. To ease orientation, all top level menus remain
 persistent, even if no actions are available for that menu in the
 current context. The menu bar of the main window is also the central
@@ -21,7 +22,7 @@ interface.
 
 A status bar is shown at the bottom of the window. It displays (from
 right to left) the status of the \proglang{R} engine (busy or idle), the
-current working directory, and in a multi purpose region additional
+current working directory, and in a multi purpose region for additional
 information on some menu items and other GUI elements, visible when
 hovering the mouse pointer over them.
 
@@ -43,7 +44,7 @@ E) In addition to the menu bar at the top A) toolbar buttons
 on the bottom of the main window give quick access to the command log, 
 running jobs, an \proglang{R} console, and the \proglang{R} help. 
 RKWard main window. Panels B) and D) can be resized or collapsed. The navigator element B)
-presents detailed information (e.\,g. type, class) about objects and their properties.}
+presents detailed information (e.\,g., type, class) about objects and their properties.}
  \label{fig:main_window}
 \end{figure}
 
@@ -66,7 +67,7 @@ using drag \& drop.
 Both document windows and tool views can be detached from the main
 window as independent windows, managed by the window manager, and also
 re-attached. This feature allows to conveniently work with multiple documents
-at the same time, e.\,g. scripts or data editors. On{}-screen
+at the same time, e.\,g., scripts or data editors. On{}-screen
 graphics device windows are created detached by default, but can also
 be attached to the document view area of the main window.
 
@@ -111,7 +112,7 @@ removed, renamed, and edited from the context menu.
 Literally hundreds or even thousands of objects are present in a typical
 \proglang{R} session. This can be overwhelming at
 first, therefore the workspace browser offers to show only a certain
-subset of objects, e.\,g. only functions or only data objects, including
+subset of objects, e.\,g., only functions or only data objects, including
 or excluding hidden objects (by names starting with a 
 dot), or showing only the contents of \code{.GlobalEnv} as
 opposed to all environments in the search path.
@@ -126,7 +127,7 @@ supported types of objects for editing (see Section~\ref{sec:spreadsheet}; curre
 
 An object list similar to the workspace browser (but showing only
 \code{.GlobalEnv} by default) is also used in several places for the
-selection of objects to work with, e.\,g. an analysis plugin (see Section~\ref{sec:analyzing_data}).
+selection of objects to work with, e.\,g., an analysis plugin (see Section~\ref{sec:analyzing_data}).
 
 Selecting ``View'' from the workspace
 browser's context menu opens a new window in the
@@ -161,7 +162,7 @@ inclusion of similar features into the core
 technically based on different mechanisms.}. A further feature specific
 to the \proglang{R} language is the
 ``Paste Special'' action. It allows to
-paste the clipboard content (e.\,g. from a separate spreadsheet
+paste the clipboard content (e.\,g., from a separate spreadsheet
 application) as a single string, vector, or matrix, suitable
 for inclusion in an \proglang{R} script, optionally
 transforming it in advance (figure \ref{fig:special_paste}).
@@ -177,7 +178,7 @@ and B) function arguments.}
 \begin{figure}[htp]
  \centering
  \includegraphics[width=8.042cm,height=8.143cm]{../figures/special_paste.png}
- \caption{Special paste dialog. This tool allows to paste data (e.\,g. tabular, text) from the clipboard, directly to an 
+ \caption{Special paste dialog. This tool allows to paste data (e.\,g., tabular, text) from the clipboard, directly to an 
  \proglang{R} script and therefore accelerates the work process with data from different sources 
  like spread-sheet applications.
 }
@@ -187,7 +188,7 @@ and B) function arguments.}
 Code editor windows can be created by opening an existing
 \proglang{R} script file from the file browser, the
 ``File''-menu, or by creating a new empty script. The script editor can
-also be invoked from \proglang{R}, e.\,g. using the
+also be invoked from \proglang{R}, e.\,g., using the
 \code{file.edit()}, \code{file.show()} or \code{fix()}
 commands.
 
@@ -198,7 +199,7 @@ embedded \proglang{R} engine in the
 \proglang{R} console tool window. It is important to understand that technically this is an
 emulation of \proglang{R} running in a console
 session, not a real \proglang{R} session. This leads to a few subtle
-differences, e.\,g. with respect to the command history feature in
+differences, e.\,g., with respect to the command history feature in
 \proglang{R}.
 
 However, for most purposes RKWard's \proglang{R} console can be used exactly
@@ -264,7 +265,7 @@ mode to examine data objects.
 
 In the context of data editing it is noteworthy that
 RKWard supports working with multiple objects simultaneously, rather than
-limiting actions to a single active \code{data.frame}, as with e.\,g. \pkg{Rcmdr} or
+limiting actions to a single active \code{data.frame}, as with e.\,g., \pkg{Rcmdr} or
 \pkg{DeduceR}. Given this non-modal interface design, multiple data editor
 windows can be opened at once (figure \ref{fig:data_editors}).
 
@@ -273,7 +274,7 @@ windows can be opened at once (figure \ref{fig:data_editors}).
  \includegraphics{../figures/data_editors.png}
  \caption{RKWard with several \code{data.frame}s in use at the same time. A) One \code{data.frame} is opened for editing in the 
  main window. B) A second \code{data.frame} is opened as detached window. C) \proglang{R}'s standard data editing features 
-(e.\,g. \code{fix()}, \code{edit()}) are also usable within an RKWard session. 
+(e.\,g., \code{fix()}, \code{edit()}) are also usable within an RKWard session. 
 In this example \code{fix(DNase)} was invoked from the console (arrow).}
  \label{fig:data_editors}
 \end{figure}
@@ -486,7 +487,7 @@ possible to invoke external helpers \citep{Zhang2004}.
 %%TODO: MM: shouldn't the names of the interesting tools
 % in this section be highlighted, maybe at least by ``name'' ?
 The file browser tool window can be
-used to open supported file types (e.\,g. \proglang{R}
+used to open supported file types (e.\,g., \proglang{R}
 scripts, \proglang{HTML} files) inside the main RKWard
 window. For unsupported file types (such as PDF), the
 systems default external applications can be used.
