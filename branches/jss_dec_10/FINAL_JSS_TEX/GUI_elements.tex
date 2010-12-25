@@ -73,21 +73,21 @@ be attached to the document view area of the main window.
 Windows can be shown (or activated) using a mouse device with point \&
 click, as well as using a series of keyboard shortcuts (defined by
 default) for switching between the different tool and document windows.
-Key bindings can be configured from the GUI via ``Settings->Configure Shortcuts''.
+Key bindings can be configured from the GUI via ``Settings$\rightarrow$Configure Shortcuts''.
 However, for technical reasons only the shortcuts of currently active components
 will be listed. Thus, for example, to
 configure data editor shortcuts, one has to open a data editor first and
-then to select ``Settings->Configure Shortcuts''. Since RKWard relies on the
+then to select ``Settings$\rightarrow$Configure Shortcuts''. Since RKWard relies on the
 \proglang{KDE} SC editor component,
 shortcuts for the script editor (Section~\ref{sec:code_editor}) are managed separately using
-``Settings->Configure Editor->Shortcuts''. On most systems, it is also
+``Settings$\rightarrow$Configure Editor$\rightarrow$Shortcuts''. On most systems, it is also
 possible to configure shortcuts by right-clicking on the respective
 menu item.
 
 The choice of available actions on the tool bar can be
-configured via ``Settings->Configure Toolbars``. Further, it is possible to add and remove sets
+configured via ``Settings$\rightarrow$Configure Toolbars``. Further, it is possible to add and remove sets
 of data manipulation and analysis features from the GUI, using
-``Settings->Configure RKWard/Plugins``.
+``Settings$\rightarrow$Configure RKWard/Plugins``.
 
 \subsection{Workspace browser and object viewer}
 \label{sec:workspace_browser_object_viewer}
@@ -99,8 +99,8 @@ to a regular file-system browser. This includes both, user objects
 \proglang{R} search path (typically
 \proglang{R} package environments). Objects are shown
 in a hierarchical tree structure. For instance, an object of class
-\proglang{list} can be expanded to show all contained objects
-by clicking on the \proglang{+}-symbol left to the object name.
+\code{list} can be expanded to show all contained objects
+by clicking on the \code{+}-symbol left to the object name.
 The basic type of each object is indicated by different icons. Further
 information on each object can be obtained by hovering the mouse
 pointer over the respective icon. A tooltip window will appear,
@@ -235,7 +235,7 @@ slider, to save space for the display and editing of actual data.
 Similarly, an editable column showing the row names of the \code{data.frame}
 can be shown or hidden separately from the data.
 
-For columns of type \proglang{factor}, factor levels can be edited by double-clicking on the
+For columns of type \code{factor}, factor levels can be edited by double-clicking on the
 ``Levels'' row of the meta information. Levels can also be assigned to other types of
 variables, but only for consecutive integer values. These levels will
 be displayed instead of the underlying value, if applicable. Each
@@ -247,7 +247,7 @@ Contrary to many other editors, the data editor in RKWard does not
 automatically convert data types of columns. For instance, if a
 non-numeric string is entered into a cell of a numeric column, the data
 type of the column remains numeric, and the entered value is
-highlighted in red. Internally, the invalid cell is set to \proglang{NA}.
+highlighted in red. Internally, the invalid cell is set to \code{NA}.
 The entered value is stored separately, in an attribute of the column.
 The rationale for this approach is that it offers protection against
 accidental -- and probably undetected -- conversion of data types. The
@@ -273,7 +273,7 @@ windows can be opened at once (figure \ref{fig:data_editors}).
  \includegraphics{../figures/data_editors.png}
  \caption{RKWard with several \code{data.frame}s in use at the same time. A) One \code{data.frame} is opened for editing in the 
  main window. B) A second \code{data.frame} is opened as detached window. C) \proglang{R}'s standard data editing features 
-(e.\,g. \code{fix()},\code{edit()}) are also usable within an RKWard session. 
+(e.\,g. \code{fix()}, \code{edit()}) are also usable within an RKWard session. 
 In this example \code{fix(DNase)} was invoked from the console (arrow).}
  \label{fig:data_editors}
 \end{figure}
@@ -310,7 +310,7 @@ data which were already described elsewhere
 also be imported using copy \& paste (see Sections~\ref{sec:code_editor} and \ref{sec:spreadsheet}), or by
 manually entering appropriate \proglang{R} commands in
 the \proglang{R} Console (Section~\ref{sec:using_R_console}). To import CSV
-data, select ``File->Import format->Import Text->CSV''
+data, select ``File$\rightarrow$Import format$\rightarrow$Import Text$\rightarrow$CSV''
 data from the menu. This will open the dialog shown in
 Figure~\ref{fig:import_data}A. The central area of this dialog is concerned with setting
 the options to control the import. The input field for
@@ -368,7 +368,7 @@ window records any unsaved plots to the history.
   available as a drop-down list, allowing to jump directly to a previous 
   plot. In this example, five different plots were performed on the same data 
   set of a random sample (\code{rnorm()}). The plot can be 
-  selectively exported as described in Figure~\ref{fig:boxplot2} via ``Device->Export...''.
+  selectively exported as described in Figure~\ref{fig:boxplot2} via ``Device$\rightarrow$Export...''.
 }
  \label{fig:plot_history}
 \end{figure}
@@ -385,56 +385,52 @@ under the Distributions menu can be very helpful to dynamically ``show''
 the convergence while teaching. Such ``preview plots'' are not added to
 the history.
 
-%% TODO: Santa Claus: merry X-mas ;-)
-%% this comment is just to remind we where i was :: MM
-
 \subsection{Results output}
 \label{sec:results_output}
 
 While all basic mechanisms of
 capturing and documenting \proglang{R} output can also
-be used in RKWard, RKWard provides a dedicated output file and output
+be used, RKWard provides a dedicated output file and output
 window for the documentation of results. All GUI-driven data handling
 functions (see Section~\ref{sec:analyzing_data}) write their output to this file. 
-The same applies to error messages in case a plugin fails to perform the task.
-The output is presented as journal view\footnote{Note: The view of the output can be adjusted in
+The same applies to error messages, in case a plugin fails to perform its task.
+The output is presented in journal view\footnote{Note: The view of the output can be adjusted in
 to a desired font size for easy reading from the menu. 
 Since the output is based on \proglang{HTML} it is also possible to view the source code 
-(see below).}. Therefore all results are presented
-sequentially with the most current performed task on the bottom.
+(see below).}. All results are presented
+sequentially with the last performed task at the bottom.
 It is also possible to write to the output from \proglang{R}
 scripts by using a number of dedicated \proglang{R}
 functions. For the GUI-driven data handling functions, the output is
 standardized to include the name of the feature, the date and time of
-the execution of the feature, and other basic parameters (if
-applicable). Further, a clickable Run
-Again-link is rendered below the output of each data
-handling feature, which allows to invoke the same feature again, with
+its execution, and other basic parameters, if
+applicable. Further, a clickable ``Run
+Again'' link is rendered below the output of each data
+handling feature, which allows to invoke the same feature again with
 identical parameters\footnote{In case not all parameters could be
 applied, since some of the \proglang{R} objects in
 question are no longer available, the user will be notified.} (see
-figure \ref{fig:results_output}). Thus, the Run
-Again feature combines the documentation of the result
-with a mostly automated way to conduct the same analysis again, on new
-data, providing benefits similar to the automated report generation as
-available for example from RreportGenerator
-\citep{RaffelsbergerW2008} which generates automatic
+figure \ref{fig:results_output}). Thus, the ``Run
+Again'' feature combines the documentation of the result
+with an automated way to conduct the same analysis again on new
+data, providing benefits similar to, i.\,e., the automated report generation
+available from \pkg{RreportGenerator}\footnote{The application generates automatic
 reports from routine statistical analysis in bioinformatical
-applications.
+applications} \citep{RaffelsbergerW2008}.
 
 \begin{figure}[htp]
  \centering
  \includegraphics[width=15.5cm]{../figures/results_output_cropped.png}
  \caption{Sample contents of the output window. Standard elements of plugin output include
- a standardized header, and a ``Run again''-link, which allows to repeat the analysis with
+ a standardized header, and a ``Run again'' link, which allows to repeat the analysis with
  identical or similar parameters.}
  \label{fig:results_output}
 \end{figure}
 
-The formatting of the output is kept to a minimum, and in particular,
+The formatting of the output is kept to a minimum. In particular,
 RKWard is very reluctant to round numerical results for the sake of a
-pretty output. Rather the focus is on making the results easily
-accessible to further processing, typically in a dedicated word
+pretty output. Rather, the focus is on making the results easily
+accessible for further processing, typically in a dedicated word
 processor. Output is based on
 \proglang{HTML} (hypertext markup language), and the raw
 \proglang{HTML} file and any images can be directly
@@ -442,19 +438,19 @@ retrieved from a dedicated folder
 (\~{}/.rkward, by default). It is also
 possible to select and copy sections of the output directly from the
 output window, and to paste them into office applications as
-\proglang{HTML} code. In future releases RKWard will
-try to integrate with existing office suites, and it is possible that
-this will also mean changing to a different file format such as ODF (open
+\proglang{HTML} code. In future releases, RKWard will
+try to integrate with existing office suites. This
+will possibly also mean changing to a different file format such as ODF (open
 document format, and technologies such as \pkg{sweave} and \pkg{odfWeave}
 \citep{Leisch2002, Kuhn2006}.
 
 Images contained in the output are stored as
 PNG\footnote{\url{http://www.libpng.org/pub/png/}} by
-default, but JPG\footnote{\url{http://www.jpeg.org/index.html}} and
+default, but JPEG\footnote{\url{http://www.jpeg.org/index.html}} and
 SVG\footnote{\url{http://www.w3.org/Graphics/SVG/}}
-can also be used as the output format. Similarly, the size of the
+can also be used. Similarly, the size of
 images can be configured by the user. It is expected that SVG will
-become the default output format, eventually, but currently some SVG
+become the default output format eventually, but currently some SVG
 files produced by \proglang{R} are not properly
 rendered by older supported versions of the
 \proglang{KDE} libraries.
@@ -466,29 +462,31 @@ network), Omegahat\footnote{\url{http://www.omegahat.org/}} and Bioconductor \ci
 (2001) to \proglang{R} v. 2.7 (2008) \citep{Fox2008, Ligges2003, Visne2009}. RKWard
 utilizes functionality from a growing number of these packages, but avoids
 making the installation of all supported packages a pre-requirement to using
-RKWard at all. Once a non-installed package is required to conduct a certain
-action, the package management dialog is invoked automatically, which allows to
+RKWard at all. Only once a not yet installed package is required to conduct a certain
+action, a package management dialog is invoked automatically, which allows to
 download and install the package from a repository such as CRAN. The package
 management dialog can also be invoked manually from the menu
-(``Settings->Configure Packages``) for installing new or updating existing \proglang{R}
+(``Settings$\rightarrow$Configure Packages'') for installing new or updating existing \proglang{R}
 packages. The underlying package management technology is that of \proglang{R}
 \citep{Ligges2003, Ripley2005}.
 
 RKWard supports installing packages to any user writable location. If no current
-library location is user writable, RKWard offers to create a new library
-location. On UNIX-systems, interactively acquiring administrator privileges for
-installation to the system-wide library is also supported. The dialog can be
-used for updating already installed packages. The user can choose whether to
+library location is user writable, RKWard offers to create a new one.
+On UNIX systems, interactively acquiring root privileges for
+installation to the system-wide library is also supported. If used to
+update already installed packages, the user can choose whether to
 update all packages at once, or only selected packages. The installation process
-itself can be monitored from the interface for error tracking. At the time of this writing, RKWard has no
+itself can be monitored at the interface for error tracking. At the time of this writing, RKWard has no
 built-in tools for the interactive exploration of \proglang{R} packages. However, it is
 possible to invoke external helpers \citep{Zhang2004}.
 
 \subsection{Further tool windows}
 \label{sec:further_tool_windows}
 
+%%TODO: MM: shouldn't the names of the interesting tools
+% in this section be highlighted, maybe at least by ``name'' ?
 The file browser tool window can be
-used to open supported file types (e.g. \proglang{R}
+used to open supported file types (e.\,g. \proglang{R}
 scripts, \proglang{HTML} files) inside the main RKWard
 window. For unsupported file types (such as PDF), the
 systems default external applications can be used.
@@ -496,17 +494,16 @@ systems default external applications can be used.
 The command log window contains a log of the commands that have been
 evaluated by the \proglang{R} engine, and any output
 produced by these commands. By default, the log shows only commands
-which have been entered by the user, or directly correspond to user
+which have been entered by the user or directly correspond to user
 actions, but it can be configured to include commands which are run for
 application internal purposes such as keeping the workspace browser up
 to date.
 
 Commands can be submitted while the \proglang{R} engine
 has not yet started, or while another lengthy calculation is still
-performing. In this case commands are placed into a queue, first, and
+performing. In these cases commands are placed into a queue first, and
 executed as soon as the \proglang{R} engine becomes
-available. The pending jobs windows (not
-shown) lists current \proglang{R} commands waiting for
+available. A pending jobs window lists current \proglang{R} commands waiting for
 evaluation by the \proglang{R} engine. While this
 window is mostly of interest to application developers for diagnostic
 purposes, it can also be used to interrupt selected commands.
@@ -522,32 +519,32 @@ RKWard in general, and help pages on specific GUI dialogs within
 RKWard\footnote{For technical backgound of RKWard GUI help pages 
 please refer to Section~\ref{sec:technical_plugins_defining}}. 
 All types of help can be browsed in the
-same document window, and can be cross-linked. For example help pages for
+same document window, and can be cross-linked. For example, help pages for
 RKWard GUI dialogs will typically link to documentation for both
-related RKWard dialogs, and the underlying
+related RKWard dialogs and the underlying
 \proglang{R} functions.
 
-The help system can be invoked from several action in the
-Help menu. Help on RKWard dialogs can be
+The help system can be invoked through several actions in the
+Help menu. Help pages on RKWard dialogs can be
 accessed from the dialog itself using the
-Help button. Help pages on RKWard dialogs
+Help button. They
 also allow starting the respective dialog by click on a link near the
 top of the page. Help on \proglang{R} specific
-\proglang{R} functions can be invoked from the context
+functions can be invoked from the context
 menu of the workspace browser, by pressing F2 (Function
 reference) while the cursor is on a function name in the
 code editor or the \proglang{R} console, or by using
 the \proglang{R} \code{help()}
-command. In addition a tool view is provided as an interface to the
+command. In addition, a tool view is provided as an interface to the
 \code{help.search()} command in
 \proglang{R}. This allows to search all installed, all
 loaded, or specific \proglang{R} packages for a
 specified topic.
 
 The help browser window is based on the \proglang{KDE}
-\proglang{HTML} viewer component, and supports
-features like increasing / decreasing the font size, or searching text
+\proglang{HTML} viewer component and supports
+features like increasing/decreasing the font size or searching text
 within a help page. \proglang{R} code inside a help
 page can be sent to the \proglang{R} engine for
-evaluation by selecting it, and pressing F8 (Run/Run
+evaluation by selecting it and pressing F8 (Run/Run
 Selection).
