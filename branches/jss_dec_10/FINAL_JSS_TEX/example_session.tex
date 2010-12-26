@@ -1,20 +1,20 @@
 % !TEX root = RKWard_paper.tex
-\section{Using RKWard - an example RKWard session}
+\section{Using RKWard -- an example RKWard session}
 \label{sec:using_RKWard}
 This section describes an example RKWard session, in order to give an idea
 of what working with RKWard is like in practice.
 The session is organized along the routine tasks of importing,
 analyzing, and visualizing data. In this example, it is assumed that an experimental
-treatment was given to 20 test subjects, and the objective is to compare the responses
+treatment was given to 20 test subjects. The objective is to compare the responses 
 before and after the treatment. 
 
 \subsection{Importing data}
 \label{sec:importing_data}
-Suppose that the data was saved as or exported to CSV format, for example, from a
+Suppose that the data was saved as or exported to CSV format, for example, from a 
 spreadsheet application. RKWard's import plugin can
 comfortably read it into a new \proglang{R} object.
 The import dialog (``File$\rightarrow$Import$\rightarrow$Import
-format$\rightarrow$Import Text / CSV data'') assists in reading the
+format$\rightarrow$Import Text/CSV data'') assists in reading the
 data by a common point \& click interface (Figure~\ref{fig:import_data}A). In this
 example, ``comma'' and ``period'' were chosen via ``Quick mode'' as the field
 separator and decimal point characters respectively.
@@ -49,15 +49,15 @@ are selected (Figure~\ref{fig:t_test}A).
 Pressing the ``Submit'' button opens the output document tab
 showing the results (Figure~\ref{fig:t_test}B).
 
+
 \begin{figure}[htp]
  \centering
- \includegraphics[width=15.5cm]{../figures/t-test.png}
- \caption{A) Student's t-test dialog for two variables. B) Test results in tabular \proglang{HTML} format. 
+ \includegraphics[width=15.5cm]{../figures/t-test2.png}
+ \caption{A) Student's t-test dialog for two variables. The bottom area shows the \proglang{R} code corresponding to the settings. 
+  B) Test results in tabular \proglang{HTML} format. 
 Besides the result, information such as the date of analysis and the relevant test parameters are also reported.}
  \label{fig:t_test}
 \end{figure}
-
-
 
 \subsection{Creating a plot}
 \label{sec:create_plot}
@@ -71,11 +71,10 @@ that window, the plot can then be exported to several image formats (Figure~\ref
 \begin{figure}[htp]
  \centering
  \includegraphics[width=15.5cm]{../figures/boxplot1.png}
- \caption{Boxplot dialog. The first tab (``Variables'') is used to select the variables for analysis. It is possible to
+ \caption{Boxplot dialog. The first tab ``Variables'' is used to select the variables for analysis. It is possible to
   combine any data present in \code{.GlobalEnv}. The second tab ``Options'' allows further adjustments (e.\,g., the addition of mean and standard deviation) to the plot (not shown).}
  \label{fig:boxplot1}
 \end{figure}
-
 
 \begin{figure}[htp]
  \centering

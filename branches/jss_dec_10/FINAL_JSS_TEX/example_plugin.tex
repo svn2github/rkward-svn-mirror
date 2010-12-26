@@ -1,7 +1,7 @@
 % !TEX root = RKWard_paper.tex
 \section{Extending RKWard - an example of creating a plugin}
 \label{sec:example_plugin}
-As discussed in Section~\ref{sec:technical_plugins}, plugins in RKWard are
+As discussed in section~\ref{sec:technical_plugins}, plugins in RKWard are
 defined by four separate files (Figure~\ref{fig:plugin_structure}). To give an impression of the technique,
 this section shows (portions of) the relevant files for a plugin that provides
 a simple dialog for a t-test. For brevity, the help-file is omitted.
@@ -10,14 +10,9 @@ a simple dialog for a t-test. For brevity, the help-file is omitted.
 \label{sec:defining_menu_hierarchy}
 A so called ``.pluginmap'' file declares each plugin, and, if appropriate, defines where it should
 be placed in the menu hierarchy. Usually each .pluginmap-file declares many plugins. In this example
-we only show one, namely,
-%% TF: Well, I don't think this is really a feature to advertize. We don't actually support this,
-%% and any changes would be overwritten by the next update.
-%Since the files are editable with a text editor it is possible for the user to adjust
-%the menus as desired.
-the definition entry for a two variable t-test (see Figure~\ref{fig:ttest-gui-example}). 
+we only show one, namely, the definition entry for a two variable t-test (see Figure~\ref{fig:ttest-gui-example}). 
 The pluginmap (\code{<!DOCTYPE rkpluginmap>}) gives a unique identifier (``id"), the location of the GUI description (``file"), and the window title (``label''). The menu
-is defined in a hierarchical structure (see code example below; long lines are broken at ``$\ldots~\ldots$''). Moreover, the position within the menu can be explicitly defined.
+is defined in a hierarchical structure (see code example below\footnote{Long lines are broken at ``$\ldots~\ldots$''.}). Moreover, the position within the menu can be explicitly defined.
 This might be required if the menu entries are to be ordered non-alphabetically.
 
 \begin{footnotesize}
@@ -46,10 +41,11 @@ This might be required if the menu entries are to be ordered non-alphabetically.
 \end{Code}
 \end{footnotesize}
 
+
 \begin{figure}[htp]
  \centering
  \includegraphics{../figures/ttest-gui-example.png}
- \caption{Generated menu GUI as defined by the pluginmap.}
+ \caption{Generated menu GUI as defined by the plugin map.}
  \label{fig:ttest-gui-example}
 \end{figure}
 
@@ -64,9 +60,8 @@ is only enabled for paired sample tests).
 
 The \proglang{XML} file defines the t-test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs (Figure~\ref{fig:t_test}A) asking for the variables
 to analyze in the first tab and optionally in the second tab for specific settings like the confidence level (default 0.95). Note that this \proglang{XML} file
-also invokes the \proglang{XML} help file. Two variables can be selected (\code{<varslot .../>}). These are set to be ``required'', i.e.
+also invokes the \proglang{XML} help file. Two variables can be selected (\code{<varslot .../>}). These are set to be ``required'', i.\,e.
 the ``Submit'' button will remain disabled until the user has made a valid selection for both.
-
 
 \begin{footnotesize}
 \begin{Code}
@@ -180,7 +175,8 @@ function printout () {
 \end{Code}
 \end{footnotesize}
 
-The generated code readable by the user is the following \proglang{R} code. Here, \code{rk.header} and \code{rk.results} 
+The generated code readable by the user is the following \proglang{R} code (code below and Figure~\ref{fig:t_test}). 
+Here, \code{rk.header} and \code{rk.results} 
 are RKWard functions provided by the package \pkg{rkward}. In case the package is installed the code below 
 can be run from any \proglang{R} engine.
 
