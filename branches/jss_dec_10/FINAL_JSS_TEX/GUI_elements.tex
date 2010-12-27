@@ -7,9 +7,9 @@ The default layout of the main application window is divided into five
 parts, as depicted in Figure~\ref{fig:main_window}. While many aspects
 of the GUI can be customized by the user, for simplicity we will
 describe the default appearance of RKWard in the present section. The
-top of the window is occupied by menu bar and toolbar (Figure~
-\ref{fig:main_window}A). The content of both bars is partially context
-sensitive, e.\,g., the Edit menu will offer
+top of the window is occupied by menu bar and toolbar 
+(Figure~\ref{fig:main_window}A). The content of both bars is partially context
+sensitive, e.\,g., the ``Edit'' menu will offer
 one set of actions when the current document window is a data editor,
 and another set of actions for a \proglang{R} script
 editor window. To ease orientation, all top level menus remain
@@ -154,8 +154,8 @@ For interaction with \proglang{R}, the editor has
 predefined shortcuts (and toolbar icons) for submitting the current line, the current 
 selection, predefined blocks, or the entire document to the
 \proglang{R} engine for evaluation. It also 
-offers object-name completion and function argument hinting (Figure
-\ref{fig:code_hinting}A and B) based on the objects present in
+offers object-name completion and function argument hinting 
+(Figure~\ref{fig:code_hinting}A and B) based on the objects present in
 the \proglang{R} workspace\footnote{The object-name
 completion and function argument hinting features in RKWard predate the
 inclusion of similar features into the core
@@ -166,7 +166,7 @@ to the \proglang{R} language is the
 paste the clipboard content (e.\,g., from a separate spreadsheet
 application) as a single string, vector, or matrix, suitable
 for inclusion in an \proglang{R} script, optionally
-transforming it in advance (Figure \ref{fig:special_paste}).
+transforming it in advance (Figure~\ref{fig:special_paste}).
 
 \begin{figure}[htp]
  \centering
@@ -188,7 +188,7 @@ and B) function arguments.}
 
 Script editor windows can be created by opening an existing
 \proglang{R} script file from the file browser, the
-``File''-menu, or by creating a new empty script. It can
+``File'' menu, or by creating a new empty script. It can
 also be invoked from \proglang{R}, e.\,g., using the
 \code{file.edit()}, \code{file.show()}, or \code{fix()}
 commands.
@@ -229,7 +229,7 @@ gives the illusion of ``in-place'' editing of data. New \code{data.frame}s can
 be created and opened from the GUI, and existing objects can be opened
 for editing from the workspace browser. For opening objects from
 \proglang{R} code, the function \code{rk.edit()} can be used.
-Figure \ref{fig:data_editors} shows multiple \code{data.frame}s open for editing.
+Figure~\ref{fig:data_editors} shows multiple \code{data.frame}s open for editing.
 
 \begin{figure}[htp]
  \centering
@@ -283,7 +283,7 @@ In the context of data editing, it is noteworthy that
 RKWard supports working with multiple objects simultaneously, rather than
 limiting actions to a single active \code{data.frame}, as with e.\,g., \pkg{Rcmdr} or
 \pkg{DeduceR}. Given this non-modal interface design, multiple data editor
-windows can be opened at once (Figure \ref{fig:data_editors}).
+windows can be opened at once (Figure~\ref{fig:data_editors}).
 
 \subsection{Handling, manipulating, and analyzing data}
 \label{sec:analyzing_data}
@@ -327,7 +327,7 @@ it is required to specify a file before the dialog can proceed.
 Further options are available from the tabbed pages of the central area.
 
 The right-side area is common to all data handling
-dialogs. Here the ``Submit button'' is used
+dialogs. Here the ``Submit'' button is used
 to start the import action. It is enabled once all required
 settings have been made, i.\,e., in this case a file name has been
 selected. The ``Close'' button will close the
@@ -335,7 +335,7 @@ dialog without taking any action.
 
 The bottom area optionally shows the \proglang{R}
 code corresponding to the current settings, and which will be run
-upon pressing the ``Submit button'' (see Section~\ref{sec:importing_data} for generated \proglang{R} code). 
+upon pressing the ``Submit'' button (see Section~\ref{sec:importing_data} for generated \proglang{R} code). 
 The code display is hidden by default and can be revealed using
 the ``Code'' button. This 
 generated code display is updated dynamically as the user changes settings, allowing
@@ -360,7 +360,7 @@ including GUI dialogs for exporting the current plot,
 and adding a grid to an existing plot 
 (works on only certain types of plots). Further, a history mechanism is provided,
 which stores most created plots automatically and allows to navigate
-back to earlier plots (Figure \ref{fig:plot_history}). 
+back to earlier plots (Figure~\ref{fig:plot_history}). 
 The history is available as a drop down list of the plot calls as well as using typical ``back''
 and ``forward'' buttons on the toolbar.
 The maximum number
@@ -388,7 +388,7 @@ window records any unsaved plots to the history.
 Further, RKWard provides access to different plotting functions using GUI dialogs,
 available from the ``Plots'' menu. Wherever appropriate, RKWard supports a ``plot
 preview'' feature. If the ``Preview'' box of
-the respective dialog is checked (c.\,f., Figure \ref{fig:boxplot1}), a device window is opened, which
+the respective dialog is checked (see Figure~\ref{fig:boxplot1}), a device window is opened, which
 shows the plot as it would be created with the current settings. The
 preview is updated automatically as the user makes changes, allowing to
 see the effect of each setting instantly\footnote{The preview is
@@ -422,7 +422,7 @@ handling feature, which allows to invoke the same feature again with
 identical parameters\footnote{In case not all parameters could be
 reused, since, may be, some of the objects in
 question are no longer available, the user will be notified.} (see
-Figure \ref{fig:results_output}). Thus, the ``Run
+Figure~\ref{fig:results_output}). Thus, the ``Run
 Again'' feature combines the documentation of the result
 with an automated way to conduct the same analysis again on new
 data, providing benefits similar to, for example, the automated report generation
@@ -547,7 +547,7 @@ window, and are appropriately cross--linked. For example, help pages for
 RKWard GUI dialogs will typically link to documentation for both
 related RKWard dialogs and the underlying \proglang{R} functions.
 It worthwhile to note here that, the TDI interface of the document view area 
-(c.\,f., Figure \ref{fig:main_window}C) allows to utilize arbitrary number of document 
+(c.\,f., Figure~\ref{fig:main_window}C) allows to utilize arbitrary number of document 
 windows for browsing these help pages simultaneously.
 
 %The help system can be invoked through several actions in the
@@ -576,7 +576,7 @@ such as, the context menu of the workspace browser, by pressing F2 (function
 reference) while the cursor is on a function name either in the code editor or 
 in the \proglang{R} console, and of course, by using the \proglang{R} \code{help()}
 command. In addition, a tool view window\footnote{Note the ``Help search'' 
-tool in Figure \ref{fig:main_window}E.} is provided as an interface to the
+tool in Figure~\ref{fig:main_window}E.} is provided as an interface to the
 \code{help.search()} command in \proglang{R}. This allows to search all installed, 
 all loaded, and related \proglang{R} packages for a specified topic.
 
