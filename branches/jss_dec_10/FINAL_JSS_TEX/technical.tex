@@ -2,7 +2,7 @@
 \label{sec:technical}
 In this section we will give a compact overview over key aspects of RKWards
 technical design. We will give slightly more attention to the details of the
-plugin framework (section~\ref{sec:technical_plugins}) used in RKWard, since this is central to the extensibility of
+plugin framework (Section~\ref{sec:technical_plugins}) used in RKWard, since this is central to the extensibility of
 RKWard.
 
 \subsection{Asynchronous command execution}
@@ -13,7 +13,7 @@ remain the application usable to a high degree, even during the computation of
 time-consuming analysis. For instance, while waiting for the estimation of a
 complex model to complete, the user should be able to continue to use the GUI to
 prepare the next analysis. Asynchronous command execution is also a prerequisite
-for an implementation of the plot-preview feature (see section~\ref{sec:plot_previews}). Commands
+for an implementation of the plot-preview feature (see Section~\ref{sec:plot_previews}). Commands
 generated from plugins or user actions are placed in queue and are evaluated in
 a separate thread in the order they were submitted\footnote{
     It is possible, and in some cases necessary, to enforce a different order of command execution in
@@ -23,11 +23,11 @@ a separate thread in the order they were submitted\footnote{
 }. The asynchronous design implies that RKWard avoids to rely on the
 \proglang{R} engine during interactive use. This is one of several reasons for
 the use of \proglang{ECMAScript} in plugins, instead of scripting using
-\proglang{R} (see sections~\ref{sec:technical_toolkit} and \ref{sec:technical_plugins}).
+\proglang{R} (see Sections~\ref{sec:technical_toolkit} and \ref{sec:technical_plugins}).
 A further implication is that RKWard avoids querying information about the
 existence and properties of objects in \proglang{R} interactively. Rather,
 RKWard keeps a representation of \proglang{R} objects and their basic properties
-(e.\,g., class and dimensions), which is used for the workspace browser (section~\ref{sec:workspace_browser_object_viewer}),
+(e.\,g., class and dimensions), which is used for the workspace browser (Section~\ref{sec:workspace_browser_object_viewer}),
 object name completion, function argument hinting and
 other occasions. The object representation includes objects in all environments
 in the search path, and any objects contained within these environments in a
@@ -66,7 +66,7 @@ detect such changes in order to always display accurate information in the
 workspace browser, object selection lists, and object views. Beyond that,
 detecting any changes is particularly important with respect to objects which
 are currently opened for editing in the data editor (which provides an illusion
-of in-place editing, see section~\ref{sec:spreadsheet}). Here, it is necessary to synchronize
+of in-place editing, see Section~\ref{sec:spreadsheet}). Here, it is necessary to synchronize
 the data between \proglang{R} and the GUI in both directions.
 
 For simplicity and performance, object modification detection is only
@@ -136,7 +136,7 @@ of RKWard is the ``XMLGUI'' technology
 the various components of RKWard.
 
 Plugins in RKWard rely on \proglang{XML} (Extensible Markup Language)\footnote{\url{http://www.w3.org/XML/}}
-and \proglang{ECMAScript}\footnote{\url{http://www.ecmascript.org/}} (see section~\ref{sec:technical_plugins}). \proglang{XML} is not
+and \proglang{ECMAScript}\footnote{\url{http://www.ecmascript.org/}} (see Section~\ref{sec:technical_plugins}). \proglang{XML} is not
 only well suited to describe the layout of the GUI of plugins, but simple
 functional logic can also be represented \citep{Visne2009}. \proglang{ECMAScript} was
 chosen for the generation of \proglang{R} commands within plugins, in particular due to its
@@ -210,7 +210,7 @@ statistical analysis.
 \subsubsection{Defining a plugin}
 \label{sec:technical_plugins_defining}
 Plugins consist of four parts as visualized in Figure~\ref{fig:plugin_structure} 
-\citep[see section~\ref{sec:example_plugin} for an example; for a complete
+\citep[see Section~\ref{sec:example_plugin} for an example; for a complete
 manual, see][]{Friedrichsmeier2010}:
 
 \begin{figure}[htp]
@@ -223,7 +223,7 @@ manual, see][]{Friedrichsmeier2010}:
 
 \begin{itemize}
     \item
-    An \proglang{XML} file (section~\ref{sec:defining_menu_hierarchy}), 
+    An \proglang{XML} file (Section~\ref{sec:defining_menu_hierarchy}), 
     called a \textbf{plugin map}, is used to declare one or more plugins, each
     with a unique identifier. For most plugins, the plugin map also defines the
     placement in the menu hierarchy. Plugin maps are meant to represent groups of
@@ -231,7 +231,7 @@ manual, see][]{Friedrichsmeier2010}:
     complexity of the menu hierarchy.
 
     \item
-    A second \proglang{XML} file describes the \textbf{plugin GUI layout} itself (section~\ref{sec:defining_dialog_ui}). 
+    A second \proglang{XML} file describes the \textbf{plugin GUI layout} itself (Section~\ref{sec:defining_dialog_ui}). 
     Most importantly this includes
     the definition of the GUI-layout and GUI-behavior. High level GUI-elements can
     be defined with simple \proglang{XML}-tags. Layout is based on ``rows'' and ''columns'',
@@ -244,7 +244,7 @@ manual, see][]{Friedrichsmeier2010}:
     behavior using \proglang{ECMAScript}.
 
     \item
-    A separate \textbf{\proglang{ECMAScript} file} (section~\ref{sec:generating_r_code_from_ui_settings}) 
+    A separate \textbf{\proglang{ECMAScript} file} (Section~\ref{sec:generating_r_code_from_ui_settings}) 
     is used to translate GUI settings into \proglang{R}
     code\footnote{
         In earlier versions of RKWard, \proglang{PHP} was used
@@ -302,7 +302,7 @@ printed using \code{rk.print()}, which is just a thin wrapper around the
 \code{HTML()} function of the \pkg{R2HTML} package \citep{Lecoutre2003} in the current
 implementation. The use of custom formatting with \proglang{HTML} is possible, but
 discouraged. Standard elements such as a horizontal separator, and the ``Run again''
-link (see section~\ref{sec:results_output}) are inserted automatically, without the need to define
+link (see Section~\ref{sec:results_output}) are inserted automatically, without the need to define
 them for each plugin.
 
 Regarding the style of the generated \proglang{R} code, enforcing consistency is harder,
@@ -335,7 +335,7 @@ including plots (e.\,g., boxplot) or standard tests (e.\,g., Student's t-Test)\f
 of the plugins depend on \proglang{R} packages other than the recommended \proglang{R} base packages.
 Examples herein are the calculation of kurtosis, skewness or the exact Wilcoxon
 test. Installation of additional packages is handled automatically by RKWard
-(see section~\ref{sec:package_management}).
+(see Section~\ref{sec:package_management}).
 
 RKWard avoids loading all these packages pro-actively, as \pkg{Rcmdr} does. Rather,
 plugins which depend on certain package simply include an appropriate call to
