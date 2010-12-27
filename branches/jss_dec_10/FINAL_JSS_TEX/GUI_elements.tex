@@ -1,13 +1,13 @@
 \section{Main elements of the user interface}
 \label{sec:user_interface}
 This section gives an overview of the main user interface elements and features of RKWard.
-For a use-case oriented example of an RKWard session, see Section~\ref{sec:using_RKWard}.
+For a use case oriented example of an RKWard session, see Section~\ref{sec:using_RKWard}.
 
-The default layout of the main application window is divided into five
-parts, as depicted in Figure~\ref{fig:main_window}\footnote{
+The default layout\footnote{
  Many aspects of the RKWard GUI can be customized by the user. For simplicity we will
  describe the default appearance of RKWard, only.
-}. The top of the window is occupied by menu bar and toolbar 
+} of the main application window is divided into five
+parts, as depicted in Figure~\ref{fig:main_window}. The top of the window is occupied by menu bar and toolbar 
 (Figure~\ref{fig:main_window}A). The content of both bars is partially context
 sensitive, e.\,g., the ``Edit'' menu will offer
 one set of actions when the current document window is a data editor,
@@ -21,15 +21,11 @@ interface.
 
 \begin{figure}[htp]
  \centering
- \includegraphics[width=15.446cm,height=10.949cm]{../figures/main_window.png}
-%% TF: I've shortened the caption to basically just list each area. We already give
-%% descriptions in the main text. The previous version of the caption seemed to repeat a lot
-%% but not all of that.
-%% Perhaps area D should include the tool buttons, and E only the statusbar?
+ \includegraphics[width=15.450cm]{../figures/main_window.png}
  \caption{Default RKWard main window after start up. 
 A) Menubar and toolbar, B) tool panel showing workspace browser, C) main view area, showing
-a help page D) tool panel showoing embedded \proglang{R} console E) tool buttons, and status bar.
-Panels B) and D) can be resized or collapsed.}
+a help page D) tool panel showing embedded \proglang{R} console E) tool buttons, and status bar.
+Panels B) and D) can be resized or collapsed. Note the red square (B) indicates the active interface element.}
  \label{fig:main_window}
 \end{figure}
 
@@ -110,7 +106,6 @@ including information such as dimensionality or function arguments,
 depending on the type of object. Further, objects inside \code{.GlobalEnv} can be
 removed, renamed, and edited from the context menu.
 
-%% TF: I swapped the below two paragraphs.
 Several actions are available from a context menu (after right-clicking
 on the object names), depending on the type of object. These allow to search the
 \proglang{R} help for information on that object, to
@@ -172,7 +167,7 @@ transforming it in advance (Figure~\ref{fig:special_paste}).
  \centering
  \includegraphics[width=15.5cm]{../figures/code_hinting.png}
  \caption{Code hinting features of the script editor. The script editor is able to hint A) \proglang{R} object names
-and B) function arguments.}
+and B) function arguments. Random data (\code{rnorm()}, n = 50) were assigned to a variable and later used in Figure~\ref{fig:plot_history}.}
  \label{fig:code_hinting}
 \end{figure}
 
@@ -313,19 +308,27 @@ elements of data handling functions by example of importing CSV
   the \proglang{R} console (Section~\ref{sec:using_R_console}).
 }. Further examples are given in Section~\ref{sec:using_RKWard}.
 
-%% TF: The figure that we reference here is quite a loooong stretch away. I think we
-%% should repeat it here (and with no filename entered, yet, as that is the state which the text describes).
 At the time of this writing, RKWard provides support for importing SPSS, 
 Stata, and ``delimited text'' data. Internally, RKWard
 relies on standard \proglang{R} functions and the package \pkg{foreign}
 \citep{Murdoch2002} for reading these data files. To import CSV (comma separated values)
 data, select ``File$\rightarrow$Import format$\rightarrow$Import Text$\rightarrow$CSV''
 data from the menu. This will open the dialog shown in
-Figure~\ref{fig:import_data}A. The central area of this dialog provides 
+Figure~\ref{fig:CSV_import}. The central area of this dialog provides 
 options to control the import. The 
 ``File name'' field is highlighted, to indicate that
 it is required to specify a file before the dialog can proceed.
 Further options are available from the tabbed pages of the central area.
+
+\begin{figure}[htp]
+ \centering
+ \includegraphics[width=15.5cm]{../figures/CSV_import.png}
+ \caption{General data import dialog. Useful defaults for a variety of formats can
+  be set using the ``Quick Mode'' selector on the left. Customizations can be done
+  from the ``Rows and Columns'' and ''Further Options'' tabs, respectively. The 
+  code in the bottom area can be copied and used for other purposes.}
+ \label{fig:CSV_import}
+\end{figure}
 
 The right-side area is common to all data handling
 dialogs. Here the ``Submit'' button is used
@@ -432,12 +435,6 @@ with an automated way to conduct the same analysis again on new
 data, providing benefits similar to, for example, the automated report generation
 available from \pkg{RreportGenerator} \citep{RaffelsbergerW2008}.
 
-%%TF: I think the reader can easily guess that it is about automatic report generation from the context.
-%% So I've removed this footnote.
-%\footnote{The application generates automatic
-%reports from routine statistical analysis in bioinformatical
-%applications.}
-
 \begin{figure}[htp]
  \centering
  \includegraphics[width=15.5cm]{../figures/results_output_cropped.png}
@@ -496,11 +493,6 @@ RKWard supports installing packages to any user writable location. If no current
 library location is user writable, RKWard offers to create a new one. 
 On UNIX systems, interactively acquiring root privileges for
 installation to the system-wide libraries is also supported.
-%% TF: I think this feature is so naturally to be expected, that mentioning it,
-%% explicitly, sounds awkward:
-%If used to
-%update already installed packages, the user can choose to either
-%update all packages at once, or only the selected ones.
 The installation process
 itself can be monitored at the interface for error tracking. At the time of this writing, RKWard has no
 built-in tools for the interactive exploration of \proglang{R} packages. However, it is
@@ -534,19 +526,6 @@ purposes, it can also be used to interrupt selected commands.
 
 \subsection{Help system}
 \label{sec:help_system}
-%Help on \proglang{R}
-%or RKWard are easily available and accessible through an arbitrary number of document
-%windows. These allow to browse \proglang{R} manuals in
-%\proglang{HTML} form, help pages on
-%\proglang{R} functions and packages, help pages on
-%RKWard in general, and help pages on specific GUI dialogs within
-%RKWard\footnote{For technical backgound of RKWard GUI help pages 
-%please refer to Section~\ref{sec:technical_plugins_defining}}. 
-%All types of help can be browsed in the
-%same document window, and can be cross-linked. For example, help pages for
-%RKWard GUI dialogs will typically link to documentation for both
-%related RKWard dialogs and the underlying
-%\proglang{R} functions.
 
 RKWard provides access to both \proglang{R} specific and 
 RKWard specific help pages.
@@ -562,23 +541,6 @@ RKWard GUI dialogs will typically link to documentation for both
 related RKWard dialogs and the underlying \proglang{R} functions.
 An arbitrary number of help windows can be browsed simultaneously, in the
 TDI view area (c.\,f., Figure~\ref{fig:main_window}C) or in detached windows.
-
-%The help system can be invoked through several actions in the
-%Help menu. Help pages on RKWard dialogs can be
-%accessed from the dialog itself using the
-%Help button. They
-%also allow starting the respective dialog by click on a link near the
-%top of the page. Help on \proglang{R} specific
-%functions can be invoked from the context
-%menu of the workspace browser, by pressing F2 (Function
-%reference) while the cursor is on a function name in the
-%code editor or the \proglang{R} console, or by using
-%the \proglang{R} \code{help()}
-%command. In addition, a tool view is provided as an interface to the
-%\code{help.search()} command in
-%\proglang{R}. This allows to search all installed, all
-%loaded, or specific \proglang{R} packages for a
-%specified topic.
 
 A central access point to the help system is the ``Help'' menu. Further, help pages on
 RKWard GUI dialogs can be accessed from the dialog itself using the
