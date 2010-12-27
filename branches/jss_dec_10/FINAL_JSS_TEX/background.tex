@@ -9,17 +9,22 @@ since 1997 development has evolved under the umbrella of the \proglang{R}
 Development Core Team \citep{RDCT2001, RDCT2010, Ihaka_Gentlemen_1993}.
 \proglang{R} does not include an advanced cross-platform GUI (graphical user interface) as known from other
 statistical software packages. However, \proglang{R} includes tools for building GUIs
-mainly based on \proglang{Tlc/Tk} \citep{Dalgaard2001, Dalgaard2002}. Since then a
+mainly based on \proglang{Tlc/Tk} \citep{Dalgaard2001, Dalgaard2002}. Meanwhile a
 plethora of \proglang{R} GUIs have emerged (see \url{http://www.sciviews.org/_rgui/} for a
-comprehensive list). In 2005 John Fox released version 1.0 of \proglang{R} Commander, which
+comprehensive list). In 2005 John Fox released version 1.0 of \proglang{R} Commander (package \pkg{Rcmdr}, which
 can be considered a milestone in \proglang{R} GUI development; it was the first GUI
-implementation that was able to deliver the experience of statistical tests,
-plots and data manipulation easily accessible for \proglang{R} novices as well as advanced
-users. However, John Fox stated that \proglang{R} Commander's target was to provide
-functionality for basic-statistical courses; though the features have increased over
+implementation that was able to make statistical tests,
+plots and data manipulation easily accessible for \proglang{R} novices.
+%% TF: I've removed the part ``as well as advanced users``, also to better explain in how
+%% far RKWard follows a different philosophy than Rcmdr.
+%% While of coure Rcmdr is usable by advanced users, it does not offer much added value
+%% for R experts in the way that RKWard does. So certainly the target audience is R novices
+%% or learners.
+John Fox stated that \pkg{Rcmdr}'s target was to provide
+functionality for basic-statistical courses, though the features have increased over
 time beyond this \citep{Fox2005, Fox2007}. In November 2002 Thomas Friedrichsmeier
-started the RKWard open-source software project with the goal to create an
-implementation of an \proglang{R} GUI-based on \proglang{KDE} and \proglang{Qt} technologies.
+started the RKWard open-source software project with the goal to create a GUI to
+\proglang{R} based on \proglang{KDE} and \proglang{Qt} technologies.
 
 The scope of RKWard is deliberately broad, targeting both \proglang{R} novices and experts.
 For the first group, the aim is to allow any person with knowledge on
@@ -41,13 +46,12 @@ perform any supported task in \proglang{R}, in order to make it easy for the use
 complete codes for all GUI actions\footnote{
   This distinguishes RKWard from \proglang{R} GUIs such as Red-R (\url{http://www.red-r.org/}), which 
   specifically aims to hide the complexities of the \proglang{R} programming language, following the concept of visual data-flow 
-  programming \citep{Sutherland1966}.
-}. In doing so, RKWard deliberately generates\footnote{
-  RKWard limits itself to generate \proglang{R} code from GUI settings.
-} relatively verbose code. It avoids wrapping complex sequences of data
+  programming \citep{Sutherland1966}. In contrast, RKWard limits itself to generate \proglang{R} code from GUI settings.
+}. In doing so, RKWard deliberately generates
+comparatively verbose code. It avoids wrapping complex sequences of data
 manipulation or analysis into custom high-level \proglang{R} functions. The task of
 providing high-level functions is logically independent of the development of the
-GUI frontend, and should best be addressed in dedicated \proglang{R} packages, if necessary.
+GUI frontend, and should best be addressed in dedicated \proglang{R} packages, where necessary.
 This approach allows to make better use of the modular design of \proglang{R}, avoids
 locking-in users to a specific GUI application, and provides them with more options for
 customizing the generated code patterns.
@@ -59,7 +63,7 @@ necessarily show a one-to-one correspondence to the underlying steps in \proglan
 rather oriented at statistical tasks. Furthermore, RKWard does not impose
 artificial limitations on how users can work with the application. For example,
 the user is not limited to using only one \code{data.frame} or one model at a
-time. RKWard is designed to allow users to even create custom GUI dialogs
+time. RKWard is designed to allow users to create custom GUI dialogs
 easily (see Sections~\ref{sec:technical_plugins} and \ref{sec:example_plugin}).
 
 RKWard is licensed under the terms of the GNU GPL (general public license) Version 2
