@@ -1,6 +1,7 @@
+%!TEX root=RKWard_paper.tex
 \section{Technical design}
 \label{sec:technical}
-In this section we will give a compact overview over key aspects of RKWards
+In this section we will give a compact overview of the key aspects of RKWard's
 technical design. We will give slightly more attention to the details of the
 plugin framework (Section~\ref{sec:technical_plugins}) used in RKWard, since this is central to the extensibility of
 RKWard.
@@ -20,7 +21,7 @@ a separate thread in the order they were submitted\footnote{
     internal code. For instance, RKWard makes sure that no user command can
     potentially interfere while RKWard is loading the data of a \code{data.frame} for
     editing.
-}. The asynchronous design implies that RKWard avoids to rely on the
+}. The asynchronous design implies that RKWard avoids relying on the
 \proglang{R} engine during interactive use. This is one of several reasons for
 the use of \proglang{ECMAScript} in plugins, instead of scripting using
 \proglang{R} itself (see Sections~\ref{sec:technical_toolkit} and \ref{sec:technical_plugins}).
@@ -28,8 +29,8 @@ A further implication is that RKWard avoids querying information about the
 existence and properties of objects in \proglang{R} interactively. Rather,
 RKWard keeps a representation of \proglang{R} objects and their basic properties
 (e.\,g., class and dimensions), which is used for the workspace browser (Section~\ref{sec:workspace_browser_object_viewer}),
-object name completion, function argument hinting and
-other occasions. The object representation includes objects in all environments
+object name completion, function argument hinting, and
+other places. The object representation includes objects in all environments
 in the search path, and any objects contained within these environments in a
 hierarchical tree\footnote{
     Currently, environments of functions or formulas are not taken into account.
@@ -37,11 +38,13 @@ hierarchical tree\footnote{
 pro-actively. This has a notable impact on performance when loading packages.
 Specifically, objects which would usually be ``lazy loaded'' only when needed \citep[see][]{Ripley2004} are
 accessed in order to fetch information on their properties. This means the data
-has to be loaded from disk; however, the memory is freed directly after fetching
-information on the object.
+has to be loaded from disk; however, the memory is freed immediately after fetching
+information on the object. Additionally, as an override switch, RKWard provides an option 
+to list packages which will not be scanned pro-actively for object structures when loaded.
+%% PK: Thomas can you verify/modify/delete the above sentence?
 
 A further side-effect of the asynchronous threaded design is that there is
-inherently a rather clear separation between GUI code and code making direct use
+inherently a rather clear separation between the GUI code and the code making direct use
 of the \proglang{R} API (see also Figure~\ref{fig:design_sketch}). In the current development version, the evaluation
 of \proglang{R} commands has even been moved into a separate process. Therefore in future releases it could 
 be made possible to run GUI and \proglang{R} engine on different computers.
@@ -65,7 +68,7 @@ command can potentially add, modify, or remove objects in \proglang{R}. RKWard t
 detect such changes in order to always display accurate information in the
 workspace browser, object selection lists, and object views. Beyond that,
 detecting any changes is particularly important with respect to objects which
-are currently opened for editing in the data editor (which provides an illusion
+are currently being edited in the data editor (which provides an illusion
 of in-place editing, see Section~\ref{sec:spreadsheet}). Here, it is necessary to synchronize
 the data between \proglang{R} and the GUI in both directions.
 
@@ -82,12 +85,12 @@ environment, which registers any write-access to the object\footnote{
 
 The use of active bindings has significant performance implications when
 objects are accessed very frequently. This is particularly notable where an
-object inside the global environment (i.\,e. an object wrapped into an active
+object inside the global environment (i.\,e., an object wrapped into an active
 binding) is used as the index variable in a loop, as illustrated by the
 following example:
 
 \begin{Code}
-# 'i', created below, will become subject to object modification detection
+# 'i', created below, will be subject to object modification detection
 # as soon as the user command returns
 i <- 1
 
@@ -120,11 +123,11 @@ this constitutes a rather heavy dependency. Moreover, the \proglang{KDE} librari
 still known to have portability issues especially on Mac OS X, and to some degree
 also on the MS Windows platform.
 
-The major reason for choosing the \proglang{KDE} and \proglang{Qt} libraries was their providing 
-of many high level features which have allowed RKWard development to make quick
+The major reason for choosing the \proglang{KDE} and \proglang{Qt} libraries was their 
+many high level features which have allowed RKWard development to make quick
 progress despite limited resources. Most importantly, the \proglang{KDE} libraries provide a
 full featured text editor \citep{CullmannND} as a component which can be
-seamlessly integrated into a hosting application using the KParts technology
+seamlessly integrated into a host application using the KParts technology
 \citep{Faure2000}. Additionally, another KPart provides \proglang{HTML} browsing capabilities in a
 similarly integrated way. The availability of KWord \citep{KWord} as an
 embeddable KPart might prove useful in future versions of RKWard, when better
@@ -187,7 +190,7 @@ on \code{plot.new()} which stores and retrieves the existing plot, essentially, 
 The actual plotting calls are tracked using appropriate \code{sys.call()} commands in
 the hooks. These call strings are displayed as a drop-down menu on the toolbar
 for non-sequential browsing (see Figure~\ref{fig:plot_history}) providing a very intuitive browsing
-interface unlike the implementation for MS Windows or Quartz devices.
+interface unlike the native implementations in \code{windows()} and \code{quartz()} devices.
 
 \subsection{Plugin infrastructure}
 \label{sec:technical_plugins}
@@ -201,10 +204,10 @@ into \proglang{R} code\footnote{
 }. Thus, the plugin framework is basically a tool set used to define
 GUIs for the automatic generation of \proglang{R} code.
 
-Much of the functionality in RKWard is currently implemented as plugins. For example, import of different file
+Much of the functionality in RKWard is currently implemented as plugins. For example, importing different file
 formats relying on the \pkg{foreign} package is achieved by this approach. Similarly,
 RKWard provides a modest GUI driven tool set for statistical analysis,
-especially for item response theory (IRT), distributions and descriptive
+especially for item response theory (IRT), distributions, and descriptive
 statistical analysis.
 
 \subsubsection{Defining a plugin}
@@ -236,9 +239,9 @@ manual, see][]{Friedrichsmeier2010}:
     the definition of the GUI-layout and GUI-behavior. High level GUI-elements can
     be defined with simple \proglang{XML}-tags. Layout is based on ``rows'' and ''columns'',
     instead of pixel counts. In most cases this allows for a very sensible resizing
-    behavior. RKWard supports single-page dialogs, and multi-page wizards, however,
+    behavior. RKWard supports single-page dialogs and multi-page wizards, however,
     most plugins define only a single-page UI. GUI behavior can be programmed by
-    connecting ``properties'' of the GUI elements to each other. For example the state
+    connecting ``properties'' of the GUI elements to each other. For example, the state
     of a checkbox could be connected to the ``enabled'' property of a dependent
     control. More complex logic is also supported, as is procedural scripting of GUI
     behavior using \proglang{ECMAScript}.
@@ -258,7 +261,8 @@ manual, see][]{Friedrichsmeier2010}:
 
     \item
     A third \proglang{XML} file defines a help page. This help page usually links to the \proglang{R} help
-    pages of the central functions/concepts used by the plugin. Compared to \proglang{R} help
+    pages of the main functions/concepts used by the plugin, as well as to other 
+    related RKWard help pages. Compared to \proglang{R} help
     pages, the plugin help pages try to give more hands-on advice on using the
     plugin. Plugins can be invoked from their help page by clicking on a link near
     the top, which can be useful after following a link from a related help page.
@@ -306,7 +310,7 @@ link (see Section~\ref{sec:results_output}) are inserted automatically, without 
 them for each plugin.
 
 Regarding the style of the generated \proglang{R} code, enforcing consistency is harder,
-but plugins which are to become part of the official RKWard distribution are
+but plugins which are to become part of the official RKWard application are
 reviewed for adherence to some guidelines. Perhaps the most important guidelines
 are 
 
@@ -321,8 +325,8 @@ are
 
   \item
   Plugins can be restricted to accept only certain types of data (such as only one-dimensional numeric data).
-  Use such restrictions where appropriate to the user avoid errors, but be very careful not to add
-  too much restrictions.
+  Use such restrictions where appropriate to avoid errors, but be very careful not to add
+  too many of them.
 \end{itemize}
 
 \subsubsection{Handling of R package dependencies}
@@ -359,7 +363,7 @@ allowed to be made visible by default, by moving it to an appropriate plugin
 map.
 
 The current development version adds support for downloading additional sets of
-plugins, which are not officially included or supported by the
+plugins, which are neither officially included nor supported by the
 RKWard developers, from the internet.
 
 \subsubsection{Automated testing}
