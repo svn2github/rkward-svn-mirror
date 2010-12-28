@@ -39,7 +39,7 @@ pro-actively. This has a notable impact on performance when loading packages.
 Specifically, objects which would usually be ``lazy loaded'' only when needed \citep[see][]{Ripley2004} are
 accessed in order to fetch information on their properties. This means the data
 has to be loaded from disk; however, the memory is freed immediately after fetching
-information on the object. Additionally, for packages with extremely many objects, RKWard
+information on the object. Additionally, for packages with extremely large number of objects, RKWard
 provides an option to exclude specific packages from scanning the object structures.
 
 A further side-effect of the asynchronous threaded design is that there is
@@ -121,7 +121,7 @@ In addition to \proglang{R}, RKWard is based on the \proglang{KDE} libraries, wh
 on \proglang{Qt}, and implemented mostly in \proglang{C++}. Compared to many competing libraries,
 this constitutes a rather heavy dependency. Moreover, the \proglang{KDE} libraries are
 still known to have portability issues especially on Mac OS X, and to some degree
-also on the MS Windows platform.
+also on the Windows platform.
 
 The major reason for choosing the \proglang{KDE} and \proglang{Qt} libraries was their 
 many high level features which have allowed RKWard development to make quick
@@ -157,7 +157,7 @@ Contrary to the approach used in \pkg{JGR} \citep{HelbigTheus2005}, RKWard does
 not technically provide a custom on-screen graphics device. RKWard detects when
 new graphics windows are created via calls to \code{X11()} or \code{windows()}. These windows
 are then ``captured'' in a platform dependent way (based on the XEmbed \citep{Ettrich2002} protocol
-for X11, on reparenting for the MS Windows platform). An RKWard menu bar and a
+for X11, on reparenting for the Windows platform). An RKWard menu bar and a
 toolbar is then added to these windows to provide added functionality. While
 this approach requires some platform dependent code, any corrections or
 improvements made to the underlying \proglang{R} native devices will automatically be
@@ -170,9 +170,9 @@ dependent way. For example, as of this writing, plotting calls that use either
 the ``standard graphics system'' or the ``\pkg{lattice} system'' can be added to the plot
 history; other plots are drawn but not added. The basic procedure is to identify
 changes to the on-screen canvas and record the existing plot before a new plot
-wipes it out. A single ``global'' history for the recorded plots is maintained
+wipes it out. A single global history for the recorded plots is maintained
 which is used by all the on-screen device windows. This is similar to the
-implementation in \proglang{Rgui.exe} (MS Windows), but unlike the one in \proglang{Rgui.app} 
+implementation in \proglang{Rgui.exe} (Windows), but unlike the one in \proglang{Rgui.app} 
 (Mac OS X). Each such device window points to a position in the history
 and behaves independently when recording a new plot or deleting an existing
 one.
@@ -198,7 +198,7 @@ One of the earliest features of RKWard was the extensibility by plugins.
 Basically, plugins in RKWard provide complete GUI-dialogs, or re-usable
 GUI-components, which accept user settings and translate those user settings
 into \proglang{R} code\footnote{
-    Plugins are also used in some other contexts within RKWard, for instance the
+    Plugins are also used in some other contexts within RKWard, for instance, the
     integrated text editor (kate part) supports extensions via plugins and user scripts. At this point we
     will focus only on plugins generating \proglang{R} code.
 }. Thus, the plugin framework is basically a tool set used to define
@@ -237,7 +237,7 @@ manual, see][]{Friedrichsmeier2010}:
     A second \proglang{XML} file describes the plugin GUI layout itself (Section~\ref{sec:defining_dialog_ui}). 
     Most importantly this includes
     the definition of the GUI-layout and GUI-behavior. High level GUI-elements can
-    be defined with simple \proglang{XML}-tags. Layout is based on ``rows'' and ''columns'',
+    be defined with simple \proglang{XML}-tags. Layout is based on ``rows'' and ``columns'',
     instead of pixel counts. In most cases this allows for a very sensible resizing
     behavior. RKWard supports single-page dialogs and multi-page wizards, however,
     most plugins define only a single-page UI. GUI behavior can be programmed by
