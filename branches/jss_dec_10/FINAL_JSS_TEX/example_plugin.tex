@@ -175,35 +175,3 @@ function printout () {
 }
 \end{Code}
 \end{footnotesize}
-
-%% TF: I think this part is redundant. Instead, for the curious, I've added a footnote above, referring to the t_test-figure.
-%% ----
-% The generated code readable by the user is the following \proglang{R} code (code below and Figure~\ref{fig:t_test}). 
-% Here, \code{rk.header} and \code{rk.results} 
-% are RKWard functions provided by the package \pkg{rkward}. In case the package is installed the code below 
-% can be run from any \proglang{R} engine.
-% 
-% \begin{footnotesize}
-% \begin{Code}
-% local({
-% ## Prepare
-% names <- rk.get.description (my.csv.data[["before"]], my.csv.data[["after"]])
-% ## Compute
-% result <- t.test (my.csv.data[["before"]], my.csv.data[["after"]], alternative="less", paired=TRUE)
-% ## Print result
-% rk.header (result\$method, 
-% 	parameters=list ("Comparing", paste (names[1], "against", names[2]),
-% 	"H1", rk.describe.alternative (result)))
-% 
-% rk.results (list (
-% 	'Variable Name'=names,
-% 	'estimated mean'=result\$estimate,
-% 	'degrees of freedom'=result\$parameter,
-% 	t=result\$statistic,
-% 	p=result\$p.value,
-% 	'confidence interval percent'=(100 * attr(result\$conf.int, "conf.level")),
-% 	'confidence interval of difference'=result\$conf.int ))
-% })
-% 
-% \end{Code}
-% \end{footnotesize}

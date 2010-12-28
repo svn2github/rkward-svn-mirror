@@ -23,7 +23,7 @@ interface.
  \centering
  \includegraphics[width=15.450cm]{../figures/main_window.png}
  \caption{Default RKWard main window after start up. 
-A) Menubar and toolbar, B) tool panel showing workspace browser, C) main view area, showing
+A) Menu bar and toolbar, B) tool panel showing workspace browser, C) main view area, showing
 a help page D) tool panel showing embedded \proglang{R} console E) tool buttons, and status bar.
 Panels B) and D) can be resized or collapsed. The red border around (B) indicates that the workspace browser is the active interface element.}
  \label{fig:main_window}
@@ -82,7 +82,7 @@ shortcuts for the script editor (Section~\ref{sec:code_editor}) are managed sepa
 possible to configure shortcuts by right-clicking on the respective
 menu item.
 
-The choice of available actions on the tool bar can be
+The choice of available actions on the toolbar can be
 configured via ``Settings$\rightarrow$Configure Toolbars''. Further, it is possible to add and remove sets
 of data manipulation and analysis features from the GUI, using
 ``Settings$\rightarrow$Configure RKWard$\rightarrow$Plugins''.
@@ -99,8 +99,10 @@ to a regular file-system browser. This includes both, user objects
 in a hierarchical tree structure. For instance, an object of class
 \code{list} can be expanded to show all contained objects 
 by clicking on the $+$ symbol left of the object name.
-The basic type of each object is indicated by specific icons. Further
-information on each object can be seen by hovering the mouse
+The basic type of each object is indicated by specific icons\footnote{The workspace browser 
+indicates the types ``Number'', ``Factor'', ``String'', and ``Logical'' for the \code{data.frame} 
+``my.data'' (Figure~\ref{fig:main_window}B).}. 
+Further information on each object can be seen by hovering the mouse
 pointer over the respective icon. A tooltip window will appear,
 including information such as dimensionality or function arguments,
 depending on the type of object. Further, objects inside \code{.GlobalEnv} can be
@@ -173,8 +175,8 @@ and B) function arguments. Random data (\code{rnorm()}, n = 50) were assigned to
 
 \begin{figure}[htp]
  \centering
- \includegraphics[width=8.042cm,height=8.143cm]{../figures/special_paste.png}
- \caption{Special paste dialog. This tool allows to paste data (e.\,g., tabular, text) from the clipboard, directly to an 
+ \includegraphics[width=8.043cm]{../figures/special_paste.png}
+ \caption{Paste special dialog. This tool allows to paste data (e.\,g., tabular, text) from the clipboard, directly to an 
  \proglang{R} script and therefore accelerates the work process with data from different sources 
  like spread-sheet applications.
 }
@@ -529,8 +531,6 @@ purposes, it can also be used to interrupt selected commands.
 
 RKWard provides access to both \proglang{R} specific and 
 RKWard specific help pages.
-%% TF: Well, I wouldn't really call it seamless. The fact that it's all in one window, and cross-linked is mentioned, below.
-% seamlessly in a unified framework. 
 \proglang{R} specific documentation includes help pages for functions and packages 
 and the various \proglang{R} manuals. RKWard specific documentation consists of
 help pages on RKWard in general and on specific GUI dialogs\footnote{For technical 
