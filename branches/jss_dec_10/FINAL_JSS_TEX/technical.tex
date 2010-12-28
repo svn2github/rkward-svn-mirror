@@ -39,9 +39,8 @@ pro-actively. This has a notable impact on performance when loading packages.
 Specifically, objects which would usually be ``lazy loaded'' only when needed \citep[see][]{Ripley2004} are
 accessed in order to fetch information on their properties. This means the data
 has to be loaded from disk; however, the memory is freed immediately after fetching
-information on the object. Additionally, as an override switch, RKWard provides an option 
-to list packages which will not be scanned pro-actively for object structures when loaded.
-%% PK: Thomas can you verify/modify/delete the above sentence?
+information on the object. Additionally, for packages with extremely many objects, RKWard
+provides an option to exclude specific packages from scanning the object structures.
 
 A further side-effect of the asynchronous threaded design is that there is
 inherently a rather clear separation between the GUI code and the code making direct use
