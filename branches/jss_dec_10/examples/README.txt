@@ -12,7 +12,7 @@ search path, you can also run
 from within the directory containing this file.
 
 Note that since most examples/figures are concerned with interactive GUI
-elements, the demonstraction script runs interactively as well, and will prompt
+elements, the demonstration script runs interactively as well, and will prompt
 you to perform certain user actions, which cannot (meaningfully) be scripted.
 
 -- Plugin example from Section 6 --
