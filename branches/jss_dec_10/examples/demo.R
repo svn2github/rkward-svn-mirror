@@ -1,5 +1,5 @@
 ## Instruction
-rk.show.message ("<b>Instructions</b><br>Most examples presented in the article are concerned with interactive GUI elements, which can not be fully scripted in a 		meaningful way. For this reason, most demos will ask you to carry out certain user actions, such as pressing buttons, manually.<br>
+rk.show.message ("<b>Instructions</b><br>Most examples presented in the article are concerned with interactive GUI elements, which cannot be fully scripted in a 		meaningful way. For this reason, most demos will ask you to carry out certain user actions, such as pressing buttons, manually.<br>
 	In each case you will be given the
 	choice of taking ten (more) seconds to interact with the GUI, or to proceed to the next demo.")
 
@@ -54,7 +54,7 @@ hist (data_rnorm)
 stripchart (data_rnorm)
 rk.first.plot ()
 ok.to.proceed ("<b>Replication of Figure 7</b>: Five plots have been created, and the first has been activated.</br>
-Click on the 'Go to plot' toolbar icon for a dropdown list of plots.")
+Click on the 'Go to plot' toolbar icon for a drop-down list of plots.")
 
 
 ## Figure 8
@@ -78,7 +78,7 @@ ok.to.proceed ("<b>Replication of Figure 10</b>: Dialog for t-test on imported d
 
 ## Figure 11
 rk.call.plugin ("rkward::box_plot", mean.state="", names_custom.text="T1;T2", names_exp.text="names (x)", names_mode.string="custom", notch.state="FALSE", orientation.string="FALSE", outline.state="TRUE", plotoptions.add_grid.state="0", plotoptions.asp.real="0.00", plotoptions.main.text="", plotoptions.pointcolor.color.string="", plotoptions.pointtype.string="", plotoptions.sub.text="", plotoptions.xaxt.state="", plotoptions.xlab.text="", plotoptions.xlog.state="", plotoptions.xmaxvalue.text="", plotoptions.xminvalue.text="", plotoptions.yaxt.state="", plotoptions.ylab.text="", plotoptions.ylog.state="", plotoptions.ymaxvalue.text="", plotoptions.yminvalue.text="", sd.state="", x.available="experiment.data[[\"before\"]]\nexperiment.data[[\"after\"]]", submit.mode="manual")
-ok.to.proceed ("<b>Replication of Figure 11</b>: Dialog for box plot of imported data.</br>
+ok.to.proceed ("<b>Replication of Figure 11</b>: Dialog for boxplot of imported data.</br>
 <b>Note</b>: To follow the text of the article, you can check the 'Preview'-box, here, but this is not required for this demo. Click 'Close' when done.<br>")
 
 
@@ -97,7 +97,7 @@ On typical systems, this will take several seconds to complete.")
 i <- 1
 rk.sync.global ()	# Needed to trigger object modification detection without returning to the toplevel command prompt
 for (i in 1:100000) i+i
-rk.show.message ("<b>Code listing in Section 5.2</b>.<br>Next, we run the example that <b>is not</b> subject to object modification detection, but performs equivalent computations. This should finish nearly instantaneuously.")
+rk.show.message ("<b>Code listing in Section 5.2</b>.<br>Next, we run the example that <b>is not</b> subject to object modification detection, but performs equivalent computations. This should finish nearly instantaneously.")
 f <- function () {
 	i <- 1
 	for (i in 1:100000) i+i
