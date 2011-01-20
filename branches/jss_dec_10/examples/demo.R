@@ -54,3 +54,16 @@ stripchart (data_rnorm)
 rk.first.plot ()
 ok.to.proceed ("<b>Replication of Figure 7</b>: Five plots have been created, and the first has been activated.</br>
 Click on the 'Go to plot' toolbar icon for a dropdown list of plots.")
+
+
+## Figure 8
+rk.call.plugin ("rkward::descriptive", constMad.real="1.4628", length.state="1", mad.state="0", mad_type.string="average", mean.state="1", median.state="1", prod.state="0", range.state="1", sd.state="1", sum.state="0", trim.real="0.00", x.available="DNase[[\"density\"]]\nDNase[[\"conc\"]]\nChickWeight[[\"weight\"]]\nChickWeight[[\"Time\"]]", submit.mode="submit")
+ok.to.proceed ("<b>Replication of Figure 8</b>: The result of running the 'Descriptive Statistics' plugin should now be visible in the output window.")
+
+
+## Figure 9
+rk.call.plugin ("rkward::import_csv", quick.string="csv", name.objectname="experiment.data", file.selection=paste (getwd (), "experiment.txt", sep="/"))
+ok.to.proceed ("<b>Replication of Figure 9</b>: CSV data import dialog.</br>
+<b>Note</b>: You may need to adjust the path to the file 'experiment.txt', which we provided in the same directory
+as the demo script.<br>
+Click 'Submit' when done. <b>Note</b>: Subsequent demos require this data, so <b>do</b> click 'Submit'.")
