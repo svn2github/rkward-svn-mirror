@@ -45,6 +45,7 @@ Click 'Proceed' when done interacting.")
 
 ## Figure 7
 graphics.off ()
+rk.clear.plot.history ()
 plot (rnorm (50))
 data_rnorm <- rnorm (50)
 boxplot (data_rnorm)
@@ -67,3 +68,45 @@ ok.to.proceed ("<b>Replication of Figure 9</b>: CSV data import dialog.</br>
 <b>Note</b>: You may need to adjust the path to the file 'experiment.txt', which we provided in the same directory
 as the demo script.<br>
 Click 'Submit' when done. <b>Note</b>: Subsequent demos require this data, so <b>do</b> click 'Submit'.")
+
+
+## Figure 10
+rk.call.plugin ("rkward::t_test_two_vars", confint.state="1", conflevel.real="0.95", hypothesis.string="less", paired.state="1", x.available="experiment.data[[\"before\"]]", y.available="experiment.data[[\"after\"]]", submit.mode="manual")
+ok.to.proceed ("<b>Replication of Figure 10</b>: Dialog for t-test on imported data.</br>
+<b>Note</b>: The results (Figure 10B) will appear in the output window after clicking 'Submit'.<br>")
+
+
+## Figure 11
+rk.call.plugin ("rkward::box_plot", mean.state="", names_custom.text="T1;T2", names_exp.text="names (x)", names_mode.string="custom", notch.state="FALSE", orientation.string="FALSE", outline.state="TRUE", plotoptions.add_grid.state="0", plotoptions.asp.real="0.00", plotoptions.main.text="", plotoptions.pointcolor.color.string="", plotoptions.pointtype.string="", plotoptions.sub.text="", plotoptions.xaxt.state="", plotoptions.xlab.text="", plotoptions.xlog.state="", plotoptions.xmaxvalue.text="", plotoptions.xminvalue.text="", plotoptions.yaxt.state="", plotoptions.ylab.text="", plotoptions.ylog.state="", plotoptions.ymaxvalue.text="", plotoptions.yminvalue.text="", sd.state="", x.available="experiment.data[[\"before\"]]\nexperiment.data[[\"after\"]]", submit.mode="manual")
+ok.to.proceed ("<b>Replication of Figure 11</b>: Dialog for box plot of imported data.</br>
+<b>Note</b>: To follow the text of the article, you can check the 'Preview'-box, here, but this is not required for this demo. Click 'Close' when done.<br>")
+
+
+## Figure 12
+data_list <- experiment.data
+names (data_list) <- c ("T1", "T2")
+boxplot (data_list, notch = FALSE, outline = TRUE, horizontal = FALSE)
+ok.to.proceed ("<b>Replication of Figure 12</b>: Box plot of imported data.</br>
+Select Device->Export... to bring up the dialog shown in Figure 12 (not accessible programmatically).<br>")
+
+
+## Section 5.2
+rk.show.message ("<b>Code listing in Section 5.2</b>.<br>The following demo runs the code listing in section 5.2
+of the article. First, we run the example that <b>is</b> subject to object modification detection.
+On typical systems, this will take several seconds to complete.")
+i <- 1
+rk.sync.global ()	# Needed to trigger object modification detection without returning to the toplevel command prompt
+for (i in 1:100000) i+i
+rk.show.message ("<b>Code listing in Section 5.2</b>.<br>Next, we run the example that <b>is not</b> subject to object modification detection, but performs equivalent computations. This should finish nearly instantaneuously.")
+f <- function () {
+	i <- 1
+	for (i in 1:100000) i+i
+}
+f ()
+
+
+## Done
+rk.show.message ("<b>Finished</b>.<br>This demo has finished.<br>
+<b>Note</b> that the example plugin shown in section 6 cannot be wrapped into this demo script in a meaningful
+way. For instructions on replicating this example, see the README.txt file which we provided in the same directory
+as this demo script.")
