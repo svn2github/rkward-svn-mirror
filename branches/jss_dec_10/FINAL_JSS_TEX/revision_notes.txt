@@ -5,6 +5,32 @@ textwidth of the manuscript.
 
 o In itemized/bullet lists please capitalize the first word of the item. 
 
+o All code comments (#) should be removed and incorporated within the text
+of the manuscript.
+
+--- Notes from JSS that we have addressed, but which we are not entirely sure about ---
+
+Code:
+Please include a standalone replication script of all code/examples
+used within the manuscript
+
+We now provide
+- An R script to be run inside an RKWard session, which will replicate the
+examples from Sections 3, 4, and 5. Note that since most of these examples
+are concerned with interactive GUI elements, the script itself is interactive,
+and will prompt the user to perform certain actions, manually.
+- A sample data file used in Section 5. Since one example is concerned with
+importing this data file, the data cannot simply be inlined in the R script.
+- A set of files to replicate the plugin example in Section 6. These files
+cannot meaningfully be integrated into a standalone script.
+- A file README.txt with further instructions on using the examples.
+
+The scripts and files are only meaningful when used inside an RKWard session,
+not in a plain R session.
+
+Source code for RKWard 0.5.4 can be obtained from
+http://sourceforge.net/projects/rkward/files/Current_Stable_Releases/rkward-0.5.4.tar.gz/download .
+
 --- Notes from JSS that we have not addressed, yet ---
 
 Manuscript:
@@ -30,10 +56,6 @@ chain Monte Carlo)" etc.
 	o please check all abbreviations
 	- see our notes below
 
-o All code comments (#) should be removed and incorporated within the text
-of the manuscript.
-
-
 o Figure placement (i.e. placement of floating objects): 
   The {figure} or {table} environment should be close to the first
   reference in the manuscript. It should first use the "t!" option for
@@ -42,10 +64,6 @@ o Figure placement (i.e. placement of floating objects):
 
 References
   - Java (not: JAVA, java)
-
-Code:
-Please include a standalone replication script of all code/examples
-used within the manuscript
 
 
 --- Items that we are not sure about ---

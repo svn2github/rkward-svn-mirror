@@ -24,7 +24,7 @@ This might be required if the menu entries are to be ordered non-alphabetically.
 <document base_prefix="" namespace="rkward">
   <components>
     <component type="standard" id="t_test_two_vars"
-          file="analysis/t_test_two_vars.xml" label="Two Variable t-test" />
+          file="demo_t_test_two_vars.xml" label="Two Variable t-test" />
   </components>
 
   <hierarchy>
@@ -67,8 +67,8 @@ additional settings like the confidence level (default 0.95).
 \begin{Code}
 <!DOCTYPE rkplugin>
 <document>
-  <code file="t_test_two_vars.js"/>
-  <help file="t_test_two_vars.rkh"/>
+  <code file="demo_t_test_two_vars.js"/>
+  <help file="demo_t_test_two_vars.rkh"/>
 
   <logic>
     <connect client="varequal.enabled" governor="paired.not"/>
