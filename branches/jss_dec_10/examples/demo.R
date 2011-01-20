@@ -11,6 +11,7 @@ ok.to.proceed <- function (instruction) {
 	}
 }
 
+
 ## Figure 2
 my.data <- data.frame (var=numeric (1), var1=factor (1), var2=character (1), var3=logical (1), stringsAsFactors=FALSE)
 rk.sync.global ()
@@ -19,3 +20,37 @@ ok.to.proceed ("<b>Replication of Figure 2</b>: The object \"my.data\" has been 
 Click on the \"Workspace\" button in the left tool view to show object information in the workspace browser.
 Click on the '+'-symbol next to the object to expand it.")
 
+
+## Figure 5
+library (datasets)
+data (C02)
+data (DNase)
+data (ChickWeight)
+rk.sync.global ()
+rk.edit (CO2)
+rk.edit (ChickWeight)
+ok.to.proceed ("<b>Replication of Figure 5</b>: Example data sets 'CO2' and 'ChickWeight' (from package datasets) have been opened for editing.<br>
+Use Windows->Detach from the menu to detach the editor showing the ChickWeight dataset. <b>Note</b>: The editors will not be populated with data, until the R interpreter becomes idle, i.e., in this case, until the demo script has finished.<br>
+After clicking 'Proceed', the command 'fix(DNase)' will be called. You will need to close the DNase dataset,
+manually, to proceed.")
+fix (DNase)
+
+
+## Figure 6
+rk.call.plugin ("rkward::import_csv")
+ok.to.proceed ("<b>Replication of Figure 6</b>: CSV data import dialog has been opened.<br>
+<b>NOTE</b>: You will have to close the dialog, manually, to get rid of it.</br>
+Click 'Proceed' when done interacting.")
+
+
+## Figure 7
+graphics.off ()
+plot (rnorm (50))
+data_rnorm <- rnorm (50)
+boxplot (data_rnorm)
+plot (ecdf (data_rnorm))
+hist (data_rnorm)
+stripchart (data_rnorm)
+rk.first.plot ()
+ok.to.proceed ("<b>Replication of Figure 7</b>: Five plots have been created, and the first has been activated.</br>
+Click on the 'Go to plot' toolbar icon for a dropdown list of plots.")
