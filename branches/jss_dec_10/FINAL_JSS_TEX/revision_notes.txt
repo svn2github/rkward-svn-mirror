@@ -8,6 +8,9 @@ o In itemized/bullet lists please capitalize the first word of the item.
 o All code comments (#) should be removed and incorporated within the text
 of the manuscript.
 
+References
+  - Java (not: JAVA, java)
+
 --- Notes from JSS that we have addressed, but which we are not entirely sure about ---
 
 Code:
@@ -61,10 +64,6 @@ o Figure placement (i.e. placement of floating objects):
   reference in the manuscript. It should first use the "t!" option for
   placement. If a figure then ends up before the start of its (sub)section,
   "t!" should be changed to "b!".  e.g., {figure}[b!].
-
-References
-  - Java (not: JAVA, java)
-
 
 --- Items that we are not sure about ---
 ---- Use of the \proglang macro ----
