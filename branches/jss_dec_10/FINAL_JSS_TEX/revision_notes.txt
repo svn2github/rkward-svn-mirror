@@ -1,0 +1,108 @@
+--- Notes from JSS that we have addressed, already ---
+o In all cases, text/tables/figures\equations must fit within the normal
+textwidth of the manuscript. 
+	o Pages: 1,32
+
+o In itemized/bullet lists please capitalize the first word of the item. 
+
+--- Notes from JSS that we have not addressed, yet ---
+
+Manuscript:
+o As a reminder, please make sure that:
+  - \proglang, \pkg and \code have been used for highlighting throughout
+the paper (including titles and references), except where explicitly escaped.
+  - see our notes below
+
+o Abbreviation expansions should only be introduced in the abstract if they
+are needed again within the abstract. If an expansion is introduced within
+the abstract it needs to be introduced again within the manuscript the
+first time it is used.
+	o  KDE
+	- see our notes below
+
+o Abbreviations should be spelled in upper-case letters without additional
+formatting (i.e., without periods, without small caps, italics, etc.). All
+abbreviations should be introduced with their expansion where the expansion
+should NOT be capitalized. (Exceptions are, of course, when the expansion
+contains proper names or the first word is the first word of a sentence.)
+Examples would include "support vector machine (SVM)" or "MCMC (Markov
+chain Monte Carlo)" etc.
+	o please check all abbreviations
+	- see our notes below
+
+o All code comments (#) should be removed and incorporated within the text
+of the manuscript.
+
+
+o Figure placement (i.e. placement of floating objects): 
+  The {figure} or {table} environment should be close to the first
+  reference in the manuscript. It should first use the "t!" option for
+  placement. If a figure then ends up before the start of its (sub)section,
+  "t!" should be changed to "b!".  e.g., {figure}[b!].
+
+References
+  - Java (not: JAVA, java)
+
+Code:
+Please include a standalone replication script of all code/examples
+used within the manuscript
+
+
+--- Items that we are not sure about ---
+---- Use of the \proglang macro ----
+In several cases, we are not entirely sure, whether the use of the \proglang macro is called for or not.
+The macro documentation says:
+
+% \DescribeMacro{\proglang}
+% This should be used for typesetting the names of programming
+% languages, e.g., |\proglang{Java}|, |\proglang{C++}| or |\proglang{R}|.
+% This applies also to programmable environments which also have a GUI
+% like |\proglang{SAS}|, |\proglang{Stata}| or |\proglang{S-PLUS}|.
+
+However, for some cases, it appears debatable, whether they consitute a "programmable environment".
+Below is a list of applicable terms that we decided to mark up, or not to mark up with the
+\proglang macro:
+
+----- We have used the \proglang macro on these items -----
+* R: (clear case)
+* Java: (clear case)
+* C++: (clear case)
+* ECMAScript: (clear case)
+* Tcl/Tk: (clear case)
+* Qt:     Not a programming language, but a (C++-based) programming library.
+* KDE:    Probably not a prototypical example, but still a "programmable environment"
+          (using D-Bus, shell scripting, and many programming languages). Also, in the
+          context of this article, it is primarily used to name the KDE programming
+          libraries.
+* HTML, XML: We are not entirely sure, whether these markup languages are to be considered
+          "programmable", but have decided to use the \proglang macro for these.
+-- TODO --
+Complete?
+
+----- We have not used the \proglang macro on these items -----
+* PNG, JPEG: Binary file formats
+* TSV, CSV: Text based file formats. We did not consider these are "programmable"
+* SVG, ODF: These are XML-based, and arguably "programmable". However, we decided not
+          to use the \proglang macro, here, for consistency with the other file
+          storage formats.
+* RKWard: The program presented in this article is a GUI and IDE to R. As such, it provides
+          full access to R's programmability. It also features extensibility by plugins. For
+          the purpose of markup, we decided to consider it as a pure GUI, however, rather than
+          a complete environment. We are not sure, whether or not this is in line with the
+          intended usage of the macro.
+-- TODO --
+Complete?
+
+---- Expansion of acronyms or partial abbreviations ----
+We have decided to treat the following items as proper names that do not need to be
+introduced in their expanded form, although they could be read as abbreviations, or
+contain abbreviated portions.
+* KDE
+* Tcl/Tk
+* ECMAScript
+* Mac OS X
+* PHP
+* GNU
+Further, we refrained from expanding the names of R packages such as "JGR".
+-- TODO --
+Complete?
