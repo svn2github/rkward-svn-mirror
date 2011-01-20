@@ -85,25 +85,27 @@ environment, which registers any write-access to the object\footnote{
 
 The use of active bindings has significant performance implications when
 objects are accessed very frequently. This is particularly notable where an
-object inside the global environment (i.\,e., an object wrapped into an active
-binding) is used as the index variable in a loop, as illustrated by the
-following example:
+object inside the global environment is used as the index variable in a loop,
+as illustrated by the following example. When control returns to the top level
+prompt, after the first assignment, \code{i} will become subject to object modification
+detection (i.\,e., it will be wrapped into an active
+binding). The subsequent \code{for} loop will then run slow.
 
 \begin{Code}
-# 'i', created below, will be subject to object modification detection
-# as soon as the user command returns
-i <- 1
+R> i <- 1
+R> for (i in 1:100000) i + i
+\end{Code}
 
-# this loop will run slow, since 'i' is stored as an active binding
-for (i in 1:100000) i + i
+In contrast, in the following example, \code{i} is a local object, and will not
+be replaced by an active binding. Therefore the loop will run approximately as fast
+as in a plain \proglang{R} session:
 
-f <- function () {
-    # this loop will run approximately as fast as in plain R
-    # 'i' is a local object in this function, and not subject
-    # to object modification detection
-    for (i in 1:100000) i + i
-}
-f ()
+\begin{Code}
+R> f <- function () {
+R+    i <- 1
+R+    for (i in 1:100000) i + i
+R+ }
+R> f ()
 \end{Code}
 
 Future versions of RKWard will try to avoid this performance problem. 

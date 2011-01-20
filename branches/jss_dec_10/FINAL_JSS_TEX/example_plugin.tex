@@ -11,8 +11,10 @@ a simple dialog for a t-test. For brevity, the help-file is omitted.
 A so called ``.pluginmap'' file declares each plugin, and, if appropriate, defines where it should
 be placed in the menu hierarchy. Usually each .pluginmap file declares many plugins. In this example
 we only show one, namely, a two variable t-test (see Figure~\ref{fig:ttest-gui-example}). 
-The pluginmap (\code{<!DOCTYPE rkpluginmap>}) gives a unique identifier (``id"), the location of the GUI description (``file"), and the window title (``label''). The menu
-is defined in a hierarchical structure, as shown in the code example below\footnote{Long lines are broken at ``$\ldots~\ldots$''.}. Moreover, the position within the menu can be explicitly defined.
+The pluginmap (\code{<!DOCTYPE rkpluginmap>}) gives a unique identifier (``id''), the location of the
+GUI description (``file"), and the window title (``label''). The menu layout is defined in a hierarchical
+structure by nesting \code{<menu>} elements to form toplevel menus and submenus. Menus with the same ``id''
+are merged across .pluginmap files. Moreover, the position within the menu can be explicitly defined (attribute ``index'').
 This might be required if the menu entries are to be ordered non-alphabetically.
 
 \begin{footnotesize}
@@ -21,14 +23,11 @@ This might be required if the menu entries are to be ordered non-alphabetically.
 
 <document base_prefix="" namespace="rkward">
   <components>
-    <component type="standard" id="t_test_two_vars" file="analysis/t_test_two_vars.xml" ...
-      ... label="Two Variable t-test" />
+    <component type="standard" id="t_test_two_vars"
+          file="analysis/t_test_two_vars.xml" label="Two Variable t-test" />
   </components>
 
   <hierarchy>
-    <!-- Menu hierarchy can be defined in XML, easily.
-    Menus with the same "id"-attribute will be merged, even if defined in
-    separate .pluginmap files. -->
     <menu id="analysis" label="Analysis" index="4">
       <menu id="means" label="Means" index="4">
         <menu id="ttests" label="t-Tests">
@@ -55,8 +54,9 @@ This might be required if the menu entries are to be ordered non-alphabetically.
 The main \proglang{XML} file of each plugin defines the layout and behavior of the GUI, and references the
 \proglang{ECMAScript} file that is used for generating \proglang{R} code from UI settings and the help file (not included in this paper).
 
-GUI logic can be defined directly in the \proglang{XML} file. In this example, the ``Assume equal variances'' checkbox
-is only enabled for paired sample tests. Optionally, GUI behavior can also be scripted in \proglang{ECMAScript}.
+GUI logic can be defined directly in the \proglang{XML} file (the \code{<logic>} element).
+In this example, the ``Assume equal variances'' checkbox is only enabled for paired sample tests.
+Optionally, GUI behavior can also be scripted in \proglang{ECMAScript}.
 
 The \proglang{XML} file defines the t-test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs (Figure~\ref{fig:t_test}A).
 On the first tab, two variables can be selected (\code{<varslot .../>}). These are set to be ``required'', i.\,e.,
@@ -71,7 +71,6 @@ additional settings like the confidence level (default 0.95).
   <help file="t_test_two_vars.rkh"/>
 
   <logic>
-    <!-- GUI behavior can also be scripted in ECMAScript. -->
     <connect client="varequal.enabled" governor="paired.not"/>
   </logic>
 
