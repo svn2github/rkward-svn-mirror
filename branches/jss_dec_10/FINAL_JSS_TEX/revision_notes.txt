@@ -64,7 +64,7 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
 \proglang macro:
 
 ----- We have used the \proglang macro on these items -----
-* R, S, ECMAScript, JavaScript, Java, C++, Tcl/Tk: We consider these clear cases.
+* R, S, ECMAScript, JavaScript, Java, C++, Tcl/Tk, SPSS, Stata: We consider these clear cases.
 * Rgui.exe, Rgui.app: As the "official" R GUIs, we decided to treat these the same as
           R, i.e. to use the \proglang macro.
 * Qt:     Not a programming language, but a (C++-based) programming library.
@@ -78,8 +78,8 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
 - Complete?
 
 ----- We have not used the \proglang macro on these items -----
-* PNG, JPEG: Binary file formats
-* TSV, CSV: Text based file formats. We did not consider these are "programmable"
+* PNG, JPEG: Binary file formats.
+* TSV, CSV: Text based file formats. We did not consider these as "programmable".
 * SVG, ODF: These are XML-based, and arguably "programmable". However, we decided not
           to use the \proglang macro, here, for consistency with the other file
           storage formats.
@@ -93,7 +93,7 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
           intended usage of the macro.
 * R Commander: For similar reasons, we marked up only the "R" in R Commander with the
           \proglang macro (the corresponding package Rcmdr is marked up using the \pkg macro).
-* Red-R:  Not marked as \proglang, for the same reason as RKWard.
+* Red-R:  Not marked as \proglang, for the same reason as "RKWard".
 -- TODO --
 - Complete?
 
@@ -113,6 +113,8 @@ contain abbreviated portions, or portions that were originally derived from abbr
 * XMLGUI
 * KWord
 * KPart
+* SPSS
+* Stata
 Further, we refrained from expanding the names of R packages such as "JGR".
 -- TODO --
 - Complete?
