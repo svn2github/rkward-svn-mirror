@@ -76,7 +76,7 @@ However, for technical reasons only the shortcuts of currently active components
 will be listed. Thus, for example, to
 configure data editor shortcuts, one has to open a data editor first and
 then to select ``Settings$\rightarrow$Configure Shortcuts''. Since RKWard relies on the 
-\proglang{KDE} SC editor component,
+\proglang{KDE} editor component,
 shortcuts for the script editor (Section~\ref{sec:code_editor}) are managed separately via 
 ``Settings$\rightarrow$Configure Editor$\rightarrow$Shortcuts''. On most systems, it is also
 possible to configure shortcuts by right-clicking on the respective
@@ -300,7 +300,7 @@ basic recipe for most of the functionality provided by RKWard
 (see Section~\ref{sec:technical_plugins} for details). For
 the purpose of this article we will look at the standard
 elements of data handling functions by an example of importing CSV
-(comma-separated values) data\footnote {
+(comma separated values) data\footnote {
   Note that on purpose, RKWard does not have its
   own file format for data import and export, but rather uses
   \proglang{R} workspaces as default data format. Additionally, it is possible
@@ -313,8 +313,8 @@ elements of data handling functions by an example of importing CSV
 At the time of this writing, RKWard provides support for importing SPSS, 
 Stata, and ``delimited text'' data. Internally, RKWard
 relies on standard \proglang{R} functions and the package \pkg{foreign}
-\citep{Murdoch2002} for reading these data files. To import CSV (comma separated values)
-data, select ``File$\rightarrow$Import format$\rightarrow$Import Text$\rightarrow$CSV''
+\citep{Murdoch2002} for reading these data files. To import CSV data,
+select ``File$\rightarrow$Import format$\rightarrow$Import Text$\rightarrow$CSV''
 data from the menu. This will open the dialog shown in
 Figure~\ref{fig:CSV_import}. The central area of this dialog provides 
 options to control the import. The 

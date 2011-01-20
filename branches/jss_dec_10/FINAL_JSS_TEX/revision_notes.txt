@@ -64,11 +64,9 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
 \proglang macro:
 
 ----- We have used the \proglang macro on these items -----
-* R: (clear case)
-* Java: (clear case)
-* C++: (clear case)
-* ECMAScript: (clear case)
-* Tcl/Tk: (clear case)
+* R, S, ECMAScript, JavaScript, Java, C++, Tcl/Tk: We consider these clear cases.
+* Rgui.exe, Rgui.app: As the "official" R GUIs, we decided to treat these the same as
+          R, i.e. to use the \proglang macro.
 * Qt:     Not a programming language, but a (C++-based) programming library.
 * KDE:    Probably not a prototypical example, but still a "programmable environment"
           (using D-Bus, shell scripting, and many programming languages). Also, in the
@@ -77,7 +75,7 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
 * HTML, XML: We are not entirely sure, whether these markup languages are to be considered
           "programmable", but have decided to use the \proglang macro for these.
 -- TODO --
-Complete?
+- Complete?
 
 ----- We have not used the \proglang macro on these items -----
 * PNG, JPEG: Binary file formats
@@ -85,24 +83,40 @@ Complete?
 * SVG, ODF: These are XML-based, and arguably "programmable". However, we decided not
           to use the \proglang macro, here, for consistency with the other file
           storage formats.
+* PDF:    Although based on the PostScript programming language, we decided not to use
+          the \proglang macro in this case, for consistency with other file storage
+          formats.
 * RKWard: The program presented in this article is a GUI and IDE to R. As such, it provides
           full access to R's programmability. It also features extensibility by plugins. For
           the purpose of markup, we decided to consider it as a pure GUI, however, rather than
           a complete environment. We are not sure, whether or not this is in line with the
           intended usage of the macro.
+* R Commander: For similar reasons, we marked up only the "R" in R Commander with the
+          \proglang macro (the corresponding package Rcmdr is marked up using the \pkg macro).
+* Red-R:  Not marked as \proglang, for the same reason as RKWard.
 -- TODO --
-Complete?
+- Complete?
 
 ---- Expansion of acronyms or partial abbreviations ----
 We have decided to treat the following items as proper names that do not need to be
 introduced in their expanded form, although they could be read as abbreviations, or
-contain abbreviated portions.
+contain abbreviated portions, or portions that were originally derived from abbreviations.
 * KDE
 * Tcl/Tk
 * ECMAScript
 * Mac OS X
 * PHP
 * GNU
+* Debian
+* OpenSuse
+* SEXP
+* XMLGUI
+* KWord
+* KPart
 Further, we refrained from expanding the names of R packages such as "JGR".
 -- TODO --
-Complete?
+- Complete?
+
+-- TODO --
+- Check, whether we are really following the above lists, consistently.
+- Also check, whether we introduce all abbreviations, properly.
