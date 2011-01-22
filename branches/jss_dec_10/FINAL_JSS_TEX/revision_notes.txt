@@ -1,4 +1,13 @@
---- Notes from JSS that we have addressed, already ---
+--- TODO ---
+- Check, whether we are really following our lists (markup, abbreviations), consistently.
+  - Also check, whether we introduce all abbreviations, properly.
+- Second check figure placement
+
+I've tried to write the remainder of these notes in a way that we can simply
+attach it to the revision, and send it to the editors. Please check wording / spelling, etc.
+
+
+--- Requests that we have addressed ---
 o In all cases, text/tables/figures\equations must fit within the normal
 textwidth of the manuscript. 
 	o Pages: 1,32
@@ -17,7 +26,7 @@ o Figure placement (i.e. placement of floating objects):
 References
   - Java (not: JAVA, java)
 
---- Notes from JSS that we have addressed, but which we are not entirely sure about ---
+--- Requests that we have addressed, but questions remain ---
 
 Code:
 Please include a standalone replication script of all code/examples
@@ -40,20 +49,25 @@ not in a plain R session.
 Source code for RKWard 0.5.4 can be obtained from
 http://sourceforge.net/projects/rkward/files/Current_Stable_Releases/rkward-0.5.4.tar.gz/download .
 
---- Notes from JSS that we have not addressed, yet ---
-
 Manuscript:
 o As a reminder, please make sure that:
   - \proglang, \pkg and \code have been used for highlighting throughout
 the paper (including titles and references), except where explicitly escaped.
-  - see our notes below
+
+We have checked our usage of these macros, and esp. added appropriate highlighting
+in titles and references. Note that for several terms we are not entirely sure,
+whether it is considered appropriate to use the \proglang macro or not. We have added
+a corresponding list near the end of this text file.
 
 o Abbreviation expansions should only be introduced in the abstract if they
 are needed again within the abstract. If an expansion is introduced within
 the abstract it needs to be introduced again within the manuscript the
 first time it is used.
 	o  KDE
-	- see our notes below
+
+We have removed the abbreviation "IDE" in the abstract. We have decided
+to consider KDE (and several other acronyms) as a proper name, and we do not
+provide an expansion, deliberately (see below).
 
 o Abbreviations should be spelled in upper-case letters without additional
 formatting (i.e., without periods, without small caps, italics, etc.). All
@@ -63,7 +77,14 @@ contains proper names or the first word is the first word of a sentence.)
 Examples would include "support vector machine (SVM)" or "MCMC (Markov
 chain Monte Carlo)" etc.
 	o please check all abbreviations
-	- see our notes below
+
+We have checked our usage of abbreviations and their introduction, and have
+corrected several occurences. For several terms which are derived from
+abbreviations, can be read as acronyms, or contain portions of abbreviations or
+acronyms, we have decided to treat these as proper names, which are not
+introduced with an expansion. A list terms that we have / have not treated as
+an abbreviation is included near the end of this text file. Naturally we will
+be happy to adjust our treatment of these terms per your request.
 
 --- Items that we are not sure about ---
 ---- Use of the \proglang macro ----
@@ -91,8 +112,6 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
           libraries.
 * HTML, XML: We are not entirely sure, whether these markup languages are to be considered
           "programmable", but have decided to use the \proglang macro for these.
--- TODO --
-- Complete?
 
 ----- We have not used the \proglang macro on these items -----
 * PNG, JPEG: Binary file formats.
@@ -111,8 +130,6 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
 * R Commander: For similar reasons, we marked up only the "R" in R Commander with the
           \proglang macro (the corresponding package Rcmdr is marked up using the \pkg macro).
 * Red-R:  Not marked as \proglang, for the same reason as "RKWard".
--- TODO --
-- Complete?
 
 ---- Expansion of acronyms or partial abbreviations ----
 We have decided to treat the following items as proper names that do not need to be
@@ -137,7 +154,8 @@ contain abbreviated portions, or portions that were originally derived from abbr
 Further, we refrained from expanding the names of R packages such as "JGR", and any terms
 marked up as \code.
 
-The following abbreviations are introduced in the article (page number of introduction):
+The following items are treated as abbreviations, and are introduced in the
+article (page number of introduction is given in parentheses):
 * GUI (1 & 2)
 * IDE (2)
 * GPL (3)
@@ -155,12 +173,3 @@ The following abbreviations are introduced in the article (page number of introd
 * XML (22)
 * IRT (24)
 * ECDF (25)
--- TODO --
-- Complete?
-
--- Generic TODO list --
-- Check, whether we are really following the above lists (markup, abbreviations), consistently.
-  - Also check, whether we introduce all abbreviations, properly.
-- Second check figure placement
-
-
