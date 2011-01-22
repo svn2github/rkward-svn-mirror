@@ -8,6 +8,12 @@ o In itemized/bullet lists please capitalize the first word of the item.
 o All code comments (#) should be removed and incorporated within the text
 of the manuscript.
 
+o Figure placement (i.e. placement of floating objects): 
+  The {figure} or {table} environment should be close to the first
+  reference in the manuscript. It should first use the "t!" option for
+  placement. If a figure then ends up before the start of its (sub)section,
+  "t!" should be changed to "b!".  e.g., {figure}[b!].
+
 References
   - Java (not: JAVA, java)
 
@@ -58,12 +64,6 @@ Examples would include "support vector machine (SVM)" or "MCMC (Markov
 chain Monte Carlo)" etc.
 	o please check all abbreviations
 	- see our notes below
-
-o Figure placement (i.e. placement of floating objects): 
-  The {figure} or {table} environment should be close to the first
-  reference in the manuscript. It should first use the "t!" option for
-  placement. If a figure then ends up before the start of its (sub)section,
-  "t!" should be changed to "b!".  e.g., {figure}[b!].
 
 --- Items that we are not sure about ---
 ---- Use of the \proglang macro ----
@@ -136,6 +136,9 @@ Further, we refrained from expanding the names of R packages such as "JGR".
 -- TODO --
 - Complete?
 
--- TODO --
-- Check, whether we are really following the above lists, consistently.
-- Also check, whether we introduce all abbreviations, properly.
+-- Generic TODO list --
+- Check, whether we are really following the above lists (markup, abbreviations), consistently.
+  - Also check, whether we introduce all abbreviations, properly.
+- Second check figure placement
+
+

@@ -19,7 +19,7 @@ access point to most data import, manipulation, analysis, and
 visualization features (see Section~\ref{sec:analyzing_data}) for which RKWard provides a GUI
 interface.
 
-\begin{figure}[htp]
+\begin{figure}[b!]
  \centering
  \includegraphics[width=15.450cm]{../figures/main_window.png}
  \caption{Default RKWard main window after start up. 
@@ -165,15 +165,15 @@ application) as a single string, vector, or matrix, suitable
 for inclusion in an \proglang{R} script, optionally
 transforming it in advance (Figure~\ref{fig:special_paste}).
 
-\begin{figure}[htp]
+\begin{figure}[t!]
  \centering
  \includegraphics[width=15.5cm]{../figures/code_hinting.png}
  \caption{Code hinting features of the script editor. The script editor is able to hint A) \proglang{R} object names
-and B) function arguments. Random data (\code{rnorm()}, n = 50) were assigned to a variable and later used in Figure~\ref{fig:plot_history}.}
+and B) function arguments.}
  \label{fig:code_hinting}
 \end{figure}
 
-\begin{figure}[htp]
+\begin{figure}[t!]
  \centering
  \includegraphics[width=8.043cm]{../figures/special_paste.png}
  \caption{Paste special dialog. This tool allows to paste data (e.\,g., tabular, text) from the clipboard, directly to an 
@@ -228,7 +228,7 @@ for editing from the workspace browser. For opening objects from
 \proglang{R} code, the function \code{rk.edit()} can be used.
 Figure~\ref{fig:data_editors} shows multiple \code{data.frame}s open for editing.
 
-\begin{figure}[htp]
+\begin{figure}[b!]
  \centering
  \includegraphics[width=15.5cm]{../figures/data_editors.png}
  \caption{RKWard with several \code{data.frame}s in use at the same time. A) 
@@ -322,7 +322,7 @@ options to control the import. The
 it is required to specify a file before the dialog can proceed.
 Further options are available from the tabbed pages of the central area.
 
-\begin{figure}[htp]
+\begin{figure}[b!]
  \centering
  \includegraphics[width=15.5cm]{../figures/CSV_import.png}
  \caption{General data import dialog. Useful defaults for a variety of formats can
@@ -381,7 +381,7 @@ renders its instances on other devices as ``new'' and hence can be added
 back to the plot history. In addition, duplicating or closing a device
 window records any unsaved plots to the history.
 
-\begin{figure}[htp]
+\begin{figure}[b!]
  \centering
  \includegraphics{../figures/plot_history_cropped.png}
  \caption{On{}-screen graphics device window in RKWard. The plot history is 
@@ -396,8 +396,8 @@ window records any unsaved plots to the history.
 Further, RKWard provides access to different plotting functions using GUI dialogs,
 available from the ``Plots'' menu. Wherever appropriate, RKWard supports a ``plot
 preview'' feature. When the ``Preview'' box of
-the respective dialog is checked (see Figure~\ref{fig:boxplot1}), a device window is opened, which
-shows the plot as it would be created with the current settings. The
+the respective dialog is checked, a device window is opened, which
+shows the plot as it would be created with the current settings (see Section~\ref{sec:create_plot} for an example). The
 preview is updated automatically as the user makes changes, allowing to
 see the effect of each setting instantly\footnote{The preview is
 updated asynchronously to keep the GUI responsive; see Section~\ref{sec:technical_graphics}.}. For example, the CLT 
@@ -437,7 +437,7 @@ with an automated way to conduct the same analysis again on new
 data, providing benefits similar to, for example, the automated report generation
 available from \pkg{RreportGenerator} \citep{RaffelsbergerW2008}.
 
-\begin{figure}[htp]
+\begin{figure}[t!]
  \centering
  \includegraphics[width=15.5cm]{../figures/results_output_cropped.png}
  \caption{Sample contents of the output window. \code{DNase} data of the \pkg{datasets} package was used. 
