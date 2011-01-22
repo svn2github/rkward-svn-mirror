@@ -132,7 +132,29 @@ contain abbreviated portions, or portions that were originally derived from abbr
 * KPart
 * SPSS
 * Stata
-Further, we refrained from expanding the names of R packages such as "JGR".
+* Kate
+* JPEG
+Further, we refrained from expanding the names of R packages such as "JGR", and any terms
+marked up as \code.
+
+The following abbreviations are introduced in the article (page number of introduction):
+* GUI (1 & 2)
+* IDE (2)
+* GPL (3)
+* GFDL (3)
+* TDI (6)
+* CSV (10)
+* CLT (13)
+* HTML (13)
+* ODF (13)
+* PNG (13)
+* SVG (13)
+* CRAN (14)
+* PDF (14-15)
+* API (20)
+* XML (22)
+* IRT (24)
+* ECDF (25)
 -- TODO --
 - Complete?
 

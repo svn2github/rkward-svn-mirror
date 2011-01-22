@@ -47,10 +47,10 @@ This might be required if the menu entries are to be ordered non-alphabetically.
 \end{figure}
 
 
-\subsection {Defining the dialog UI}
+\subsection {Defining the dialog GUI}
 \label{sec:defining_dialog_ui}
 The main \proglang{XML} file of each plugin defines the layout and behavior of the GUI, and references the
-\proglang{ECMAScript} file that is used for generating \proglang{R} code from UI settings and the help file (not included in this paper).
+\proglang{ECMAScript} file that is used for generating \proglang{R} code from GUI settings and the help file (not included in this paper).
 
 GUI logic can be defined directly in the \proglang{XML} file (the \code{<logic>} element).
 In this example, the ``Assume equal variances'' checkbox is only enabled for paired sample tests.
@@ -108,9 +108,9 @@ additional settings like the confidence level (default 0.95).
 \end{Code}
 \end{footnotesize}
 
-\subsection[Generating R code from UI settings]{Generating \proglang{R} code from UI settings}
+\subsection[Generating R code from GUI settings]{Generating \proglang{R} code from GUI settings}
 \label{sec:generating_r_code_from_ui_settings}
-A simple \proglang{ECMAScript} script is used to generate \proglang{R} code from UI settings (using \code{echo()} commands)\footnote{
+A simple \proglang{ECMAScript} script is used to generate \proglang{R} code from GUI settings (using \code{echo()} commands)\footnote{
   See Figure~\ref{fig:t_test}A) for code generated in this example.
 }. Generated code for each plugin is divided into three sections: ``Preprocess'', ``Calculate'', and ``Printout'', although each
 may be empty.
