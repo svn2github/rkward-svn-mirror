@@ -197,8 +197,8 @@ interface unlike the native implementations in \code{windows()} and \code{quartz
 \subsection{Plugin infrastructure}
 \label{sec:technical_plugins}
 One of the earliest features of RKWard was the extensibility by plugins.
-Basically, plugins in RKWard provide complete GUI-dialogs, or re-usable
-GUI-components, which accept user settings and translate those user settings
+Basically, plugins in RKWard provide complete GUI dialogs, or re-usable
+GUI components, which accept user settings and translate those user settings
 into \proglang{R} code\footnote{
     Plugins are also used in some other contexts within RKWard, for instance, the
     integrated text editor (kate part) supports extensions via plugins and user scripts. At this point we
@@ -238,7 +238,7 @@ manual, see][]{Friedrichsmeier2010}:
     \item
     A second \proglang{XML} file describes the plugin GUI layout itself (Section~\ref{sec:defining_dialog_ui}). 
     Most importantly this includes
-    the definition of the GUI-layout and GUI-behavior. High level GUI-elements can
+    the definition of the GUI layout and GUI behavior. High level GUI elements can
     be defined with simple \proglang{XML}-tags. Layout is based on ``rows'' and ``columns'',
     instead of pixel counts. In most cases this allows for a very sensible resizing
     behavior. RKWard supports single-page dialogs and multi-page wizards, however,
@@ -263,7 +263,7 @@ manual, see][]{Friedrichsmeier2010}:
 
     \item
     A third \proglang{XML} file defines a help page. This help page usually links to the \proglang{R} help
-    pages of the main functions/concepts used by the plugin, as well as to other 
+    pages of the main functions/concepts used by the plugin, as well as to other
     related RKWard help pages. Compared to \proglang{R} help
     pages, the plugin help pages try to give more hands-on advice on using the
     plugin. Plugins can be invoked from their help page by clicking on a link near
