@@ -131,6 +131,9 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
 * R Commander: For similar reasons, we marked up only the "R" in R Commander with the
           \proglang macro (the corresponding package Rcmdr is marked up using the \pkg macro).
 * Red-R:  Not marked as \proglang, for the same reason as "RKWard".
+* X11:    Used as the name of the corresponding platform, rather than the name of the library
+          in the context of this article.
+* XEmbed: A protocol. Here we interpreted the term to name a technology similar to "repartening".
 
 ---- Expansion of acronyms or partial abbreviations ----
 We have decided to treat the following items as proper names that do not need to be
