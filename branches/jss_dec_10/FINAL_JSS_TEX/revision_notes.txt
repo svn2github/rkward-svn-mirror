@@ -82,7 +82,7 @@ We have checked our usage of abbreviations and their introduction, and have
 corrected several occurences. For several terms which are derived from
 abbreviations, can be read as acronyms, or contain portions of abbreviations or
 acronyms, we have decided to treat these as proper names, which are not
-introduced with an expansion. A list terms that we have / have not treated as
+introduced with an expansion. A list of terms that we have / have not treated as
 an abbreviation is included near the end of this text file. Naturally we will
 be happy to adjust our treatment of these terms per your request.
 
@@ -151,6 +151,7 @@ contain abbreviated portions, or portions that were originally derived from abbr
 * Stata
 * Kate
 * JPEG
+* UNIX
 Further, we refrained from expanding the names of R packages such as "JGR", and any terms
 marked up as \code.
 
