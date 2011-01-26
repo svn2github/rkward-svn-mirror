@@ -123,7 +123,7 @@ In addition to \proglang{R}, RKWard is based on the \proglang{KDE} libraries, wh
 on \proglang{Qt}, and implemented mostly in \proglang{C++}. Compared to many competing libraries,
 this constitutes a rather heavy dependency. Moreover, the \proglang{KDE} libraries are
 still known to have portability issues especially on Mac OS X, and to some degree
-also on the Windows platform.
+also on the Microsoft Windows platform.
 
 The major reason for choosing the \proglang{KDE} and \proglang{Qt} libraries was their 
 many high level features which have allowed RKWard development to make quick
@@ -159,7 +159,7 @@ Contrary to the approach used in \pkg{JGR} \citep{JGR2010}, RKWard does
 not technically provide a custom on-screen graphics device. RKWard detects when
 new graphics windows are created via calls to \code{X11()} or \code{windows()}. These windows
 are then ``captured'' in a platform dependent way (based on the XEmbed \citep{Ettrich2002} protocol
-for X11, on reparenting for the Windows platform). An RKWard menu bar and a
+for X11, on reparenting for the Microsoft Windows platform). An RKWard menu bar and a
 toolbar is then added to these windows to provide added functionality. While
 this approach requires some platform dependent code, any corrections or
 improvements made to the underlying \proglang{R} native devices will automatically be
@@ -174,7 +174,7 @@ history; other plots are drawn but not added. The basic procedure is to identify
 changes to the on-screen canvas and record the existing plot before a new plot
 wipes it out. A single global history for the recorded plots is maintained
 which is used by all the on-screen device windows. This is similar to the
-implementation in \proglang{Rgui.exe} (Windows), but unlike the one in \proglang{Rgui.app} 
+implementation in \proglang{Rgui.exe} (Microsoft Windows), but unlike the one in \proglang{Rgui.app} 
 (Mac OS X). Each such device window points to a position in the history
 and behaves independently when recording a new plot or deleting an existing
 one.
