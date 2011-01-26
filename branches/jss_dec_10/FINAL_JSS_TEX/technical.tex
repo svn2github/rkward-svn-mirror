@@ -110,9 +110,9 @@ R> f ()
 
 Future versions of RKWard will try to avoid this performance problem. 
 One approach that is currently under consideration is to simply perform
-a pointer comparison of the SEXP records of objects in global environment with
+a pointer comparison of the \code{SEXP} records of objects in global environment with
 their copies in a hidden storage environment. Due to the implicit sharing of
-SEXP records \citep{RDCT2010a, RDCT2010b}, this should provide for a reliable
+\code{SEXP} records \citep{RDCT2010a, RDCT2010b}, this should provide for a reliable
 way to detect changes for most types of \proglang{R} objects, with comparatively low memory
 and performance overhead. Special handling will be needed for environments and
 active bindings.
@@ -209,7 +209,7 @@ GUIs for the automatic generation of \proglang{R} code.
 Much of the functionality in RKWard is currently implemented as plugins. For example, importing different file
 formats relying on the \pkg{foreign} package is achieved by this approach. Similarly,
 RKWard provides a modest GUI driven tool set for statistical analysis,
-especially for item response theory (IRT), distributions, and descriptive
+especially for item response theory, distributions, and descriptive
 statistical analysis.
 
 \subsubsection{Defining a plugin}
@@ -322,7 +322,7 @@ are
 
   \item 
   Do not hide any relevant computations from the user by performing them in the
-  \proglang{ECMAScript}. Rather, generate \proglang{R} code which will perform
+  \nobreak{\proglang{ECMAScript}}. Rather, generate \proglang{R} code which will perform
   those computations, transparently.
 
   \item

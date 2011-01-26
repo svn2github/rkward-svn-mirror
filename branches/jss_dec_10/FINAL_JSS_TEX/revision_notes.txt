@@ -1,7 +1,8 @@
 --- TODO ---
 - Check, whether we are really following our lists (markup, abbreviations), consistently.
   - Also check, whether we introduce all abbreviations, properly.
-- Second check figure placement
+- Second check figure placement and size.
+- Check final version for hyphenation problems.
 
 I've tried to write the remainder of these notes in a way that we can simply
 attach it to the revision, and send it to the editors. Please check wording / spelling, etc.
@@ -163,7 +164,6 @@ article (page number of introduction is given in parentheses):
 * GFDL (3)
 * TDI (6)
 * CSV (10)
-* CLT (13)
 * HTML (13)
 * ODF (13)
 * PNG (13)
@@ -172,5 +172,4 @@ article (page number of introduction is given in parentheses):
 * PDF (14-15)
 * API (20)
 * XML (22)
-* IRT (24)
 * ECDF (25)

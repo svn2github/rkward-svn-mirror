@@ -21,10 +21,11 @@ separator and decimal point characters respectively.
 
 The generated \proglang{R} code can be revealed by clicking on the ``Code'' button:
 
-\code{read.csv(file=`/media/software/experiment.txt', 
-na.strings = `NA', nrows = -1, skip = 0,
-check.names = TRUE, strip.white = FALSE, blank.lines.skip = TRUE)\\}
-
+\begin{Code}
+read.csv(file=`/media/software/experiment.txt',
+         na.strings = `NA', nrows = -1, skip = 0,
+         check.names = TRUE, strip.white = FALSE, blank.lines.skip = TRUE)
+\end{Code}
 
 Checking the ``Edit Object'' box automatically opens a data editor tab
 showing the imported data (Figure~\ref{fig:import_data}B).
@@ -34,7 +35,7 @@ showing the imported data (Figure~\ref{fig:import_data}B).
  \includegraphics[width=15.5cm]{../figures/import_data.png}
  \caption{A) CSV import dialog. Useful defaults for a variety of common text separated value formats can
   be set using the ``Quick Mode'' selector on the left. Beyond that, many options can be customized. B) Data editor. The imported CSV
-  data from experiment.txt are presented (data visually trimmed).}
+  data from ``experiment.txt'' are presented (data visually trimmed).}
  \label{fig:import_data}
 \end{figure}
 

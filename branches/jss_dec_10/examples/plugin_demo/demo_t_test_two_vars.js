@@ -1,4 +1,3 @@
-// globals
 var x;
 var y;
 var varequal;
