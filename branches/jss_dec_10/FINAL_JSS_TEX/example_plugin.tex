@@ -49,14 +49,14 @@ This might be required if the menu entries are to be ordered non-alphabetically.
 
 \subsection {Defining the dialog GUI}
 \label{sec:defining_dialog_ui}
-The main \proglang{XML} file of each plugin defines the layout and behavior of the GUI, and references the
+The main XML file of each plugin defines the layout and behavior of the GUI, and references the
 \proglang{ECMAScript} file that is used for generating \proglang{R} code from GUI settings and the help file (not included in this paper).
 
-GUI logic can be defined directly in the \proglang{XML} file (the \code{<logic>} element).
+GUI logic can be defined directly in the XML file (the \code{<logic>} element).
 In this example, the ``Assume equal variances'' checkbox is only enabled for paired sample tests.
 Optionally, GUI behavior can also be scripted in \proglang{ECMAScript}.
 
-The \proglang{XML} file defines the t-test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs (Figure~\ref{fig:t_test}A).
+The XML file defines the t-test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs (Figure~\ref{fig:t_test}A).
 On the first tab, two variables can be selected (\code{<varslot .../>}). These are set to be ``required'', i.\,e.,
 the ``Submit'' button will remain disabled until the user has made a valid selection for both. The second tab includes some
 additional settings like the confidence level (default 0.95).

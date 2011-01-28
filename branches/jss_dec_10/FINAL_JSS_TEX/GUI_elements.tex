@@ -299,8 +299,8 @@ This general pattern, implemented as plugins, is the
 basic recipe for most of the functionality provided by RKWard
 (see Section~\ref{sec:technical_plugins} for details). For
 the purpose of this article we will look at the standard
-elements of data handling functions by an example of importing CSV
-(comma separated values) data\footnote {
+elements of data handling functions by an example of importing comma-separated values (CSV)
+data\footnote {
   Note that on purpose, RKWard does not have its
   own file format for data import and export, but rather uses
   \proglang{R} workspaces as default data format. Additionally, it is possible
@@ -451,8 +451,8 @@ RKWard is very reluctant to round numerical results for the sake of a
 pretty output. Rather, the focus is on making the results easily
 accessible for further processing, typically in a dedicated word
 processor. Output is based on
-\proglang{HTML} (hypertext markup language), and the raw
-\proglang{HTML} file and any images therein can be directly
+HTML, and the raw
+HTML file and any images therein can be directly
 retrieved from a dedicated folder
 ($\sim\!$/.rkward, by default). It is also
 possible to select and copy sections of the output directly from the
@@ -460,14 +460,13 @@ output window, and to paste them into office applications as
 richly formatted text; even images and tables can be easily copied by drag \& drop to many office applications. In future releases, 
 it is planned to integrate RKWard
 with existing office suites. This
-will possibly also mean addition of different file formats such as ODF (open
-document format) and technologies such as \pkg{sweave} and \pkg{odfWeave}
+will possibly also mean addition of different file formats such as Open Document Format and technologies such as \pkg{sweave} and \pkg{odfWeave}
 \citep{Leisch2002, Kuhn2006}.
 
 Images contained in the output are stored as
-PNG (portable network graphics)\footnote{\url{http://www.libpng.org/pub/png/}} by
-default, but JPEG\footnote{\url{http://www.jpeg.org/index.html}} and
-SVG (scalable vector graphics)\footnote{\url{http://www.w3.org/Graphics/SVG/}}
+portable network graphics (PNG)\footnote{\url{http://www.libpng.org/pub/png/}} by
+default, but JPEG\footnote{\url{http://www.jpeg.org/jpeg/index.html}} and
+scalable vector graphics (SVG)\footnote{\url{http://www.w3.org/Graphics/SVG/}}
 can also be used. Similarly, the size of 
 images can be configured by the user. It is expected that SVG will
 become the default output format eventually, but currently some SVG
@@ -477,8 +476,8 @@ rendered by older supported versions of the
 
 \subsection{Package management}
 \label{sec:package_management}
-The number of \proglang{R} packages available from CRAN (the comprehensive \proglang{R} archive
-network), Omegahat\footnote{\url{http://www.omegahat.org/}} and Bioconductor \citep{Gentleman2004} has grown exponentially since \proglang{R}\, 1.3
+The number of \proglang{R} packages available from the comprehensive \proglang{R} archive
+network (CRAN), Omegahat\footnote{\url{http://www.omegahat.org/}} and Bioconductor \citep{Gentleman2004} has grown exponentially since \proglang{R}\, 1.3
 (2001) to \proglang{R}\, 2.7 (2008) \citep{Fox2008, Ligges2003, Visne2009}. RKWard
 utilizes functionality from a growing number of these packages, but avoids
 making the installation of all supported packages a pre-requirement to using
@@ -504,9 +503,9 @@ possible to invoke external helpers \citep{Zhang2004}.
 
 The file browser tool window can be
 used to open supported file types (e.\,g., \proglang{R}
-scripts, \proglang{HTML} files) inside the main RKWard
-window. For unsupported file types (such as PDF; portable document format), the
-systems default external applications are used.
+scripts, HTML files) inside the main RKWard
+window. For unsupported file types (such as portable document format; PDF), the
+system's default external applications are used.
 
 The command log window contains a log of the commands that have been
 evaluated by the \proglang{R} engine, and any output
@@ -554,7 +553,7 @@ command. In addition, a tool view window is provided as an interface to the
 all loaded, or specific \proglang{R} packages for a specified topic.
 
 The help browser window is based on the \proglang{KDE}
-\proglang{HTML} viewer component and supports many standard
+HTML viewer component and supports many standard
 features like increasing or decreasing the font size and searching text
 within a page. Additionally, \proglang{R} code inside a help
 page can be sent to the \proglang{R} engine for

@@ -111,13 +111,13 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
           (using D-Bus, shell scripting, and many programming languages). Also, in the
           context of this article, it is primarily used to name the KDE programming
           libraries.
-* HTML, XML: We are not entirely sure, whether these markup languages are to be considered
-          "programmable", but have decided to use the \proglang macro for these.
 
 ----- We have not used the \proglang macro on these items -----
 * PNG, JPEG: Binary file formats.
 * TSV, CSV: Text based file formats. We did not consider these as "programmable".
-* SVG, ODF: These are XML-based, and arguably "programmable". However, we decided not
+* HTML, XML: We are not entirely sure, whether these markup languages are to be considered
+          "programmable", but have decided not to use the \proglang macro for these.
+* SVG, ODF: These are XML-based, and, thus, arguably "programmable". However, we decided not
           to use the \proglang macro, here, for consistency with the other file
           storage formats.
 * PDF:    Although based on the PostScript programming language, we decided not to use
@@ -156,6 +156,8 @@ contain abbreviated portions, or portions that were originally derived from abbr
 * Kate
 * JPEG
 * UNIX
+* HTML
+* XML
 Further, we refrained from expanding the names of R packages such as "JGR", and any terms
 marked up as \code.
 
@@ -168,11 +170,9 @@ article (page number of introduction is given in parentheses):
 * TDI (6)
 * CSV (10)
 * HTML (13)
-* ODF (13)
 * PNG (13)
 * SVG (13)
 * CRAN (14)
 * PDF (14-15)
 * API (20)
-* XML (22)
 * ECDF (25)
