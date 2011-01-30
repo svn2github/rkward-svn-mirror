@@ -1,11 +1,11 @@
 \section{Main elements of the user interface}
 \label{sec:user_interface}
-This section gives an overview of the main user interface elements and features of RKWard.
-For a use case oriented example of an RKWard session, see Section~\ref{sec:using_RKWard}.
+This section gives an overview of the main user interface elements and features of \pkg{RKWard}.
+For a use case oriented example of an \pkg{RKWard} session, see Section~\ref{sec:using_RKWard}.
 
 The default layout\footnote{
- Many aspects of the RKWard GUI can be customized by the user. For simplicity we will
- describe the default appearance of RKWard, only.
+ Many aspects of the \pkg{RKWard} GUI can be customized by the user. For simplicity we will
+ describe the default appearance of \pkg{RKWard}, only.
 } of the main application window is divided into five
 parts, as depicted in Figure~\ref{fig:main_window}. The top of the window is occupied by menu bar and toolbar 
 (Figure~\ref{fig:main_window}A). The content of both bars is partially context
@@ -16,13 +16,13 @@ editor window. To ease orientation, all top level menus remain
 persistent, even if no actions are available for that menu in the
 current context. The menu bar of the main window is also the central
 access point to most data import, manipulation, analysis, and
-visualization features (see Section~\ref{sec:analyzing_data}) for which RKWard provides a GUI
+visualization features (see Section~\ref{sec:analyzing_data}) for which \pkg{RKWard} provides a GUI
 interface.
 
 \begin{figure}[b!]
  \centering
  \includegraphics[width=15.450cm]{../figures/main_window.png}
- \caption{Default RKWard main window after start up. 
+ \caption{Default \pkg{RKWard} main window after start up. 
 A) Menu bar and toolbar, B) tool panel showing workspace browser, C) document view area, showing
 a help page, D) tool panel showing embedded \proglang{R} console, and E) status bar.
 Panels B and D can be resized or collapsed. The red border around B indicates that the workspace browser is the active interface element.}
@@ -75,8 +75,8 @@ Key bindings can be configured from the GUI via ``Settings$\rightarrow$Configure
 However, for technical reasons only the shortcuts of currently active components 
 will be listed. Thus, for example, to
 configure data editor shortcuts, one has to open a data editor first and
-then to select ``Settings$\rightarrow$Configure Shortcuts''. Since RKWard relies on the 
-\proglang{KDE} editor component,
+then to select ``Settings$\rightarrow$Configure Shortcuts''. Since \pkg{RKWard} relies on the 
+\pkg{RKWard} editor component,
 shortcuts for the script editor (Section~\ref{sec:code_editor}) are managed separately via 
 ``Settings$\rightarrow$Configure Editor$\rightarrow$Shortcuts''. On most systems, it is also
 possible to configure shortcuts by right-clicking on the respective
@@ -137,9 +137,9 @@ selection of objects to work with, e.\,g., in an analysis plugin (see Section~\r
 \subsection{Code editor}
 \label{sec:code_editor}
 
-RKWard comes with an advanced
+\pkg{RKWard} comes with an advanced
 \proglang{R} script editor, based on the
-\proglang{KDE} advanced text editor component (Kate; \url{http://kate-editor.org/}). Features of this
+\pkg{RKWard} advanced text editor component (\pkg{Kate}; \url{http://kate-editor.org/}). Features of this
 editor include syntax highlighting (both on screen and in printouts; for
 \proglang{R} and many other script types), code
 folding, block-wise indentation adjustments or commenting, automatic
@@ -154,7 +154,7 @@ selection, predefined blocks, or the entire document to the
 offers object name completion and function argument hinting 
 (Figure~\ref{fig:code_hinting}A and B) based on the objects present in
 the \proglang{R} workspace\footnote{The object name
-completion and function argument hinting features in RKWard predate the
+completion and function argument hinting features in \pkg{RKWard} predate the
 inclusion of similar features into the core
 \proglang{R} distribution. For this reason, they are
 technically based on different mechanisms.}. A further feature specific
@@ -192,7 +192,7 @@ commands.
 
 \subsection[Using the R console]{Using the \proglang{R} console}
 \label{sec:using_R_console}
-For users with knowledge of \proglang{R}, RKWard provides direct access to the
+For users with knowledge of \proglang{R}, \pkg{RKWard} provides direct access to the
 embedded \proglang{R} engine in the
 \proglang{R} console tool window. It is important to understand that technically this is an
 emulation of \proglang{R} running in a console
@@ -200,7 +200,7 @@ session, not a real \proglang{R} session. This leads to a few subtle
 differences, e.\,g., with respect to the command history feature in
 \proglang{R}.
 
-However, for most purposes RKWard's \proglang{R} console can be used exactly
+However, for most purposes \pkg{RKWard}'s \proglang{R} console can be used exactly
 like \proglang{R} running in a terminal. Adding to that, it provides many of the
 features which are also available in the code editor (see Section~\ref{sec:code_editor}).
 Most prominently, it supports syntax highlighting, code
@@ -218,7 +218,7 @@ For further technical details, see Section~\ref{sec:technical}.
 \label{sec:spreadsheet}
 
 Historically, one of the earliest
-features of RKWard is a built-in spreadsheet-like data editor.
+features of \pkg{RKWard} is a built-in spreadsheet-like data editor.
 Currently, editing \proglang{R} objects of type
 \code{data.frame} is possible. In contrast to the \code{data.frame} editing shipped
 with the \proglang{R} core distribution, this editor
@@ -231,12 +231,12 @@ Figure~\ref{fig:data_editors} shows multiple \code{data.frame}s open for editing
 \begin{figure}[b!]
  \centering
  \includegraphics[width=15.5cm]{../figures/data_editors.png}
- \caption{RKWard with several \code{data.frame}s in use at the same time. A) 
+ \caption{\pkg{RKWard} with several \code{data.frame}s in use at the same time. A) 
   One \code{data.frame} is opened for editing in the main window. Two further \code{data.frame}s
   are opened in the background in tabs. 
   B) Another \code{data.frame} is opened as detached window. 
   C) \proglang{R}'s standard data editing features (e.\,g., \code{fix()}, \code{edit()}) 
-  are also usable within an RKWard session. In this example \code{fix(DNase)} 
+  are also usable within an \pkg{RKWard} session. In this example \code{fix(DNase)} 
   was invoked from the console (arrow).}
  \label{fig:data_editors}
 \end{figure}
@@ -257,7 +257,7 @@ column can also be assigned an arbitrary descriptive
 ``Label'', which is stored in
 \proglang{R} as an attribute of the column.
 
-Contrary to many other editors, the data editor in RKWard does not
+Contrary to many other editors, the data editor in \pkg{RKWard} does not
 automatically convert data types of columns. For instance, if a
 non-numeric string is entered into a cell of a numeric column, the data
 type of the column remains numeric, and the entered value is
@@ -277,7 +277,7 @@ the dimensions of the table. The data editor can also be set to read-only
 mode to examine data objects.
 
 In the context of data editing, it is noteworthy that
-RKWard supports working with multiple objects simultaneously, rather than
+\pkg{RKWard} supports working with multiple objects simultaneously, rather than
 limiting actions to a single active \code{data.frame}, as with e.\,g., \pkg{Rcmdr} or
 \pkg{DeduceR}. Given this non-modal interface design, multiple data editor
 windows can be opened at once (Figure~\ref{fig:data_editors}).
@@ -287,7 +287,7 @@ windows can be opened at once (Figure~\ref{fig:data_editors}).
 
 Dealing with data -- i.\,e., importing, transforming, filtering, analyzing, and visualizing  --
 is the core strength of \proglang{R}, and one central goal of
-RKWard is to make the most of this functionality available to a broader
+\pkg{RKWard} is to make the most of this functionality available to a broader
 audience by providing it in the form of easy to use GUI dialogs. Since
 the data handling functionality itself is provided by
 \proglang{R} and its numerous add-on packages, this
@@ -296,12 +296,12 @@ can basically be accomplished by defining GUI dialogs, generating
 the GUI, and having the generated code evaluated by the
 \proglang{R} engine. 
 This general pattern, implemented as plugins, is the
-basic recipe for most of the functionality provided by RKWard
+basic recipe for most of the functionality provided by \pkg{RKWard}
 (see Section~\ref{sec:technical_plugins} for details). For
 the purpose of this article we will look at the standard
 elements of data handling functions by an example of importing comma-separated values (CSV)
 data\footnote {
-  Note that on purpose, RKWard does not have its
+  Note that on purpose, \pkg{RKWard} does not have its
   own file format for data import and export, but rather uses
   \proglang{R} workspaces as default data format. Additionally, it is possible
   to import data from several sources as described in this section. Of course, further formats can
@@ -310,8 +310,8 @@ data\footnote {
   the \proglang{R} console (Section~\ref{sec:using_R_console}).
 }. Further examples are given in Section~\ref{sec:using_RKWard}.
 
-At the time of this writing, RKWard provides support for importing \proglang{SPSS},
-\proglang{Stata}, and ``delimited text'' data. Internally, RKWard
+At the time of this writing, \pkg{RKWard} provides support for importing \proglang{SPSS},
+\proglang{Stata}, and ``delimited text'' data. Internally, \pkg{RKWard}
 relies on standard \proglang{R} functions and the package \pkg{foreign}
 \citep{Murdoch2002} for reading these data files. To import CSV data,
 select ``File$\rightarrow$Import format$\rightarrow$Import Text$\rightarrow$CSV''
@@ -355,10 +355,10 @@ action by clicking on the ``Run again''-link
 \subsection{Graphics window and plot previews}
 \label{sec:plot_previews}
 
-For plotting, RKWard relies on the graphics capabilities provided by
+For plotting, \pkg{RKWard} relies on the graphics capabilities provided by
 \proglang{R}. All \proglang{R}
 devices, including on{}-screen devices, can be used in the regular way.
-However, for the \code{X11()} and \code{windows()} devices, RKWard adds a menu
+However, for the \code{X11()} and \code{windows()} devices, \pkg{RKWard} adds a menu
 bar and a toolbar to the device windows (on the Microsoft Windows platform,
 replacing the default menu bar provided by the device). The menu
 bar and toolbar give access to a number of different functions,
@@ -384,7 +384,7 @@ window records any unsaved plots to the history.
 \begin{figure}[b!]
  \centering
  \includegraphics{../figures/plot_history_cropped.png}
- \caption{On{}-screen graphics device window in RKWard. The plot history is 
+ \caption{On{}-screen graphics device window in \pkg{RKWard}. The plot history is 
   available as a drop-down list, allowing to jump directly to a previous 
   plot. In this example, five different plots were performed on the same data 
   set of a random sample (\code{rnorm()}). The plot can be 
@@ -393,8 +393,8 @@ window records any unsaved plots to the history.
  \label{fig:plot_history}
 \end{figure}
 
-Further, RKWard provides access to different plotting functions using GUI dialogs,
-available from the ``Plots'' menu. Wherever appropriate, RKWard supports a ``plot
+Further, \pkg{RKWard} provides access to different plotting functions using GUI dialogs,
+available from the ``Plots'' menu. Wherever appropriate, \pkg{RKWard} supports a ``plot
 preview'' feature. When the ``Preview'' box of
 the respective dialog is checked, a device window is opened, which
 shows the plot as it would be created with the current settings (see Section~\ref{sec:create_plot} for an example). The
@@ -411,7 +411,7 @@ the history.
 
 While all basic mechanisms of
 capturing and documenting \proglang{R} output can also
-be used, RKWard provides a dedicated output file and a output
+be used, \pkg{RKWard} provides a dedicated output file and a output
 window for documenting the results. All GUI-driven data handling
 functions (see Section~\ref{sec:analyzing_data}) write their output to this file. 
 The same applies to error messages, in case a plugin fails to perform its task.
@@ -447,7 +447,7 @@ available from \pkg{RreportGenerator} \citep{RaffelsbergerW2008}.
 \end{figure}
 
 The formatting of the output is kept to a minimum. In particular,
-RKWard is very reluctant to round numerical results for the sake of a
+\pkg{RKWard} is very reluctant to round numerical results for the sake of a
 pretty output. Rather, the focus is on making the results easily
 accessible for further processing, typically in a dedicated word
 processor. Output is based on
@@ -458,7 +458,7 @@ retrieved from a dedicated folder
 possible to select and copy sections of the output directly from the
 output window, and to paste them into office applications as
 richly formatted text; even images and tables can be easily copied by drag \& drop to many office applications. In future releases, 
-it is planned to integrate RKWard
+it is planned to integrate \pkg{RKWard}
 with existing office suites. This
 will possibly also mean addition of different file formats such as Open Document Format and technologies such as \pkg{sweave} and \pkg{odfWeave}
 \citep{Leisch2002, Kuhn2006}.
@@ -472,16 +472,16 @@ images can be configured by the user. It is expected that SVG will
 become the default output format eventually, but currently some SVG
 files produced by \proglang{R} are not properly
 rendered by older supported versions of the
-\proglang{KDE} libraries.
+\pkg{RKWard} libraries.
 
 \subsection{Package management}
 \label{sec:package_management}
 The number of \proglang{R} packages available from the comprehensive \proglang{R} archive
 network (CRAN), Omegahat\footnote{\url{http://www.omegahat.org/}} and Bioconductor \citep{Gentleman2004} has grown exponentially since \proglang{R}\, 1.3
-(2001) to \proglang{R}\, 2.7 (2008) \citep{Fox2008, Ligges2003, Visne2009}. RKWard
+(2001) to \proglang{R}\, 2.7 (2008) \citep{Fox2008, Ligges2003, Visne2009}. \pkg{RKWard}
 utilizes functionality from a growing number of these packages, but avoids
 making the installation of all supported packages a pre-requirement to using
-RKWard at all. Only once a not yet installed package is required to conduct a certain
+\pkg{RKWard} at all. Only once a not yet installed package is required to conduct a certain
 action, a package management dialog is invoked automatically, which allows to
 download and install the package from a repository such as CRAN. The package
 management dialog can also be invoked manually from the menu
@@ -489,12 +489,12 @@ management dialog can also be invoked manually from the menu
 packages. The underlying package management technology is that of \proglang{R}
 \citep{Ligges2003, Ripley2005}.
 
-RKWard supports installing packages to any user writable location. If no current
-library location is user writable, RKWard offers to create a new one. 
+\pkg{RKWard} supports installing packages to any user writable location. If no current
+library location is user writable, \pkg{RKWard} offers to create a new one. 
 On UNIX systems, interactively acquiring root privileges for
 installation to the system-wide libraries is also supported.
 The installation process
-itself can be monitored at the interface for error tracking. At the time of this writing, RKWard has no
+itself can be monitored at the interface for error tracking. At the time of this writing, \pkg{RKWard} has no
 built-in tools for the interactive exploration of \proglang{R} packages. However, it is
 possible to invoke external helpers \citep{Zhang2004}.
 
@@ -503,7 +503,7 @@ possible to invoke external helpers \citep{Zhang2004}.
 
 The file browser tool window can be
 used to open supported file types (e.\,g., \proglang{R}
-scripts, HTML files) inside the main RKWard
+scripts, HTML files) inside the main \pkg{RKWard}
 window. For unsupported file types (such as portable document format; PDF), the
 system's default external applications are used.
 
@@ -512,7 +512,7 @@ evaluated by the \proglang{R} engine, and any output
 produced by these commands. By default, the log shows only commands
 which have been entered by the user or directly correspond to user
 actions, but it can be configured to include commands which are run for
-RKWard's internal purposes such as keeping the workspace browser up
+\pkg{RKWard}'s internal purposes such as keeping the workspace browser up
 to date.
 
 Commands can be submitted while the \proglang{R} engine
@@ -527,21 +527,21 @@ purposes, it can also be used to interrupt selected commands.
 \subsection{Help system}
 \label{sec:help_system}
 
-RKWard provides access to both \proglang{R} specific and 
-RKWard specific help pages.
+\pkg{RKWard} provides access to both \proglang{R} specific and 
+\pkg{RKWard} specific help pages.
 \proglang{R} specific documentation includes help pages for functions and packages 
-and the various \proglang{R} manuals. RKWard specific documentation consists of
-help pages on RKWard in general and on specific GUI dialogs\footnote{For technical 
-background of RKWard GUI help pages please refer to Section~\ref{sec:technical_plugins_defining}.}. 
+and the various \proglang{R} manuals. \pkg{RKWard} specific documentation consists of
+help pages on \pkg{RKWard} in general and on specific GUI dialogs\footnote{For technical 
+background of \pkg{RKWard} GUI help pages please refer to Section~\ref{sec:technical_plugins_defining}.}. 
 All these various types of help pages can be browsed in the same document 
 window, and can be cross--linked. For example, help pages for
-RKWard GUI dialogs will typically link to documentation for both
-related RKWard dialogs and the underlying \proglang{R} functions.
+\pkg{RKWard} GUI dialogs will typically link to documentation for both
+related \pkg{RKWard} dialogs and the underlying \proglang{R} functions.
 An arbitrary number of help windows can be browsed simultaneously, in the
 TDI view area (see Figure~\ref{fig:main_window}C) or in detached windows.
 
 A central access point to the help system is the ``Help'' menu. Further, help pages on
-\nobreak{RKWard} GUI dialogs can be accessed from the dialog itself using the
+\nobreak{\pkg{RKWard}} GUI dialogs can be accessed from the dialog itself using the
 ``Help'' button. An useful (``reverse'') feature here is that these pages include 
 a link near the top of the page to start the corresponding GUI dialog directly.
 Help on \proglang{R} specific functions can be invoked from multiple places, 
@@ -552,7 +552,7 @@ command. In addition, a tool view window is provided as an interface to the
 \code{help.search()} command in \proglang{R}. This allows to search all installed, 
 all loaded, or specific \proglang{R} packages for a specified topic.
 
-The help browser window is based on the \proglang{KDE}
+The help browser window is based on the \pkg{RKWard}
 HTML viewer component and supports many standard
 features like increasing or decreasing the font size and searching text
 within a page. Additionally, \proglang{R} code inside a help
