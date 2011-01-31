@@ -158,7 +158,7 @@ more readable way to perform such basic text manipulation.
 Contrary to the approach used in \pkg{JGR} \citep{JGR2010}, \pkg{RKWard} does
 not technically provide a custom on-screen graphics device. \pkg{RKWard} detects when
 new graphics windows are created via calls to \code{X11()} or \code{windows()}. These windows
-are then ``captured'' in a platform dependent way (based on the \pkg{XEmbed} \citep{Ettrich2002} protocol
+are then ``captured'' in a platform dependent way (based on the XEmbed \citep{Ettrich2002} protocol
 for \pkg{X11}, on reparenting for the Microsoft Windows platform). An \pkg{RKWard} menu bar and a
 toolbar is then added to these windows to provide added functionality. While
 this approach requires some platform dependent code, any corrections or
@@ -201,7 +201,7 @@ Basically, plugins in \pkg{RKWard} provide complete GUI dialogs, or re-usable
 GUI components, which accept user settings and translate those user settings
 into \proglang{R} code\footnote{
     Plugins are also used in some other contexts within \pkg{RKWard}, for instance, the
-    integrated text editor (kate part) supports extensions via plugins and user scripts. At this point we
+    integrated text editor (\pkg{kate} part) supports extensions via plugins and user scripts. At this point we
     will focus only on plugins generating \proglang{R} code.
 }. Thus, the plugin framework is basically a tool set used to define
 GUIs for the automatic generation of \proglang{R} code.
@@ -353,7 +353,7 @@ in the active \pkg{RKWard} session unless unloaded, manually (from the workspace
 Dependencies between (embedded) plugins are handled using the \code{<require>}-tag in the plugin map.
 
 \subsection{Development process}
-\subsubsection{RKWard core and external plugins}
+\subsubsection[RKWard core and external plugins]{\pkg{RKWard} core and external plugins}
 \label{sec:technical_processes_plugins}
 Newly developed plugins are placed in a dedicated plugin map file.
 Plugins in this map are not visible to the user by
