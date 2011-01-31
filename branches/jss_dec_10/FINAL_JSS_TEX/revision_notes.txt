@@ -80,7 +80,7 @@ chain Monte Carlo)" etc.
 	o please check all abbreviations
 
 We have checked our usage of abbreviations and their introduction, and have
-corrected several occurences. For several terms which are derived from
+corrected several occurrences. For several terms which are derived from
 abbreviations, can be read as acronyms, or contain portions of abbreviations or
 acronyms, we have decided to treat these as proper names, which are not
 introduced with an expansion. A list of terms that we have / have not treated as
@@ -98,7 +98,7 @@ The macro documentation says:
 % This applies also to programmable environments which also have a GUI
 % like |\proglang{SAS}|, |\proglang{Stata}| or |\proglang{S-PLUS}|.
 
-However, for some cases, it appears debatable, whether they consitute a "programmable environment".
+However, for some cases, it appears debatable, whether they constitute a "programmable environment".
 Below is a list of applicable terms that we decided to mark up, or not to mark up with the
 \proglang macro:
 
@@ -120,11 +120,11 @@ Below is a list of applicable terms that we decided to mark up, or not to mark u
           formats.
 * R Commander: For similar reasons, we marked up only the "R" in R Commander with the
           \proglang macro (the corresponding package Rcmdr is marked up using the \pkg macro).
-* XEmbed: A protocol. Here we interpreted the term to name a technology similar to "repartening".
+* XEmbed: A protocol. Here we interpreted the term to name a technology similar to "reparenting".
 
 ---- Use of the \pkg macro
 I addition to the names of R packages, we have marked software applications and libraries with the
-\pkg marco. We did so after observing similar highlighting in published articles in JSS, such as
+\pkg macro. We did so after observing similar highlighting in published articles in JSS, such as
 http://www.jstatsoft.org/v25/s01/paper, although we remain unsure, whether this usage of the \pkg
 macro is called for or not:
 * RKWard: The program presented in this article is a GUI and IDE to R. As such, it provides
