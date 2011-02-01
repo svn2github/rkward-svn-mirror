@@ -1,13 +1,3 @@
---- TODO ---
-- Check, whether we are really following our lists (markup, abbreviations), consistently.
-  - Also check, whether we introduce all abbreviations, properly.
-- Second check figure placement and size.
-- Check final version for hyphenation problems.
-
-I've tried to write the remainder of these notes in a way that we can simply
-attach it to the revision, and send it to the editors. Please check wording / spelling, etc.
-
-
 --- Requests that we have addressed ---
 o In all cases, text/tables/figures\equations must fit within the normal
 textwidth of the manuscript. 
