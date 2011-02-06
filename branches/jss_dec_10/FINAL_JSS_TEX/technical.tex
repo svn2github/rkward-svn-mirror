@@ -51,7 +51,7 @@ be made possible to run GUI and \proglang{R} engine on different computers.
 
 \begin{figure}[t!]
  \centering
- \includegraphics{../figures/design_sketch.pdf}
+ \includegraphics[clip=true,trim=0cm 2cm 0cm 0cm]{../figures/design_sketch.pdf}
  \caption{Technical design of \pkg{RKWard}. Only a few central components are visualized.
  All communication with the \proglang{R} engine is passed through a single interface living in the main application thread. The \proglang{R} engine itself
  runs in a separate thread (or in a separate process). 
@@ -218,9 +218,9 @@ Plugins consist of four parts as visualized in Figure~\ref{fig:plugin_structure}
 \citep[see Section~\ref{sec:example_plugin} for an example; for a complete
 manual, see][]{Friedrichsmeier2010}:
 
-\begin{figure}[b!]
+\begin{figure}[t!]
  \centering
- \includegraphics[width=8cm]{../figures/plugin_structure.pdf}
+ \includegraphics[clip=true,trim=0cm 6cm 0cm 0cm,width=8cm]{../figures/plugin_structure.pdf}
  \caption{Plugin structure of \pkg{RKWard}. One or more plugins are declared in a ``plugin map''. Each plugin is defined by
  two XML files, and one \proglang{ECMAScript} file.}
  \label{fig:plugin_structure}
