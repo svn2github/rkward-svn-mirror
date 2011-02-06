@@ -14,6 +14,11 @@ o Figure placement (i.e. placement of floating objects):
   placement. If a figure then ends up before the start of its (sub)section,
   "t!" should be changed to "b!".  e.g., {figure}[b!].
 
+Note: Placement of Figure 3 resulted either in a position prior to the start of the text
+or within the footnote. Therefore we took a reference to other JSS paper (e.g. Fox 2005)
+and found that a placement of the figure right after the first reference is acceptable too.
+
+
 References
   - Java (not: JAVA, java)
 
