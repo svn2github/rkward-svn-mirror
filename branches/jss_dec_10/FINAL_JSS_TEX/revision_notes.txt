@@ -24,9 +24,7 @@ Figure placement of selected figures:
 Note: Placement of Figure 1, 2, 14 resulted in a placement either unfavorable, prior to the start of the text
 or within the footnote. Therefore we took a reference to other JSS paper (e.g. Fox 2005)
 and found that a placement of the figure right after the first reference or withing the text 
-is acceptable in rare cases too.
-Using "t!" or "b!" resulted in a further page. Therefore the previously 34 page version of our manuscript
-has now 35 pages. No content was added or removed.	 
+is acceptable in rare cases too. 
 
 
 Code:
