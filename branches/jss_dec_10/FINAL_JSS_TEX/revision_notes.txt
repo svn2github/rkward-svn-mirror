@@ -14,15 +14,20 @@ o Figure placement (i.e. placement of floating objects):
   placement. If a figure then ends up before the start of its (sub)section,
   "t!" should be changed to "b!".  e.g., {figure}[b!].
 
-Note: Placement of Figure 3 resulted either in a position prior to the start of the text
-or within the footnote. Therefore we took a reference to other JSS paper (e.g. Fox 2005)
-and found that a placement of the figure right after the first reference is acceptable too.
-
-
 References
   - Java (not: JAVA, java)
 
 --- Requests that we have addressed, but questions remain ---
+
+Figure placement of selected figures:
+
+Note: Placement of Figure 1, 2, 14 resulted in a placement either unfavorable, prior to the start of the text
+or within the footnote. Therefore we took a reference to other JSS paper (e.g. Fox 2005)
+and found that a placement of the figure right after the first reference or withing the text 
+is acceptable in rare cases too.
+Using "t!" or "b!" resulted in a further page. Therefore the previously 34 page version of our manuscript
+has now 35 pages. No content was added or removed.	 
+
 
 Code:
 Please include a standalone replication script of all code/examples
@@ -165,14 +170,12 @@ The following items are treated as abbreviations, and are introduced in the
 article (page number of introduction is given in parentheses):
 * GUI (1 & 2)
 * IDE (2)
-* GPL (3)
-* GFDL (3)
 * TDI (6)
 * CSV (10)
 * HTML (13)
 * PNG (13)
 * SVG (13)
 * CRAN (14)
-* PDF (14-15)
+* PDF (15)
 * API (20)
 * ECDF (25)
