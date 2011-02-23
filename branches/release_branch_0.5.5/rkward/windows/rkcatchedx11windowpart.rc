@@ -1,0 +1,50 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkward_x11window" version="54">
+	<MenuBar>
+		<Menu name="device"><text>&amp;Device</text>
+			<Action name="device_activate"/>
+			<Action name="device_duplicate"/>
+			<Separator/>
+			<Action name="device_print"/>
+			<Action name="device_copy_to_output"/>
+			<Action name="device_copy_to_r_object"/>
+			<Merge/>
+			<Separator/>
+		</Menu>
+		<Menu name="history"><text>&amp;History</text>
+			<Action name="plot_list"/>
+			<Separator/>
+			<Action name="plot_first"/>
+			<Action name="plot_prev"/>
+			<Action name="plot_next"/>
+			<Action name="plot_last"/>
+			<Separator/>
+			<Action name="plot_force_append"/>
+			<Action name="plot_remove"/>
+			<Separator/>
+			<Action name="plot_clear_history"/>
+			<Separator/>
+			<Action name="plot_properties"/>
+		</Menu>
+		<Menu name="view"><text>&amp;View</text>
+			<Action name="toggle_fixed_size"/>
+			<Separator/>
+			<Action name="set_fixed_size_1"/>
+			<Action name="set_fixed_size_2"/>
+			<Action name="set_fixed_size_3"/>
+			<Action name="set_fixed_size_manual"/>
+			<Merge/>
+			<Separator/>
+		</Menu>
+		<Merge/>
+	</MenuBar>
+	<ToolBar name="mdiToolBar">
+		<Action name="device_copy_to_output"/>
+		<Separator/>
+		<Action name="plot_list"/>
+		<Action name="plot_prev"/>
+		<Action name="plot_next"/>
+		<Separator/>
+		<Action name="plot_remove"/>
+	</ToolBar>
+</kpartgui>
