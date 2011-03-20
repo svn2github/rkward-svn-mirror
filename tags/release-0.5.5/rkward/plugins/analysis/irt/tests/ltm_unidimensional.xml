@@ -1,0 +1,29 @@
+<!DOCTYPE rkplugin>
+<document>
+  <code file="ltm_unidimensional.js" />
+  <!--<help file="ltm_unidimensional.rkh" />-->
+
+  <logic>
+    <connect client="save_name.enabled"  governor="chk_save.state" />
+    <connect client="save_name.required" governor="chk_save.state" />
+  </logic>
+
+  <dialog label="Unidimensionality check (Rasch, LTM, 3PM)">
+    <tabbook>
+      <tab id="tab_var_options" label="Data">
+        <row id="row_vars">
+          <varselector id="vars" />
+          <column>
+            <varslot type="numeric" id="x" classes="rasch ltm tpm" source="vars" required="true" label="Chose fitted model to check:"/>
+            <text>Only objects of class rasch, ltm or tpm are valid!</text>
+            <stretch />
+            <frame id="frame_options" label="Monte Carlo options">
+              <spinbox id="spin_samples" label="Number of samples:" type="integer" initial="100" min="1" size="small" />
+            </frame>
+            <saveobject id="save_name" checkable="true" checked="true" label="Save results in workspace" initial="unidim.res"/>
+          </column>
+        </row>
+      </tab>
+    </tabbook>
+  </dialog>
+</document>
