@@ -159,7 +159,7 @@ Contrary to the approach used in \pkg{JGR} \citep{JGR2010}, \pkg{RKWard} does
 not technically provide a custom on-screen graphics device. \pkg{RKWard} detects when
 new graphics windows are created via calls to \code{X11()} or \code{windows()}. These windows
 are then ``captured'' in a platform dependent way (based on the XEmbed \citep{Ettrich2002} protocol
-for \pkg{X11}, on reparenting for the Microsoft Windows platform). An \pkg{RKWard} menu bar and a
+for \pkg{X11}, or reparenting for the Microsoft Windows platform). An \pkg{RKWard} menu bar and a
 toolbar is then added to these windows to provide added functionality. While
 this approach requires some platform dependent code, any corrections or
 improvements made to the underlying \proglang{R} native devices will automatically be
