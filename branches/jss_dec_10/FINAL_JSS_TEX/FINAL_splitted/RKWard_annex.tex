@@ -238,10 +238,10 @@ active bindings.
 \subsection{Choice of toolkit and implementation languages}
 \label{sec:technical_toolkit}
 In addition to \proglang{R}, \pkg{RKWard} is based on the \pkg{KDE} libraries, which are in turn based
-on \pkg{Qt}, and implemented mostly in \proglang{C++}. Compared to many competing libraries,
+on \pkg{Qt} \citep{perens1999}, and implemented mostly in \proglang{C++}. Compared to many competing libraries,
 this constitutes a rather heavy dependency. Moreover, the \pkg{KDE} libraries are
 still known to have portability issues especially on Mac OS X, and to some degree
-also on the Microsoft Windows platform.
+also on the Microsoft Windows platform \citep{Jarvis2010}.
 
 The major reason for choosing the \pkg{KDE} and \pkg{Qt} libraries was their 
 many high level features which have allowed \pkg{RKWard} development to make quick
@@ -300,7 +300,7 @@ one.
 The \pkg{lattice} system is implemented by inserting a hook in the \code{print.lattice()}
 function. This hook retrieves and stores the \code{lattice.status} object from the
 \code{lattice:::.LatticeEnv} environment, thereby making \code{update()} calls on trellis
-objects transparent to the user. Any recorded trellis object is then replayed
+objects \citep[see also][]{Sarkar2008} transparent to the user. Any recorded trellis object is then replayed
 using \code{plot.lattice()}, bypassing the recording mechanism. The standard graphics
 system, on the other hand, is implemented differently because the hook in
 \code{plot.new()} is ineffective for this purpose. A customized function is overloaded
