@@ -1,0 +1,24 @@
+\section[Installing and starting RKWard]{Installing and starting \pkg{RKWard}}
+\label{sec:installing_starting_RKWard}
+\pkg{RKWard} can be downloaded free of charge in source and binary form from \url{http://rkward.sourceforge.net/}. 
+On the GNU/Linux platform, binary packages are available for many major distributions,
+including Debian, Ubuntu, OpenSuse, Gentoo, and Fedora. On the Microsoft Windows
+platform, \pkg{RKWard} is available in two forms: as a single binary
+installer (requires existing installations of
+\proglang{R} and \pkg{KDE}) and
+as an installation bundle (including \proglang{R} and
+essential parts of the \pkg{KDE} runtime environment)\footnote{For detailed information please refer to the 
+\pkg{RKWard} wiki \url{http://p.sf.net/rkward/windows}.}. At the time of
+this writing, the developers lack the resources to support a Mac OS X
+port, and especially to provide binaries for Mac OS X. However, \pkg{RKWard}
+has been shown to be compilable and installable on the Mac, and appears
+to be mostly functional.
+
+\pkg{RKWard} cannot be loaded from within an \proglang{R}
+session, but rather it is started as a stand-alone application with an
+embedded \proglang{R} engine. To facilitate the first
+steps for new users, a dialog offers the choice to load an existing
+workspace, to start with an empty workspace, or to create a new
+\code{data.frame} and open that for editing. Also, an overview help page is
+shown in the document area of the main window. Both start-up features
+can be turned off.
