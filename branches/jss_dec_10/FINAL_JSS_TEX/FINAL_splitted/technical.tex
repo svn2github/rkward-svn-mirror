@@ -1,12 +1,12 @@
 %!TEX root=RKWard_paper.tex
-\section{Technical design}
-\label{sec:technical}
-In this supplement we will give an overview of the selected aspects of \pkg{RKWard}'s
-technical design and development process. We will give slightly more attention to the details of the
+\section{Introduction}
+In this supplement we will give an overview of some key aspects of \pkg{RKWard}'s
+technical design and development process, comparing them briefly to competing GUI solutions, where appropriate.
+We will give slightly more attention to the details of the
 plugin framework (Section~\ref{sec:technical_plugins}) used in \pkg{RKWard}, since this is central to the extensibility of
-\pkg{RKWard}.
+\pkg{RKWard}, and we will conclude with an example for extending \pkg{RKWard} by a plugin (Section~\ref{sec:example_plugin}).
 
-\subsection{Asynchronous command execution}
+\section{Asynchronous command execution}
 \label{sec:technical_asynchronous}
 One central design decision in the implementation of \pkg{RKWard} is that the
 interface to the \proglang{R} engine operates asynchronously. The intention is to
@@ -61,7 +61,7 @@ be made possible to run GUI and \proglang{R} engine on different computers.
  \label{fig:design_sketch}
 \end{figure}
 
-\subsection{Object modification detection}
+\section{Object modification detection}
 \label{sec:technical_omd}
 \pkg{RKWard} allows the user to run arbitrary commands in \proglang{R} at any time, even while
 editing a \code{data.frame} or while selecting objects for analysis in a GUI dialog. Any user
@@ -119,7 +119,7 @@ way to detect changes for most types of \proglang{R} objects, with comparatively
 and performance overhead. Special handling will be needed for environments and
 active bindings.
 
-\subsection{Choice of toolkit and implementation languages}
+\section{Choice of toolkit and implementation languages}
 \label{sec:technical_toolkit}
 In addition to \proglang{R}, \pkg{RKWard} is based on the \pkg{KDE} libraries, which are in turn based
 on \pkg{Qt}, and implemented mostly in \proglang{C++}. Compared to many competing libraries,
@@ -155,7 +155,7 @@ concatenation of text strings. While \proglang{R} provides support for this, con
 strings with the \code{+}-operator, as available in \proglang{ECMAScript}, allows for a much
 more readable way to perform such basic text manipulation.
 
-\subsection{On-screen graphics windows}
+\section{On-screen graphics windows}
 \label{sec:technical_graphics}
 Contrary to the approach used in \pkg{JGR} \citep{JGR2010}, \pkg{RKWard} does
 not technically provide a custom on-screen graphics device. \pkg{RKWard} detects when
@@ -197,7 +197,7 @@ the hooks. These call strings are displayed as a drop-down menu on the toolbar
 for non-sequential browsing (see the section on graphics windows in the main article) providing a very intuitive browsing
 interface unlike the native implementations in \code{windows()} and \code{quartz()} devices.
 
-\subsection{Plugin infrastructure}
+\section{Plugin infrastructure}
 \label{sec:technical_plugins}
 One of the earliest features of \pkg{RKWard} was the extensibility by plugins.
 Basically, plugins in \pkg{RKWard} provide complete GUI dialogs, or re-usable
@@ -215,7 +215,7 @@ formats relying on the \pkg{foreign} package is achieved by this approach. Simil
 especially for item response theory, distributions, and descriptive
 statistical analysis.
 
-\subsubsection{Defining a plugin}
+\subsection{Defining a plugin}
 \label{sec:technical_plugins_defining}
 Plugins consist of four parts as visualized in Figure~\ref{fig:plugin_structure} 
 \citep[see Section~\ref{sec:example_plugin} for an example; for a complete
@@ -275,7 +275,7 @@ manual, see][]{Friedrichsmeier2010}:
 
 Changes to the source code of these elements take effect without the requirement to recompile \pkg{RKWard}.
 
-\subsubsection{Embedding and reuse of plugins}
+\subsection{Embedding and reuse of plugins}
 \label{sec:technical_plugins_embedding}
 \pkg{RKWard} supports several mechanisms for modularization and re-use of
 functionality in plugins. File inclusion is one very simple but effective
@@ -293,7 +293,7 @@ hiding irrelevant options). The generated code portions can be fetched from the
 code. Other examples of embedded plugins are options for histograms, barplots,
 and empirical cumulative distribution function (ECDF) plots (which in turn embed the generic plot options plugin).
 
-\subsubsection{Enforcing a consistent interface}
+\subsection{Enforcing a consistent interface}
 \label{sec:technical_plugins_consistency}
 \pkg{RKWard} tries to make it easy to create a consistent interface in all plugins.
 GUI-wise this is supported by providing high-level GUI elements, and embeddable
@@ -334,7 +334,7 @@ are
   too many of them.
 \end{itemize}
 
-\subsubsection[Handling of R package dependencies]{Handling of \proglang{R} package dependencies}
+\subsection[Handling of R package dependencies]{Handling of \proglang{R} package dependencies}
 \label{sec:technical_plugins_dependencies}
 A wide range of plugins for diverse functionality is present in \pkg{RKWard},
 including plots (e.\,g., boxplot) or standard tests (e.\,g., Student's t-test)\footnote{
@@ -386,19 +386,3 @@ plugin infrastructure, and before any new release.
 The automated testing framework is also useful in testing some aspects of the
 application which are not implemented as plugins, but this is currently limited
 to very few basic tests.
-
-\subsection{Internationalization}
-\label{sec:technical_internationalization}
-Currently strings in the main application are translated to varying extents in
-Czech (cs), Catalan (ca), Spanish (es), German (de), Chinese (zh\_CN), Turkish
-(tr), Polish (pl), Italian (it), French (fr), Greek (el), and Danish (da).
-Translatable strings are to be found under po/*.po in the sources. These files
-can conveniently be edited with front-ends like Lokalize\footnote{\url{http://i18n.kde.org/tools/}}. 
-
-Plugins and help pages in \pkg{RKWard} are not translatable at the time of this
-writing. While it will be technically possible to include the respective strings in
-message catalogs, this is currently not implemented in \pkg{RKWard}. Similarly, any
-output generated by \proglang{R} functions defined for \pkg{RKWard} is currently not
-translatable. Again, however, there is no technical barrier with respect to
-internationalization of \proglang{R} code, as discussed by \cite{Ripley2005a},
-and it is planned to make \pkg{\pkg{RKWard}} fully translatable in future versions.
