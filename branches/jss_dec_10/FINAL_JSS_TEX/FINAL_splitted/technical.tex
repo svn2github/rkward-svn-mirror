@@ -14,7 +14,8 @@ keep the application usable to a high degree, even during the computation of
 time-consuming analysis. For instance, while waiting for the estimation of a
 complex model to complete, the user should be able to continue to use the GUI to
 prepare the next analysis. Asynchronous command execution is also a prerequisite
-for an implementation of the plot-preview feature (see Section~\ref{sec:plot_previews}). Commands
+for an implementation of the plot-preview feature (see the section no graphics windows
+in the main article). Commands
 generated from plugins or user actions are placed in queue and are evaluated in
 a separate thread in the order they were submitted\footnote{
     It is possible, and in some cases necessary, to enforce a different order of command execution in
@@ -28,7 +29,7 @@ the use of \proglang{ECMAScript} in plugins, instead of scripting using
 A further implication is that \pkg{RKWard} avoids querying information about the
 existence and properties of objects in \proglang{R} interactively. Rather,
 \pkg{RKWard} keeps a representation of \proglang{R} objects and their basic properties
-(e.\,g., class and dimensions), which is used for the workspace browser (Section~\ref{sec:workspace_browser_object_viewer}),
+(e.\,g., class and dimensions), which is used for the workspace browser,
 object name completion, function argument hinting, and
 other places. The object representation includes objects in all environments
 in the search path, and any objects contained within these environments in a
@@ -69,7 +70,8 @@ detect such changes in order to always display accurate information in the
 workspace browser, object selection lists, and object views. Beyond that,
 detecting any changes is particularly important with respect to objects which
 are currently being edited in the data editor (which provides an illusion
-of in-place editing, see Section~\ref{sec:spreadsheet}). Here, it is necessary to synchronize
+of in-place editing, see the section on the spreadsheet-like data editor in the
+main article). Here, it is necessary to synchronize
 the data between \proglang{R} and the GUI in both directions.
 
 For simplicity and performance, object modification detection is only
@@ -179,7 +181,8 @@ implementation in \proglang{Rgui.exe} (Microsoft Windows), but unlike the one in
 and behaves independently when recording a new plot or deleting an existing
 one.
 
-The \pkg{lattice} system \citep[see also][]{Sarkar2008} is implemented by inserting a hook in the \code{print.lattice()}
+Plot history support for the
+\pkg{lattice} system \citep[see also][]{Sarkar2008} is implemented by inserting a hook in the \code{print.lattice()}
 function. This hook retrieves and stores the \code{lattice.status} object from the
 \code{lattice:::.LatticeEnv} environment, thereby making \code{update()} calls on trellis
 objects transparent to the user. Any recorded trellis object is then replayed
@@ -191,7 +194,7 @@ on \code{plot.new()} which stores and retrieves the existing plot, essentially, 
 
 The actual plotting calls are tracked using appropriate \code{sys.call()} commands in
 the hooks. These call strings are displayed as a drop-down menu on the toolbar
-for non-sequential browsing (see Figure~\ref{fig:plot_history}) providing a very intuitive browsing
+for non-sequential browsing (see the section on graphics windows in the main article) providing a very intuitive browsing
 interface unlike the native implementations in \code{windows()} and \code{quartz()} devices.
 
 \subsection{Plugin infrastructure}
@@ -308,7 +311,7 @@ printed using \code{rk.print()}, which is just a thin wrapper around the
 \code{HTML()} function of the \pkg{R2HTML} package \citep{Lecoutre2003} in the current
 implementation. The use of custom formatting with HTML is possible, but
 discouraged. Standard elements such as a horizontal separator, and the ``Run again''
-link (see Section~\ref{sec:results_output}) are inserted automatically, without the need to define
+link (see the section on the results output in the main article) are inserted automatically, without the need to define
 them for each plugin.
 
 Regarding the style of the generated \proglang{R} code, enforcing consistency is harder,
@@ -346,7 +349,7 @@ test.
 plugins which depend on a certain package simply include an appropriate call to
 \code{require()} in the pre-processing section of the generated \proglang{R} code. The \code{require()}
 function is overloaded in \pkg{RKWard}, in order to bring up the package-installation
-dialog (see Section~\ref{sec:package_management}) whenever needed. Packages invoked by \code{require()} remain loaded
+dialog whenever needed. Packages invoked by \code{require()} remain loaded
 in the active \pkg{RKWard} session unless unloaded manually (from the workspace browser, or using the
 \proglang{R} function \code{detach()}).
 

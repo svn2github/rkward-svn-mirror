@@ -56,7 +56,9 @@ GUI logic can be defined directly in the XML file (the \code{<logic>} element).
 In this example, the ``Assume equal variances'' checkbox is only enabled for paired sample tests.
 Optionally, GUI behavior can also be scripted in \proglang{ECMAScript}.
 
-The XML file defines the t-test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs (Figure~\ref{fig:t_test}A).
+The XML file defines the t-test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs\footnote{
+  A screenshot of the resulting dialog can be found the in the main article.
+}.
 On the first tab, two variables can be selected (\code{<varslot .../>}). These are set to be ``required'', i.\,e.,
 the ``Submit'' button will remain disabled until the user has made a valid selection for both. The second tab includes some
 additional settings like the confidence level (default 0.95).
@@ -110,9 +112,7 @@ additional settings like the confidence level (default 0.95).
 
 \subsection[Generating R code from GUI settings]{Generating \proglang{R} code from GUI settings}
 \label{sec:generating_r_code_from_ui_settings}
-A simple \proglang{ECMAScript} script is used to generate \proglang{R} code from GUI settings (using \code{echo()} commands)\footnote{
-  See Figure~\ref{fig:t_test}A) for code generated in this example.
-}. Generated code for each plugin is divided into three sections: ``Preprocess'', ``Calculate'', and ``Printout'', although each
+A simple \proglang{ECMAScript} script is used to generate \proglang{R} code from GUI settings (using \code{echo()} commands). Generated code for each plugin is divided into three sections: ``Preprocess'', ``Calculate'', and ``Printout'', although each
 may be empty.
 
 \begin{footnotesize}
