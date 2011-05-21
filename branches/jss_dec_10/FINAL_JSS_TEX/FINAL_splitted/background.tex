@@ -68,8 +68,16 @@ necessarily show a one-to-one correspondence to the underlying steps in \proglan
 rather oriented at statistical tasks. Furthermore, \pkg{RKWard} does not impose
 artificial limitations on how users can work with the application. For example,
 the user is not limited to using only one \code{data.frame} or one model at a
-time. \pkg{RKWard} is designed to allow users to create custom GUI dialogs
-easily (see Sections~\ref{sec:technical_plugins} and \ref{sec:example_plugin}).
+time.
+
+\pkg{RKWard} is designed to allow users to create custom GUI dialogs as plugins, requiring relatively
+little programming knowledge. In essence, \pkg{RKWard} plugins consist of an XML file describing
+the dialog layout, and \proglang{ECMAScript} code which generates \proglang{R} code from the settings
+made in the GUI. Most of the data handling functionality in \pkg{RKWard} is implemented as plugins
+(see Section~\ref{sec:analyzing_data}), and many of these plugins have originated as user contributions.
+Since version 0.5.5, \pkg{RKWard} also provides support for downloading user contributed ``plugin packs'',
+which are not included in the official \pkg{RKWard} releases. Technical details on the definition of plugins,
+and a commented example can be found in the technical supplement to this article.
 
 \pkg{RKWard} is licensed under the terms of the GNU General Public License\footnote{\url{http://www.gnu.org/licenses/gpl.html}} Version 2
 or higher. However, due to its dependencies, \pkg{RKWard} binaries are effectively
