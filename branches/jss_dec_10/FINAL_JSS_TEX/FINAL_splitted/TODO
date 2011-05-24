@@ -1,9 +1,9 @@
-TODO list for the revision (Incomplete!)
+   TODO list for the revision (Incomplete!)
 
 - Update screenshots:
 Figure number   |   Importance   |   Comments
 2                   high             no more Pending Jobs tool view, toolbar changed, status bar changed, could show an S4 object in workspace browser
-3                   very low         could hide ".GlobalEnv", here
+3                   very low         could hide ".GlobalEnv", here (Done)
 5                   high             see Figure 2. Should probably uncheck "Show all Environments"
 8                   medium           minimally improved default CSS. Should include short snippet of syntax highlighted commands / console transcript
 10                  high             no longer shows ".GlobalEnv" (addresses reviewer comment)
@@ -18,6 +18,7 @@ Issues addressed by the reviewers
 DONE
 
 * We improved grammar and orthographicla errors as suggested by the reviewers.
+* We added specifically citation of the data set sources used in our figures.
 * The first submitted paper (JSS 706) was splitted in a main paper focusing on GUI related features of RKWard and an annex which in detail describes the technologies that RKWard is based on. This resulted in circa XY% reduction in lengthAs suggested by the reviewer the .GlobalEnv is no longer presented to the used.
 * As suggested by a reviewer we added more details and citations on KDE and Qt technologies as footnote.
 * As suggested by a reviewer the .GlobalEnv is no longer presented to the user.
