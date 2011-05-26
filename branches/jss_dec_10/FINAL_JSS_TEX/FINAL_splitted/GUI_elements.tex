@@ -5,9 +5,18 @@ For a use case oriented example of an \pkg{RKWard} session, see Section~\ref{sec
 
 The default layout\footnote{
  Many aspects of the \pkg{RKWard} GUI can be customized by the user. For simplicity we will
- describe the default appearance of \pkg{RKWard}, only.
+ describe the default appearance of \pkg{RKWard}, only. 
 } of the main application window is divided into five
-parts, as depicted in Figure~\ref{fig:main_window}. The top of the window is occupied by menu bar and toolbar 
+parts, as depicted in Figure~\ref{fig:main_window}. 
+The \pkg{RKWard} GUI generally follows a MDI (multiple-document interface) approach, which means that windows
+reside in a single parent (main application) window on fixed positions. \pkg{RKWard} has a TDI (tabbed-document interface) with 
+detachable documents embedded in the MDI. The reason is to overcome the limitation of TDIs to
+show two tabbed documents simultaniously as an alternative approach to a combined-tabbed-document interface (CTDI) \citep{Jiang2009}.
+However, as some interface 
+elements are detached by default, e.g. graphic devices, and can therefore be considered as SDI 
+(single-document interface). One reasoning behind this approach is to support highly customizeable GUIs and 
+to support working environments with multiple displays.
+The top of the window is occupied by menu bar and toolbar 
 (Figure~\ref{fig:main_window}A). The content of both bars is partially context
 sensitive, e.\,g., the ``Edit'' menu will offer
 one set of actions when the current document window is a data editor,
@@ -24,7 +33,7 @@ interface.
  \includegraphics[width=15.450cm]{./figures/main_window.png}
  \caption{Default \pkg{RKWard} main window after start up. 
 A) Menu bar and toolbar, B) tool panel showing workspace browser, C) document view area, showing
-a help page, D) tool panel showing embedded \proglang{R} console, and E) status bar with an option to stop running processes.
+different documents (help page, \code{data.frame} ``my.data'', \proglang{R} script ``demo.R''), D) tool panel showing embedded \proglang{R} console, and E) status bar with an option to stop running processes.
 Panels B and D can be resized or collapsed. The red border around B indicates that the workspace browser is the active interface element.}
  \label{fig:main_window}
 \end{figure}
@@ -50,9 +59,8 @@ log (Section~\ref{sec:further_tool_windows}), Pending Jobs (Section~\ref{sec:fur
 (Section~\ref{sec:using_R_console}), and Help Search (Section~\ref{sec:help_system}).
 
 The remainder of the central area (Figure~\ref{fig:main_window}C) is a single row tabbed document
-interface (TDI) for different documents. Early uses of TDIs date back to 1988 and are
-widely applied nowadays \citep{Hopkins2005, MDN2010,
-KimLutteroth2010}. Currently, the supported types of
+interface (TDI) for different documents. Early uses of TDIs date back to 1988 and are widely 
+applied nowadays \citep{Hopkins2005, MDN2010, KimLutteroth2010}. Currently, the supported types of
 documents are object summaries (Section~\ref{sec:workspace_browser_object_viewer}), 
 script editors (Section~\ref{sec:code_editor}), spreadsheet-like data editors 
 (Section~\ref{sec:spreadsheet}), results output (Section~\ref{sec:results_output}), 
