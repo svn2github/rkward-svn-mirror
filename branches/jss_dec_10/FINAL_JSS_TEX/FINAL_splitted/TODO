@@ -48,10 +48,11 @@ DONE
 * In the supplement's section "On-screen graphics windows", we have added a proper citation for the lattice package, as requested by the second
   reviewer.
 * We replaced the Unix-specific path "~/.rkward" by a paraphrase which is also correct on Windows (second reviewer).
+* The first reviewer asked for more information about the M/T/S/DI GUI approach. We added remarks and references on this issue.
 
 TODO
 
-* MDI, TDI, SDI mixture needs some details (Stefan)
+* MDI, TDI, SDI mixture needs some details (DONE in part, Stefan)
 
 Stuff that we will not address in the article, but that we need to respond to:
 - First reviewer:
