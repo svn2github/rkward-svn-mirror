@@ -5,7 +5,7 @@ Figure number   |   Importance   |   Comments
 2                   high             no more Pending Jobs tool view, toolbar changed, status bar changed, could show an S4 object in workspace browser (please choose)
 3                   very low         reduced size (no purpose in showing workspace browser, etc., here. (Done)
 5                   high             see Figure 2. Should probably uncheck "Show all Environments" (Done)
-8                   medium           minimally improved default CSS. Should include short snippet of syntax highlighted commands / console transcript (Done?)
+8                   medium           minimally improved default CSS. Should include short snippet of syntax highlighted commands / console transcript (Done)
 10                  high             no longer shows ".GlobalEnv" (addresses reviewer comment) (Done)
 11                  high             see Figure 8. At least this one is very easy to re-create (Done)
 
@@ -13,25 +13,55 @@ Figure number   |   Importance   |   Comments
 
 #----------------------------------------------------------
 
-Issues addressed by the reviewers
+Updates we did to reflect changes in the released version of RKWard (now 0.5.6, instead of 0.5.4)
+* Section "Code editor":         We point out that users can define custom actions in Kate based on ECMAScript (since KDE 4.6)
+* Section "Results output":      R code and R output can now be copied to the output window, easily. Figure 8 was extended to show this,
+                                 and a short paragraph was added to the end of the "Results output" section.
+* Section "Futher tool windows": Point out that the "Pending jobs" window is not (any longer) shown by default.
+* Supplement, section "Asynchronous command execution": Frontend and backend are now running in separate processes, instead of separate threads.
+* Supplement, section "Asynchronous command execution": The process of gathering object information is somewhat less pro-active, now, and also
+                                 includes S4 slots, and package namespaces.
+Further, Figures, 2, 3, 5, 8, 10, and 11 were updated to reflect changes in the GUI.
+
+Assorted other stuff that we did (not specifically requested)
+* In our paper we claimed that RKWard is aimed as productive too. We added citations, including one of the first author, from peer-review literature which specifically cite the usage of RKWard during their research work as support for our claim that RKWard's purpose is the usage as a productive tool.
+
+
+Issues raised by the reviewers
 
 DONE
 
-* We improved grammar and orthographicla errors as suggested by the reviewers.
+* We incorporated fixes to grammar and orthographical errors as suggested by the reviewers.
 * We added specifically citation of the data set sources used in our figures.
-* The first submitted paper (JSS 706) was splitted in a main paper focusing on GUI related features of RKWard and an annex which in detail describes the technologies that RKWard is based on. This resulted in circa XY% reduction in lengthAs suggested by the reviewer the .GlobalEnv is no longer presented to the used.
-* As suggested by a reviewer we added more details and citations on KDE and Qt technologies as footnote.
-  + We extended our information about the script editor (KDE advanced text editor component (Kate)) used in RKWard.
-* As suggested by a reviewer the .GlobalEnv is no longer presented to the user.
-* Figure X,Y,...Z were updated and reflect the changes (i.e. hiding of .GlobalEnv) as demanded by the reviewers.
-* The installation process was extended
-  + Citation were added which help to understand the port to platforms other than GNU/Linux.
-* In our paper we claimed that RKWard is aimed as productive too. We added citations, including one of the first author, from peer-review literature which specifically cite the usage of RKWard during their research work as support for our claim that RKWard's purpose is the usage as a productive tool.
-* We added a citation (Sarkar, Deepayan (2008) Lattice: Multivariate Data Visualization with R. Springer, New York. ISBN 978-0-387-75968-5) as a reference for readers to trellis object.
-* One of the main strength of RKWard is the plugin architechture. We moved the technical aspects to the annex and give references in the text accordingly.
-  + In addition to technical aspects we also inform the reader in the annex about the possibility to download user contributed ``plugin packs'' (as of v. 0.5.5) which are not included in the official releases.
+* The first submitted paper (JSS 706) was splitted in a main paper focusing on GUI related features of RKWard and an annex which in detail describes the technologies that RKWard is based on. This resulted in circa XY% reduction in length.
+  - In the section "Background and motivation", we added a mostly non-technical paragraph on the plugin framework, since we consider extensibility
+    using plugins a central feature. All technical details have been moved to the supplement.
+* As suggested by the second reviewer, we have added slightly more details and citations in our footnotes on the KDE and Qt technologies.
+* The first reviewer's criticism that all workspace views show an item ".GlobalEnv" to the user has been addressed in RKWard 0.5.6. Now this item
+  is hidden, when .GlobalEnv is the only environment shown, but remains visible, when all environments on the serach path are presented. This did
+  not result in any changes of the text, but Figures 5, 10, and 11 were updated, accordingly. Figure 3 was cropped to save space, and does not
+  show the workspace browser, any longer.
+* As suggested by the editors, we have significantly expanded our description of the installation process, specifically addressing the availability
+  of RKWard and its dependencies on the different platforms (Section "Installation and platform availability"). We feel that this discussion should
+  also help alleviate the concerns that the first reviewer has voiced about using KDE as a platform.
+* We have removed the term "cross-platform" from the abstract, and from the list of keywords.
+* In the supplement's section "On-screen graphics windows", we have added a proper citation for the lattice package, as requested by the second
+  reviewer.
+* We replaced the Unix-specific path "~/.rkward" by a paraphrase which is also correct on Windows (second reviewer).
 
 TODO
 
 * MDI, TDI, SDI mixture needs some details (Stefan)
-* Section 3.7 Results output ~/.rkward needs update
+
+Stuff that we will not address in the article, but that we need to respond to:
+- First reviewer:
+  * KDE as an "emulation" -> Explain that it is not an emulation, not even on the Mac.
+    Show that the KDE dependency may be "heavy", but not really a problem on Windows.
+    Concede that we are not in good shape and the Mac, and that we now state that in the article, cleary.
+    Point to section "Choice of toolkit...", which already explains some core reasons, why we use KDE. Perhaps also link to the dot.kde.org interview.
+
+-----
+
+- In what form will we present the above revision notes? Probably by citing the reviewers comments, and adding our responses in between?
+
+
