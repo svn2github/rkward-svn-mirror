@@ -6,8 +6,8 @@ Figure number   |   Importance   |   Comments
 3                   very low         could hide ".GlobalEnv", here (Done)
 5                   high             see Figure 2. Should probably uncheck "Show all Environments" (Done)
 8                   medium           minimally improved default CSS. Should include short snippet of syntax highlighted commands / console transcript (Done?)
-10                  high             no longer shows ".GlobalEnv" (addresses reviewer comment)
-11                  high             see Figure 8. At least this one is very easy to re-create
+10                  high             no longer shows ".GlobalEnv" (addresses reviewer comment) (Done)
+11                  high             see Figure 8. At least this one is very easy to re-create (Done)
 
 - Re-do figure placement, after everything else is done!
 
