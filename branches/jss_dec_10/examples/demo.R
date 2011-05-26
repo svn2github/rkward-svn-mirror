@@ -16,16 +16,14 @@ ok.to.proceed <- function (instruction) {
 ## Figure 2
 my.data <- data.frame (var=numeric (1), var1=factor (1), var2=character (1), var3=logical (1), stringsAsFactors=FALSE)
 rk.sync.global ()
-#Interactive console with syntax highlighting
+
 f <- function () {
       print ("Interactive console with syntax highlighting")
    }
    f ()
-#show an S4 object in workspace browser, source: help {utils}
-## define a S4 generic function and some methods
-combo <- function(x, y) c(x, y)
-setGeneric("combo")
-setMethod("combo", c("numeric", "numeric"), function(x, y) x+y)
+setClass ("demoClass", representation=list (slotA="numeric", slotB="character", slotC="list"), contains="data.frame")
+s4.demo.object <- new ("demoClass")
+s4.demo.object@slotC <- list (a=1, b=2)
 
 ok.to.proceed ("<b>Replication of Figure 2</b>:<br>The object \"my.data\" has been created in the global environment.<br><br>
 Click on the \"Workspace\" button in the left tool view to show object information in the workspace browser.
