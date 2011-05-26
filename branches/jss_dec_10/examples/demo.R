@@ -71,8 +71,17 @@ Click on the 'Go to plot' toolbar icon for a drop-down list of plots.")
 
 ## Figure 8
 rk.call.plugin ("rkward::descriptive", constMad.real="1.4628", length.state="1", mad.state="0", mad_type.string="average", mean.state="1", median.state="1", prod.state="0", range.state="1", sd.state="1", sum.state="0", trim.real="0.00", x.available="DNase[[\"density\"]]\nDNase[[\"conc\"]]\nChickWeight[[\"weight\"]]\nChickWeight[[\"Time\"]]", submit.mode="submit")
-ok.to.proceed ("<b>Replication of Figure 8</b>:<br>The result of running the 'Descriptive Statistics' plugin should now be visible in the output window. If it is not visible, use Windows->Show Output from the menu.")
+rk.header ("A custom heading")
+ok.to.proceed ("<b>Replication of Figure 8, upper portion</b>:<br>The result of running the 'Descriptive Statistics' plugin, and the
+text 'A custom heading' should now be visible in the output window. If it is not visible, use Windows->Show Output from the menu.")
 
+f <- function () {
+    # The only purpose of this function is to illustrate the documentation of
+    # custom R code and the corresponding R output in the RKWard output window
+    print ("A piece of output")
+}
+f ()
+ok.to.proceed ("<b>Replication of Figure 8, lower portion</b>:<br>This part of the figure can only be reproduced by interacting with the GUI, manually:<br>Run->CC commands to ouptut... from the menu, and enable copying of commands entered in the console. Then, paste the code snippet to the console.")
 
 ## Figure 9
 rk.call.plugin ("rkward::import_csv", quick.string="csv", name.objectname="experiment.data", file.selection=paste (getwd (), "experiment.txt", sep="/"))

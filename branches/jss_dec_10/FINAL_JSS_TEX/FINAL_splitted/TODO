@@ -3,7 +3,7 @@
 - Update screenshots:
 Figure number   |   Importance   |   Comments
 2                   high             no more Pending Jobs tool view, toolbar changed, status bar changed, could show an S4 object in workspace browser (please choose)
-3                   very low         could hide ".GlobalEnv", here (Done)
+3                   very low         reduced size (no purpose in showing workspace browser, etc., here. (Done)
 5                   high             see Figure 2. Should probably uncheck "Show all Environments" (Done)
 8                   medium           minimally improved default CSS. Should include short snippet of syntax highlighted commands / console transcript (Done?)
 10                  high             no longer shows ".GlobalEnv" (addresses reviewer comment) (Done)
