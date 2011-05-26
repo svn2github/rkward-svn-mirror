@@ -145,7 +145,9 @@ editor include syntax highlighting (both on screen and in printouts; for
 folding, block-wise indentation adjustments or commenting, automatic
 brackets, search and replace with plain text or regular expressions,
 and many more. The editor automatically saves snapshots of the
-currently edited files at configurable intervals.
+currently edited files at configurable intervals. 
+It is noteworthy that \pkg{Kate} is extendable by 
+customized \proglang{ECMAScript} (\proglang{JavaScript}) actions\footnote{\url{http://kate-editor.org/2010/07/09/kate-scripted-actions}}.
 
 For interaction with \proglang{R}, the editor has
 predefined shortcuts (and toolbar icons) for submitting the current line, the current 
@@ -439,10 +441,10 @@ available from \pkg{RreportGenerator} \citep{RaffelsbergerW2008}.
 \begin{figure}[t!]
  \centering
  \includegraphics[width=15.5cm]{./figures/results_output_cropped.png}
- \caption{Sample contents of the output window. \code{DNase} and \code{ChickWeight} data of the \pkg{datasets} packages were used. 
+ \caption{Sample contents of the output window (red square). \code{DNase} and \code{ChickWeight} data of the \pkg{datasets} packages were used. 
   Standard elements of plugin output include a standardized header, and a 
   ``Run again''-link, which allows to repeat the analysis with identical or 
-  similar parameters.}
+  similar parameters (Details of the previous analysis are shown in the status bar when the mouse pointer hovers over the ``Run again''-link). See also Figure 4 in the supplementary section accompining this paper.}
  \label{fig:results_output}
 \end{figure}
 
