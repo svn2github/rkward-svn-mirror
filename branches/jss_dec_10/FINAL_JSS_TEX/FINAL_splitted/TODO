@@ -2,12 +2,12 @@
 
 - Update screenshots:
 Figure number   |   Importance   |   Comments
-2                   high             no more Pending Jobs tool view, toolbar changed, status bar changed, could show an S4 object in workspace browser (please choose)
-3                   very low         reduced size (no purpose in showing workspace browser, etc., here. (Done)
-5                   high             see Figure 2. Should probably uncheck "Show all Environments" (Done)
-8                   medium           minimally improved default CSS. Should include short snippet of syntax highlighted commands / console transcript (Done)
-10                  high             no longer shows ".GlobalEnv" (addresses reviewer comment) (Done)
-11                  high             see Figure 8. At least this one is very easy to re-create (Done)
+2                   high             no more Pending Jobs tool view, toolbar changed, status bar changed, could show an S4 object in workspace browser (DONE)
+3                   very low         reduced size (no purpose in showing workspace browser, etc., here. (DONE)
+5                   high             see Figure 2. Should probably uncheck "Show all Environments" (DONE)
+8                   medium           minimally improved default CSS. Should include short snippet of syntax highlighted commands / console transcript (DONE)
+10                  high             no longer shows ".GlobalEnv" (addresses reviewer comment) (DONE)
+11                  high             see Figure 8. At least this one is very easy to re-create (DONE)
 
 - Re-do figure placement, after everything else is done!
 
@@ -23,9 +23,10 @@ Updates we did to reflect changes in the released version of RKWard (now 0.5.6, 
                                  includes S4 slots, and package namespaces.
 Further, Figures, 2, 3, 5, 8, 10, and 11 were updated to reflect changes in the GUI.
 
-Assorted other stuff that we did (not specifically requested)
-* In our paper we claimed that RKWard is aimed as productive too. We added citations, including one of the first author, from peer-review literature which specifically cite the usage of RKWard during their research work as support for our claim that RKWard's purpose is the usage as a productive tool.
+Assorted other aspects that we improved (not specifically requested by the reviewer)
 
+* In our paper we claimed that RKWard is aimed as productive too. We added citations, including one of the first author, from peer-review literature which specifically cite the usage of RKWard during their research work as support for our claim that RKWard's purpose is the usage as a productive tool.
+* We updated the example script (demo.R) to reflect the changes requested by the reviewers. We also added a reference for reader to the zip-archive containing all scripts and data used in the paper. 
 
 Issues raised by the reviewers
 
@@ -49,10 +50,6 @@ DONE
   reviewer.
 * We replaced the Unix-specific path "~/.rkward" by a paraphrase which is also correct on Windows (second reviewer).
 * The first reviewer asked for more information about the M/T/S/DI GUI approach. We added remarks and references on this issue.
-
-TODO
-
-* MDI, TDI, SDI mixture needs some details (DONE in part, Stefan)
 
 Stuff that we will not address in the article, but that we need to respond to:
 - First reviewer:
