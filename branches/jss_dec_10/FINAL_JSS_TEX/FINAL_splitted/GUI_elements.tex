@@ -7,23 +7,7 @@ The default layout\footnote{
  Many aspects of the \pkg{RKWard} GUI can be customized by the user. For simplicity we will
  describe the default appearance of \pkg{RKWard}, only. 
 } of the main application window is divided into five
-parts, as depicted in Figure~\ref{fig:main_window}. 
-The \pkg{RKWard} GUI generally follows an MDI (multiple-document interface)\footnote{
- When applied in an IDE (integrated-development environment) context this type of MDI is sometimes referred to as IDE-style interface (e.g. Eclipse).
-} approach, which means that windows
-reside in a single parent (main application) window on pre-defined positions. \pkg{RKWard} has a TDI (tabbed-document interface) in the 
-central area (Figure~\ref{fig:main_window}C) with 
-detachable documents embedded in the MDI. Detachable documents were implemented to overcome the limitation of TDIs to
-show two tabbed documents simultaniously. This is an alternative approach to a combined-tabbed-document interface (CTDI) as proposed by \cite{Jiang2009}.
-Serval tool windows are available 
-from sub-panes at the four sides (only the left, and right sub-pane are 
-populated by default, Figure~\ref{fig:main_window}B/D). However, users can also detach individual 
-document or tool windows from the main application window.
-However, as some interface 
-elements are detached by default, e.g. the graphic device, can therefore be considered as SDI 
-(single-document interface). One reasoning behind this approach is to support highly customizeable GUIs and 
-to support working environments with multiple displays.
-The top of the window is occupied by menu bar and toolbar 
+parts, as depicted in Figure~\ref{fig:main_window}. The top of the window is occupied by menu bar and toolbar 
 (Figure~\ref{fig:main_window}A). The content of both bars is partially context
 sensitive, e.\,g., the ``Edit'' menu will offer
 one set of actions when the current document window is a data editor,
@@ -33,8 +17,7 @@ persistent, even if no actions are available for that menu in the
 current context. The menu bar of the main window is also the central
 access point to most data import, manipulation, analysis, and
 visualization features (see Section~\ref{sec:analyzing_data}) for which \pkg{RKWard} provides a GUI
-interface. An interresting feature for the navigation through the window elements is a NAME which can
-be invoked by the shortcut ``Ctrl+Tab''.
+interface.
 
 \begin{figure}[h!]
  \centering
@@ -47,47 +30,52 @@ Panels B and D can be resized or collapsed. The red border around B indicates th
 \end{figure}
 
 A status bar is shown at the bottom of the window (Figure~\ref{fig:main_window}E). It displays (from
-right to left) the status of the \proglang{R} engine (busy or idle), the
+right to left) a ``Stop''-button to interrupt the current computations,
+the status of the \proglang{R} engine (busy or idle), the
 current working directory, and a multi purpose region for additional
 information on some menu items and other GUI elements, visible when
 hovering the mouse pointer over them.
 
-The central area is divided into a document view area
-(Figure~\ref{fig:main_window}C) and two panel subwindows
-(Figure~\ref{fig:main_window}B and D). The panels can be resized or moved to
-another edge of the central area independently. All panels can be
-toggled by mouse or keyboard shortcuts. When a panel is closed, the
-document view area (see below) is automatically re-sized to take up the
-free space.
+The \pkg{RKWard} GUI generally follows an MDI (multiple document interface) approach.
+Document windows\footnote{
+    Currently, the supported types of
+    document windows are object summaries (Section~\ref{sec:workspace_browser_object_viewer}), 
+    script editors (Section~\ref{sec:code_editor}), spreadsheet-like data editors 
+    (Section~\ref{sec:spreadsheet}), results output (Section~\ref{sec:results_output}), 
+    help pages (Section~\ref{sec:help_system}), and also
+    \proglang{R} on-screen graphics devices (Section~\ref{sec:plot_previews}).
+} are arranged in a TDI \citep[tabbed document interface; see e.g.][]{Hopkins2005, MDN2010, KimLutteroth2010} in the central area (Figure~\ref{fig:main_window}C). The order
+of tabs can be conveniently re-arranged using drag \& drop.
 
-The left panel (Figure~\ref{fig:main_window}B) contains a file browser (see Section~\ref{sec:further_tool_windows}) and a
-workspace browser (see Section~\ref{sec:workspace_browser_object_viewer}) by default. The
-bottom panel (Figure~\ref{fig:main_window}D) contains the tool windows, namely, Command
-log (Section~\ref{sec:further_tool_windows}), Pending Jobs (Section~\ref{sec:further_tool_windows}), \proglang{R} Console
-(Section~\ref{sec:using_R_console}), and Help Search (Section~\ref{sec:help_system}).
+Additionally, several tool windows are available form resizable sub-panes at the four sides\footnote{
+    This combination of a tabbed-document interface and sub-panes is sometimes referred to as an ``IDE-style'' interface, due to its
+    usage in popular IDEs such as Eclipse \citep{Eclipse} or KDevelop \citep{KDevelop}.
+}. By default, the
+left panel (Figure~\ref{fig:main_window}B) contains a file browser (see Section~\ref{sec:further_tool_windows}) and a
+workspace browser (see Section~\ref{sec:workspace_browser_object_viewer}), the
+bottom panel (Figure~\ref{fig:main_window}D) contains a command
+log (Section~\ref{sec:further_tool_windows}), an \proglang{R} console
+(Section~\ref{sec:using_R_console}), and a help search (Section~\ref{sec:help_system}) window. The top and right sub-panes are
+not populated by default.
 
-The remainder of the central area (Figure~\ref{fig:main_window}C) is a single row tabbed document
-interface (TDI) for different documents. Early uses of TDIs date back to 1988 and are widely 
-applied nowadays \citep{Hopkins2005, MDN2010, KimLutteroth2010}. Currently, the supported types of
-documents are object summaries (Section~\ref{sec:workspace_browser_object_viewer}), 
-script editors (Section~\ref{sec:code_editor}), spreadsheet-like data editors 
-(Section~\ref{sec:spreadsheet}), results output (Section~\ref{sec:results_output}), 
-help pages (Section~\ref{sec:help_system}), and also
-\proglang{R} on-screen graphics devices (Section~\ref{sec:plot_previews}). 
-The order of tabs can be conveniently re-arranged
-using drag \& drop.
-
-All document windows and tool views can be detached from and re-attached to the main
-window as independent windows, managed by the window manager. This feature allows to 
-conveniently work with multiple documents
-at the same time, e.\,g., scripts or data editors. On{}-screen
+Users can also detach all types of document windows and tool windows from the main application window, which will
+then appear as independent windows, managed by the window manager, or re-attach them to the main window.
+This is to allow users to take advantage of an SDI (single-document interface), where useful, such as the ability to view any two
+documents side-by-side, or to make better use of multiple displays. On{}-screen
 graphics device windows are created detached by default, but can 
 be attached to the document view area of the main window.
 
-Windows can be shown (or toggled) using a mouse device with point \&
+Windows can be selected (or shown / hidden) using a mouse device with point \&
 click, as well as using a series of keyboard shortcuts (defined by
-default) for switching between the different tool and document windows.
-Key bindings can be configured from the GUI via ``Settings$\rightarrow$Configure Shortcuts''. 
+default) for activating spefic tool windows, or for cycling through all windows
+in the order of most recent usage\footnote{
+    This uses the shortcut ``Ctrl+Tab'' by default, and behaves similar to the ``Alt+Tab''
+    feature of common window managers. The difference is that this cycles through \pkg{RKWard} windows,
+    only, including both detached windows, and windows which are attached inside the main application
+    window.
+}.
+
+All key bindings can be configured from the GUI via ``Settings$\rightarrow$Configure Shortcuts''. 
 However, for technical reasons only the shortcuts of currently active components 
 will be listed. Thus, for example, to
 configure data editor shortcuts, one has to open a data editor first and
