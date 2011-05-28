@@ -8,12 +8,19 @@ The default layout\footnote{
  describe the default appearance of \pkg{RKWard}, only. 
 } of the main application window is divided into five
 parts, as depicted in Figure~\ref{fig:main_window}. 
-The \pkg{RKWard} GUI generally follows a MDI (multiple-document interface) approach, which means that windows
-reside in a single parent (main application) window on fixed positions. \pkg{RKWard} has a TDI (tabbed-document interface) with 
-detachable documents embedded in the MDI. The reason is to overcome the limitation of TDIs to
-show two tabbed documents simultaniously as an alternative approach to a combined-tabbed-document interface (CTDI) \citep{Jiang2009}.
+The \pkg{RKWard} GUI generally follows an MDI (multiple-document interface)\footnote{
+ When applied in an IDE (integrated-development environment) context this type of MDI is sometimes referred to as IDE-style interface (e.g. Eclipse).
+} approach, which means that windows
+reside in a single parent (main application) window on pre-defined positions. \pkg{RKWard} has a TDI (tabbed-document interface) in the 
+central area (Figure~\ref{fig:main_window}C) with 
+detachable documents embedded in the MDI. Detachable documents were implemented to overcome the limitation of TDIs to
+show two tabbed documents simultaniously. This is an alternative approach to a combined-tabbed-document interface (CTDI) as proposed by \cite{Jiang2009}.
+Serval tool windows are available 
+from sub-panes at the four sides (only the left, and right sub-pane are 
+populated by default, Figure~\ref{fig:main_window}B/D). However, users can also detach individual 
+document or tool windows from the main application window.
 However, as some interface 
-elements are detached by default, e.g. graphic devices, and can therefore be considered as SDI 
+elements are detached by default, e.g. the graphic device, can therefore be considered as SDI 
 (single-document interface). One reasoning behind this approach is to support highly customizeable GUIs and 
 to support working environments with multiple displays.
 The top of the window is occupied by menu bar and toolbar 
@@ -26,7 +33,8 @@ persistent, even if no actions are available for that menu in the
 current context. The menu bar of the main window is also the central
 access point to most data import, manipulation, analysis, and
 visualization features (see Section~\ref{sec:analyzing_data}) for which \pkg{RKWard} provides a GUI
-interface.
+interface. An interresting feature for the navigation through the window elements is a NAME which can
+be invoked by the shortcut ``Ctrl+Tab''.
 
 \begin{figure}[h!]
  \centering
