@@ -27,6 +27,10 @@ Assorted other aspects that we improved (not specifically requested by the revie
 
 * In our paper we claimed that RKWard is aimed as productive too. We added citations, including one of the first author, from peer-review literature which specifically cite the usage of RKWard during their research work as support for our claim that RKWard's purpose is the usage as a productive tool.
 * We updated the example script (demo.R) to reflect the changes requested by the reviewers. We also added a reference for reader to the zip-archive containing all scripts and data used in the paper. 
+  - TF: I wonder whether that really makes sense, as including examples is really standard in JStatSoft. I checked some other recent articles, and those
+    do not seem to mention the examples, specifically.
+    Besides, in our case, I think that having the code examples is comparatively pointless (except perhaps for the example plugin), since most of
+    that is simply to show off GUI features, not produce anything.
 
 Issues raised by the reviewers
 
