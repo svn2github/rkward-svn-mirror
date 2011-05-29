@@ -39,14 +39,12 @@ information on some menu items and other GUI elements, visible when
 hovering the mouse pointer over them.
 
 The \pkg{RKWard} GUI generally follows an MDI (multiple document interface) approach.
-Document windows\footnote{
-    Currently, the supported types of
-    document windows are object summaries (Section~\ref{sec:workspace_browser_object_viewer}), 
-    script editors (Section~\ref{sec:code_editor}), spreadsheet-like data editors 
-    (Section~\ref{sec:spreadsheet}), results output (Section~\ref{sec:results_output}), 
-    help pages (Section~\ref{sec:help_system}), and also
-    \proglang{R} on-screen graphics devices (Section~\ref{sec:plot_previews}).
-} are arranged in a TDI \citep[tabbed document interface; see e.g.][]{Hopkins2005, MDN2010, KimLutteroth2010} in the central area (Figure~\ref{fig:main_window}C). The order
+Document windows (object summaries, Section~\ref{sec:workspace_browser_object_viewer};
+    script editors, Section~\ref{sec:code_editor}; spreadsheet-like data editors, Section~\ref{sec:spreadsheet};
+    results output, Section~\ref{sec:results_output}; help pages, Section~\ref{sec:help_system}; and also
+    \proglang{R} on-screen graphics devices, Section~\ref{sec:plot_previews}) 
+are arranged in a TDI \citep[tabbed document interface; see e.g.][]{Hopkins2005, MDN2010, KimLutteroth2010}
+in the central area (Figure~\ref{fig:main_window}C). The order
 of tabs can be conveniently re-arranged using drag \& drop.
 
 Additionally, several tool windows are available form resizable sub-panes at the four sides\footnote{
@@ -151,7 +149,7 @@ editor include syntax highlighting (both on screen and in printouts; for
 folding, block-wise indentation adjustments or commenting, automatic
 brackets, search and replace with plain text or regular expressions,
 and many more. Further, \pkg{Kate} can be extended by 
-customized actions implemented in \proglang{ECMAScript}\footnote{\url{http://kate-editor.org/2010/07/09/kate-scripted-actions}}.
+customized actions implemented in \proglang{ECMAScript} \citep{KateScriptedActions}.
 The editor automatically saves snapshots of the
 currently edited files at configurable intervals. 
 
