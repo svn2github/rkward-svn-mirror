@@ -26,8 +26,10 @@ interface.
  \includegraphics[width=15.450cm]{./figures/main_window.png}
  \caption{Default \pkg{RKWard} main window after start up. 
 A) Menu bar and toolbar, B) tool panel showing workspace browser, C) document view area, showing
-different documents (help page, \code{data.frame} ``my.data'', \proglang{R} script ``demo.R''), D) tool panel showing embedded \proglang{R} console, and E) status bar with an option to stop running processes.
-Panels B and D can be resized or collapsed. The red border around B indicates that the workspace browser is the active interface element.}
+different documents (welcome message, \code{data.frame} ``my.data'', ``mean'' help page, \proglang{R}
+script ``demo.R''), D) tool panel showing embedded \proglang{R} console, and E) status bar with an option to
+stop running processes. Panels B and D can be resized or collapsed. The red border around B indicates that the
+workspace browser is the active interface element.}
  \label{fig:main_window}
 \end{figure}
 
@@ -216,7 +218,7 @@ vector or matrix data directly from the clipboard.
 By default, any code that is submitted to the
 \proglang{R} engine from the code editor or from help
 pages, is sent through the \proglang{R} console.
-However, it can be configured to be the submitted in the background,
+However, it can be configured to be submitted in the background,
 instead.
 
 
@@ -434,7 +436,7 @@ applicable. Further, a clickable ``Run
 Again'' link is rendered below the output of each data
 handling feature, which allows to invoke the same feature again with
 identical parameters\footnote{In case not all parameters could be
-reused, since, may be, some of the objects in
+reused, e.\,g. because some of the objects in
 question are no longer available, the user will be notified.} (see
 Figure~\ref{fig:results_output}). Thus, the ``Run
 Again'' feature combines the documentation of the result
@@ -445,17 +447,19 @@ available from \pkg{RreportGenerator} \citep{RaffelsbergerW2008}.
 \begin{figure}[t!]
  \centering
  \includegraphics[width=15.5cm]{./figures/results_output_cropped.png}
- \caption{Sample contents of the output window. Upper portion: Result of analyzing sample data (from the \code{DNase} and \code{ChickWeight}
-  datasets of the \pkg{datasets} package) in the ``Descriptive Statistics'' plugin. Standard elements of plugin output include a standardized header, and a 
-  ``Run again''-link, which allows to repeat the analysis with identical or 
-  similar parameters. Lower portion: A custom heading added using the \code{rk.header()} function, and a short transcript of R code and the corresponding output.}
+ \caption{Sample contents of the output window. Upper portion: Result of analyzing sample data (from the
+\code{DNase} and \code{ChickWeight}
+  datasets of the \pkg{datasets} package) in the ``Descriptive Statistics'' plugin. Standard elements of
+  plugin output include a standardized header, and a  ``Run again''-link, which allows to repeat the
+  analysis with identical or similar parameters. Lower portion: A custom heading added using the
+  \code{rk.header()} function, and a short transcript of R code with corresponding output.}
 % TF: Stefan: I've removed the bit below. It was not really designed to allow this, and for the more complex plugins, this is fairly useless,
 % since only a fraction of the options will fit in the status bar:
 % (Details of the previous analysis are shown in the status bar when the mouse pointer hovers over the ``Run again''-link)
  \label{fig:results_output}
 \end{figure}
 
-The formatting of the output is kept to a minimum. In particular,
+The formatting of output is kept to a minimum. In particular,
 \pkg{RKWard} is very reluctant to round numerical results for the sake of a
 pretty output. Rather, the focus is on making the results easily
 accessible for further processing, typically in a dedicated word
@@ -484,8 +488,9 @@ rendered by older supported versions of the
 \pkg{KDE} libraries.
 
 Users can also add custom content to the output window using \code{rk.header()}, \code{rk.print()}, and some
-related functions. Further, custom R code, and the corresponding R output can easily be documented in the
-\pkg{RKWard} output window, including syntax highlighting (see the lower portion of Figure~\ref{fig:results_output}).
+related functions. Further, custom R code as well as the corresponding R output can easily be documented in
+the \pkg{RKWard} output window, including syntax highlighting (see the lower portion of
+Figure~\ref{fig:results_output}).
 
 \subsection{Package management}
 \label{sec:package_management}
@@ -556,7 +561,7 @@ TDI view area (see Figure~\ref{fig:main_window}C) or in detached windows.
 
 A central access point to the help system is the ``Help'' menu. Further, help pages on
 \nobreak{\pkg{RKWard}} GUI dialogs can be accessed from the dialog itself using the
-``Help'' button. An useful (``reverse'') feature here is that these pages include 
+``Help'' button. A useful (``reverse'') feature here is that these pages include 
 a link near the top of the page to start the corresponding GUI dialog directly.
 Help on \proglang{R} specific functions can be invoked from multiple places, 
 such as, the context menu of the workspace browser, by pressing F2 (function
