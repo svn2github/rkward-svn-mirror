@@ -21,6 +21,7 @@ Updates we did to reflect changes in the released version of RKWard (now 0.5.6, 
 * Supplement, section "Asynchronous command execution": Frontend and backend are now running in separate processes, instead of separate threads.
 * Supplement, section "Asynchronous command execution": The process of gathering object information is somewhat less pro-active, now, and also
                                  includes S4 slots, and package namespaces.
+* Supplement, section "Development process": External plugins, which are not an official part of RKWard, can now be directly downloaded and installed by chosing them from a GUI dialog.
 Further, Figures, 2, 3, 5, 8, 10, and 11 were updated to reflect changes in the GUI.
 
 Assorted other aspects that we improved (not specifically requested by the reviewer)
