@@ -19,7 +19,7 @@ access point to most data import, manipulation, analysis, and
 visualization features (see Section~\ref{sec:analyzing_data}) for which \pkg{RKWard} provides a GUI
 interface.
 
-\begin{figure}[h!]
+\begin{figure}[b!]
  \centering
  \includegraphics[width=15.450cm]{./figures/main_window.png}
  \caption{Default \pkg{RKWard} main window after start up. 
@@ -240,9 +240,9 @@ Figure~\ref{fig:data_editors} shows multiple \code{data.frame}s open for editing
  \caption{\pkg{RKWard} with several \code{data.frame}s in use at the same time. A) 
   One \code{data.frame} (\code{CO2} data of the \pkg{datasets} package) is opened for editing in the main window. Two further \code{data.frame}s
   are opened in the background in tabs. 
-  B) Another \code{data.frame} (\code{ChickWeight} data of the \pkg{datasets} package) is opened as detached window. 
+  B) Another \code{data.frame} (\code{ChickWeight}) is opened in a detached window. 
   C) \proglang{R}'s standard data editing features (e.\,g., \code{fix()}, \code{edit()}) 
-  are also usable within an \pkg{RKWard} session. In this example \code{fix(DNase)} 
+  are also usable in \pkg{RKWard}. In this example \code{fix(DNase)} 
   was invoked from the console (arrow).}
  \label{fig:data_editors}
 \end{figure}
@@ -328,7 +328,7 @@ options to control the import. The
 it is required to specify a file before the dialog can proceed.
 Further options are available from the tabbed pages of the central area.
 
-\begin{figure}[b!]
+\begin{figure}[t!]
  \centering
  \includegraphics[width=14.99cm]{./figures/CSV_import.png}
  \caption{General data import dialog. Useful defaults for a variety of formats can
