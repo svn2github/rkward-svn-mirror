@@ -1,5 +1,5 @@
 -- Requirements for this demonstration --
-These demonstration files require an existing installation of RKWard 0.5.4 on your
+These demonstration files require an existing installation of RKWard 0.5.4 (or later) on your
 system. Please refer to http://rkward.sf.net for instructions on the various
 methods of installation.
 
