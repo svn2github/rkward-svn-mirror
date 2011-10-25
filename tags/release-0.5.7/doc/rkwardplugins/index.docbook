@@ -1,0 +1,3085 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
+  <!ENTITY rkward '<application>RKWard</application>'>
+  <!ENTITY r '<application>R</application>'>
+  <!ENTITY kapp "&rkward;"><!-- replace rkward here -->
+  <!ENTITY % addindex "IGNORE">
+  <!ENTITY % English "INCLUDE"><!-- change language only here -->
+  
+  
+  <!-- Do not define any other entities; instead, use the entities
+       from kde-genent.entities and $LANG/user.entities. -->
+]>
+
+<book lang="&language;">
+
+<!-- This header contains all of the meta-information for the document such
+as Authors, publish date, the abstract, and Keywords -->
+
+<bookinfo>
+<title>Introduction to Writing Plugins for RKWard</title>
+
+<authorgroup>
+<author>
+<firstname>Thomas</firstname>
+<surname>Friedrichsmeier</surname>
+<affiliation>
+<address><email>rkward-devel AT lists DOT sourceforge DOT net</email></address>
+</affiliation>
+</author>
+
+<author>
+<firstname>Meik</firstname>
+<surname>Michalke</surname>
+<affiliation>
+<address><email>rkward-devel AT lists DOT sourceforge DOT net</email></address>
+</affiliation>
+</author>
+<!-- Additional authors go here -->
+</authorgroup>
+
+<!-- TRANS:ROLES_OF_TRANSLATORS -->
+
+<copyright>
+<year>2006</year>
+<year>2007</year>
+<year>2008</year>
+<year>2010</year>
+<year>2011</year>
+<holder>Thomas Friedrichsmeier</holder>
+</copyright>
+<!-- Translators: put here the copyright notice of the translation -->
+<!-- Put here the FDL notice.  Read the explanation in fdl-notice.docbook 
+     and in the FDL itself on how to use it. -->
+<legalnotice>&FDLNotice;</legalnotice>
+
+<date>2011-10-17</date>
+<releaseinfo>0.5.7.00</releaseinfo>
+
+<abstract>
+<para>
+This is a guide to writing plugins for &rkward;.
+</para>
+</abstract>
+
+<keywordset>
+<keyword>KDE</keyword>
+<keyword>R</keyword>
+<keyword>rkward</keyword>
+<keyword>plugins</keyword>
+</keywordset>
+
+</bookinfo>
+
+<chapter id="introduction">
+<title>Introduction</title>
+
+	<note>
+		<para>
+			Documentation as of &rkward; release 0.5.7.
+		</para>
+	</note>
+	<para>
+		This document describes how to write your own plugins. Note, that at the time of this writing, some of the concepts are not yet set it stone. Therefore, this document should be regarded as an introduction to the current approach, and as a basis for discussion. All sorts of comments are welcome.
+	</para>
+	<para>
+		For questions and comments, please write to the &rkward; development mailing list.
+	</para>
+	<para>
+		<emphasis>You do not need to read this in order to use &rkward;.</emphasis> This document is about extending &rkward;. It is targeted at advanced users, or people willing to help improve &rkward;.
+	</para>
+	<para>
+		Writing a standard plugin is basically a four-step process:
+		<itemizedlist>
+			<listitem><para><link linkend="pluginmap">Placing a new Action in the menu hierarchy</link></para></listitem>
+			<listitem><para><link linkend="mainxml">Describing the looks and behavior of the plugin GUI</link></para></listitem>
+			<listitem><para><link linkend="jstemplate">Defining, how R-code is to be generated from the settings, the user makes in the GUI</link></para></listitem>
+			<listitem><para><link linkend="pluginhelp">Adding a help page to your plugin</link></para></listitem>
+		</itemizedlist>
+		Those will be dealt with in turn.
+	</para>
+	<para>
+		Some advanced concepts may be used in those four steps, but are dealt with in separate chapters, to keep things simple:
+		<itemizedlist>
+			<listitem><para><link linkend="logic">GUI logic</link></para></listitem>
+			<listitem><para><link linkend="embedding">Embedding Plugins into Plugins</link></para></listitem>
+			<listitem><para><link linkend="plugin_series">Useful concepts for creating many series of similar plugins</link></para></listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		Also, none of the chapters shows all options, but rather only the basic concepts. A complete <link linkend="reference">reference</link> of options is provided separately.
+	</para>
+</chapter>
+
+<chapter id="whatareplugins">
+<title>Preliminaries: What are plugins in &rkward;? How do they work?</title>
+	<para>
+		Of course the first question you might have is: What portions of &rkward; functionality is realized using plugins? Or: What can plugins do?
+	</para>
+	<para>
+		One way to answer this is: Deselect all <literal role="extension">.pluginmap</literal> files under <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &rkward;</guimenuitem><guimenuitem>Plugins</guimenuitem></menuchoice>, and see what's missing. A slightly more helpful answer: Most actual statistics functions accessible via the GUI are realized using plugins. Also, you can create fairly flexible GUIs for all kinds of operations using plugins.
+	</para>
+	<para>
+		The basic paradigm behind &rkward; plugins is the one we'll walk you through in this document: An XML file describes what the GUI looks like. An additional JavaScript file is used to generate &r; syntax from the GUI settings. That is, plugins do not really have to perform any statistical calculations. Rather plugins generate the &r; syntax needed to run those calculations. The &r; syntax is then sent to the &r; backend for evaluation, and typically a result is shown in the output window.
+	</para>
+	<para>
+		Read on in the next chapters to see how this is done.
+	</para>
+</chapter>
+
+<chapter id="pluginmap">
+<title>Creating menu entries</title>
+	<para>
+		When you create a new plugin, you need to tell &rkward; about it. So the first thing to do, is to write a <literal role="extension">.pluginmap</literal> file (or modify an existing one). The format of <literal role="extension">.pluginmap</literal> is XML. I'll walk you through an example (also of course, be sure you have &rkward; configured to load your pluginmap -- <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure &rkward;</guimenuitem><guimenuitem>Plugins</guimenuitem></menuchoice>):
+	</para>
+	<tip>
+		<para>
+			After reading this chapter, have a look at the <link linkend="rkwarddev"><application>rkwarddev</application> package</link> as well. It provides some &r; functions to create most of &rkward;'s XML tags for you.
+		</para>
+	</tip>
+	<programlisting>
+&lt;!DOCTYPE rkpluginmap&gt;
+	</programlisting>
+	<para>
+	The doctype is not really interpreted, but set it to <replaceable>"rkpluginmap"</replaceable> anyway.
+	</para>
+	<programlisting>
+&lt;document base_prefix="" namespace="rkward"&gt;
+	</programlisting>
+	<para>
+		The <parameter>base_prefix</parameter> attribute can be used, if all your plugins reside in a common directory. Basically, then you can omit that directory from the filenames specified below. As you will see below, all plugins get a unique identifier, <parameter>id</parameter>. The <parameter>namespace</parameter> is a way to organize those IDs, and make it less likely to create a duplicate identifier accidentally. Internally, basically the namespace and then a <quote>::</quote> gets prepended to all the identifiers you specify below. If unsure, leave these at <replaceable>""</replaceable> and <replaceable>"rkward"</replaceable>.
+	</para>
+	<programlisting>
+	&lt;components&gt;
+	</programlisting>
+	<para>
+		Components? Aren't we talking about plugins? Yes, but in the future, plugins will be no more than a special class of components. What we do here, then, is to register all components/plugins with &rkward;. Let's look at an example entry:
+	</para>
+	<programlisting>
+		&lt;component type="standard" id="t_test_two_vars" file="t_test_two_vars.xml" label="Two Variable t-Test" /&gt;
+	</programlisting>
+	<para>
+		First the <parameter>type</parameter> attribute: Leave this to <replaceable>"standard"</replaceable> for now. Further types are not yet implemented. The <parameter>id</parameter> we've already hinted at. Each component has to be given a unique (in its namespace) identifier. Pick one that is easily recognizable. Avoid spaces and any special characters. Those are not banned, so far, but might have special meanings. With the <parameter>file</parameter> attribute, you specify where the <link linkend="mainxml">description of the actual plugin itself</link> is located. This is relative to the directory the <literal role="extension">.pluginmap</literal> file is in, and the <parameter>base_prefix</parameter> above. Finally, give the component a label. This label will be shown whereever the plugin is placed in the menu (or in the future perhaps in other places as well).
+	</para>
+	<para>
+		Typically a <literal role="extension">.pluginmap</literal> file will contain several components, so here are a few more:
+	</para>
+	<programlisting>
+		&lt;component type="standard" id="unimplemented_test" file="means/unimplemented.xml" /&gt;
+		&lt;component type="standard" id="fictional_t_test" file="means/ttests/fictional.xml" label="This is a fictional t-test" /&gt;
+		&lt;component type="standard" id="descriptive" file="descriptive.xml" label="Descriptive Statistics" /&gt;
+		&lt;component type="standard" id="corr_matrix" file="corr_matrix.xml" label="Correlation Matrix" /&gt;
+		&lt;component type="standard" id="simple_anova" file="simple_anova.xml" label="Simple Anova" /&gt;
+	&lt;/components&gt;
+	</programlisting>
+	<para>
+		Ok, this was the first step. &rkward; now knows those plugins exist. But how to invoke them? They need to be placed in a menu hierarchy:
+	</para>
+	<programlisting>
+	&lt;hierarchy&gt;
+		&lt;menu id="analysis" label="Analysis" index="4"&gt;
+	</programlisting>
+	<para>
+		Right below the <command>&lt;hierarchy&gt;</command> tag, you start describing, in which <command>&lt;menu&gt;</command> your plugins should go. With the above line, you basically say, that your plugin should be in the <menuchoice><guimenu>Analysis</guimenu></menuchoice> menu (not necessarily directly there, but in a submenu). The <menuchoice><guimenu>Analysis</guimenu></menuchoice> menu is standard in &rkward;, so it does not actually have to be created from scratch. However, if it did not exist yet, using the <parameter>label</parameter> attribute you'd give it its name. The <parameter>index</parameter> attribute says, that the menu (if newly created) should be placed at the fourth position in the menubar.
+		Finally, the <parameter>id</parameter> once again identifies this <command>&lt;menu&gt;</command>. This is needed, so several <literal role="extension">.pluginmap</literal> files can place their plugins in the same menus. They do this by looking for a <command>&lt;menu&gt;</command> with the given <parameter>id</parameter>. If the ID does not yet exist, a new menu will be created. Otherwise the entries will be added to the existing menu.
+	</para>
+	<programlisting>
+			&lt;menu id="means" label="Means" index="1"&gt;
+	</programlisting>
+	<para>
+		Basically the same thing here: Now we define a submenu to the <menuchoice><guimenu>Analysis</guimenu></menuchoice> menu. It is to be called <menuchoice><guimenuitem>Means</guimenuitem></menuchoice>.
+	</para>
+	<programlisting>
+				&lt;menu id="ttests" label="t-Tests"&gt;
+	</programlisting>
+	<para>
+		And a final level in the menu hierarchy: A submenu of the submenu <menuchoice><guimenuitem>Means</guimenuitem></menuchoice>. Note, that if you omit the <parameter>index</parameter> parameter, the new entry will be placed below any already existing ones.
+	</para>
+	<programlisting>
+					&lt;entry component="t_test_two_vars" /&gt;
+	</programlisting>
+	<para>
+		Now, finally, this is the menu we want to place the plugin in. The <command>&lt;entry&gt;</command> tag signals, this actually is the real thing, instead of another submenu. The <parameter>component</parameter> attribute refers to the <parameter>id</parameter> you gave the plugin/component above.
+	</para>
+	<programlisting>
+					&lt;entry component="fictional_t_test" /&gt;
+				&lt;/menu&gt;
+				&lt;entry component="fictional_t_test" /&gt;
+			&lt;/menu&gt;
+			&lt;menu id="frequency" label="Frequency" index="2"/&gt;
+	</programlisting>
+	<para>
+		In case you have lost track: This is another submenu to the <menuchoice><guimenu>Analysis</guimenu></menuchoice> menu. See the screenshot below. We'll skip some of what's not visible, marked with [...].
+	</para>
+	<programlisting>
+				[...]
+			&lt;/menu&gt;
+			&lt;entry component="corr_matrix" index="4"/&gt;
+			&lt;entry component="descriptive" index="3"/&gt;
+			&lt;entry component="simple_anova" index="5"/&gt;
+		&lt;/menu&gt;
+	</programlisting>
+	<para>
+		These are the final entries visible in the screenshots below. Note, that you don't need to define the entries in the order they should have in the menu. Use the <parameter>index</parameter> attribute instead.
+	</para>
+	<programlisting>
+		&lt;menu id="plots" label="Plots" index="5"&gt;
+			[...]
+		&lt;/menu&gt;
+	</programlisting>
+	<para>
+		Of course you can also place your plugins in menus other than <menuchoice><guimenu>Analysis</guimenu></menuchoice>.
+	</para>
+	<programlisting>
+		&lt;menu id="file" label="File" index="0"&gt;
+			[...]
+		&lt;/menu&gt;
+	</programlisting>
+	<para>
+		Even in standard-menus such as <menuchoice><guimenu>File</guimenu></menuchoice>. All you need is the correct <parameter>id</parameter>.
+	</para>
+	<programlisting>
+	&lt;/hierarchy&gt;	
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		That's how to do it. And this screenshot shows the result:
+	</para>
+	<screenshot>
+	<screeninfo>Menu hierarchy created by the code shown above</screeninfo>
+		<mediaobject>
+		<imageobject>
+			<imagedata fileref="menu_hierarchy_example.png" format="PNG"/>
+		</imageobject>
+		<textobject>
+			<phrase>Menu hierarchy created by the code shown above</phrase>
+		</textobject>
+		</mediaobject>
+	</screenshot>
+	<para>
+		Confused? The easiest way to get started is probably taking some of the existing <literal role="extension">.pluginmap</literal> files shipped with the distribution, and modifying them to your needs. Also, if you need help, don't hesitate to write to the development mailing list.
+	</para>
+</chapter>
+
+<chapter id="mainxml">
+<title>Defining the GUI</title>
+<sect1 id="sect_defining_the_GUI"><title>Defining a dialog</title>
+	<para>
+		In the <link linkend="pluginmap">previous chapter</link> you've seen how to register a plugin with &rkward;. The most important ingredient was specifying the path to an XML file with a description of what the plugin actually looks like. In this chapter you'll learn how to create this XML file.
+	</para>
+	<tip>
+		<para>
+			After reading this chapter, have a look at the <link linkend="rkwarddev"><application>rkwarddev</application> package</link> as well. It provides some &r; functions to create most of &rkward;'s XML tags for you.
+		</para>
+	</tip>
+	<para>
+		Once again we'll walk you through an example. The example is a (slightly simplified) version of the two variable t-Test.
+	</para>
+	<programlisting>
+&lt;!DOCTYPE rkplugin&gt;
+	</programlisting>
+	<para>
+		The doctype is not really interpreted, yet. Set it to <replaceable>rkplugin</replaceable>, anyway.
+	</para>
+	<programlisting>
+&lt;document&gt;
+	&lt;code file="t_test_two_vars.js"/&gt;
+	</programlisting>
+	<para>
+		All plugins generate some code. Currently the only way to do so is using JS, as detailed in <link linkend="jstemplate">the next chapter</link>. This defines, where to look for the JS code. The filename is relative to the directory the plugin XML is in.
+	</para>
+	<programlisting>
+	&lt;help file="t_test_two_vars.rkh"/&gt;
+	</programlisting>
+	<para>
+		It is usually a good idea to also provide a help page for your plugin. The filename of that help page is given, here, relative to the directory, the plugin XML is in. Writing help pages is documented <link linkend="pluginhelp">here</link>. If you do not provide a help file, omit this line.
+	</para>
+	<programlisting>
+	&lt;dialog label="Two Variable t-Test"&gt;
+	</programlisting>
+	<para>
+		As you know, plugins may have either a dialog or a wizard interface or both. Here we start definining a dialog interface. the <parameter>label</parameter> attribute specifies the caption of the dialog.
+	</para>
+	<programlisting>
+		&lt;tabbook&gt;
+			&lt;tab label="Basic settings"&gt;
+	</programlisting>
+	<para>
+		GUI elements can be organized using a tabbook. Here we define a tabbook as the first element in the dialog. Use <command>&lt;tabbook&gt;</command>[...]<command>&lt;/tabbook&gt;</command> to define the tabbook and then for each page in the tabbook use <command>&lt;tab&gt;</command>[...]<command>&lt;/tab&gt;</command>. The <parameter>label</parameter> attribute in the <command>&lt;tab&gt;</command> element allows you to specify a caption for that page of the tabbook.
+	</para>
+	<programlisting>
+				&lt;row id="main_settings_row"&gt;
+	</programlisting>
+	<para>
+		The <command>&lt;row&gt;</command> and <command>&lt;column&gt;</command> tags specify the layout of the GUI elements. Here you say, that you'd like to place some elements side-by-side (left to right). The <parameter>id</parameter> attribute is not strictly necessary, but we'll use it later on, when adding a wizard interface to our plugin. The first element to place in the row, is:
+	</para>
+	<programlisting>
+					&lt;varselector id="vars"/&gt;
+	</programlisting>
+	<para>
+		Using this simple tag you create a list from which the user can select variables. You have to specify an <parameter>id</parameter> for this element, so &rkward; knows how to find it.
+	</para>
+	<warning>
+		<remark>
+			You may NOT use a dot (.) in the <parameter>id</parameter> string.
+		</remark>
+	</warning>
+	<programlisting>
+					&lt;column&gt;
+	</programlisting>
+	<para>
+		Next, we nest a <command>&lt;column&gt;</command> inside the row. I.e. the following elements will be place above each other (top-to-bottom), and all will be to the right of the <command>&lt;varselector&gt;</command>.
+	</para>
+	<programlisting>
+						&lt;varslot types="number" id="x" source="vars" required="true" label="compare"/&gt;
+						&lt;varslot types="number" id="y" source="vars" required="true" label="against"/&gt;
+	</programlisting>
+	<para>
+		These elements are the counterpart to the <command>&lt;varselector&gt;</command>. They represent <quote>slots</quote> into which the user can put variables. You will note that the <parameter>source</parameter> is set to the same value as the <parameter>id</parameter> of the <command>&lt;varselector&gt;</command>. This means, the <command>&lt;varslot&gt;</command>s will each take their variables from the varselector. The <command>&lt;varslot&gt;</command>s also have to be given an <parameter>id</parameter>. They may have a <parameter>label</parameter>, and they may be set to <parameter>required</parameter>. This means that the <guibutton>Submit</guibutton> button will not be enabled until the <command>&lt;varslot&gt;</command> holds a valid value. Finally the <parameter>type</parameter> attribute is not interpreted yet, but it will be used to take care that only the correct types of variables will be allowed in the <command>&lt;varslot&gt;</command>.
+	</para>
+	<programlisting>
+						&lt;radio id="hypothesis" label="using test hypothesis"&gt;
+							&lt;option value="two.sided" label="Two-sided"/&gt;
+							&lt;option value="greater" label="First is greater"/&gt;
+							&lt;option value="less" label="Second is greater"/&gt;
+						&lt;/radio&gt;
+	</programlisting>
+	<para>
+		Here, you define a group of <command>&lt;radio&gt;</command> exclusive buttons. The group has a <parameter>label</parameter> and an <parameter>id</parameter>. Each <command>&lt;option&gt;</command> (button) has a <parameter>label</parameter> and is assigned a <parameter>value</parameter>. This is the value the <command>&lt;radio&gt;</command> element will return when the option is selected.
+	</para>
+	<programlisting>
+					&lt;/column&gt;
+				&lt;/row&gt;
+			&lt;/tab&gt;
+	</programlisting>
+	<para>
+		Each tag has to be closed. We've put all the elements we wanted (the two <command>&lt;varslots&gt;</command> and the <command>&lt;radio&gt;</command>) in the <command>&lt;column&gt;</command>. We put all elements we wanted (the <command>&lt;varselector&gt;</command> and the <command>&lt;column&gt;</command> with those elements) in the <command>&lt;row&gt;</command>. And we've put all the elements we wanted into the first page in the <command>&lt;tabbook&gt;</command>. We're not yet done defining the <command>&lt;tabbook&gt;</command> (more pages to come), and of course there's more to come in the <command>&lt;dialog&gt;</command>, too. But this screenshot is basically what we've done so far:
+	</para>
+	<screenshot>
+	<screeninfo>t-Test plugin</screeninfo>
+		<mediaobject>
+		<imageobject>
+			<imagedata fileref="t_test_plugin_example.png" format="PNG"/>
+		</imageobject>
+		<textobject>
+			<phrase>t-Test plugin</phrase>
+		</textobject>
+		</mediaobject>
+	</screenshot>
+	<para>
+		Note that we have not specified the <guibutton>Submit</guibutton>, <guibutton>Close</guibutton>, etc. buttons or the code view. Those elements get generated automatically. But of course we still have to define the second page of the <command>&lt;tabbook&gt;</command>:
+	</para>
+	<programlisting>
+			&lt;tab label="Options"&gt;
+				&lt;checkbox id="varequal" label="assume equal variances" value=", var.equal=TRUE"/&gt;
+	</programlisting>
+	<para>
+		By default elements will be placed top-to-bottom like in a <command>&lt;column&gt;</command>. Since that is what we want here, we don't have to explicitly state a <command>&lt;row&gt;</command> or <command>&lt;column&gt;</command> layout. The first element we define is a checkbox. Just like the <command>&lt;radio&gt;</command><command>&lt;option&gt;</command>s, the checkbox has a <parameter>label</parameter> and a <parameter>value</parameter>. The <parameter>value</parameter> is what gets returned, if the checkbox is checked. Of course the checkbox also needs an <parameter>id</parameter>.
+	</para>
+	<programlisting>
+				&lt;frame label="Confidence Interval" id="frame_conf_int"&gt;
+	</programlisting>
+	<para>
+		Here's yet another layout element: In order to signal that the two elements below  belong together, we draw a <command>&lt;frame&gt;</command> (box). That frame may have a <parameter>label</parameter> (caption). Since the frame is just a passive layout element, it does not need an <parameter>id</parameter>, we still define one here, as we'll refer to it later, when defining an additional wizard interface.
+	</para>
+	<programlisting>
+					&lt;checkbox id="confint" label="print confidence interval" value="1" checked="true"/&gt;
+					&lt;spinbox type="real" id="conflevel" label="confidence level" min="0" max="1" initial="0.95"/&gt;
+				&lt;/frame&gt;
+	</programlisting>
+	<para>
+		Inside the <command>&lt;frame&gt;</command> we place another <command>&lt;checkbox&gt;</command> (using <parameter>checked=</parameter><replaceable>"true"</replaceable>, we signal that checkbox should be checked by default), and a <command>&lt;spinbox&gt;</command>. The spinbox allows the user to select a value between <replaceable>"min"</replaceable> and <replaceable>"max"</replaceable> with the default/initial value <replaceable>"0.95"</replaceable>. Setting the <parameter>type</parameter> to <replaceable>"real"</replaceable> signals that real numbers are accepted as opposed to <parameter>type=</parameter><replaceable>"integer"</replaceable> which would accept integers only.
+	</para>
+	<note><para>
+		It is also possible, and often preferable, to make the <command>&lt;frame&gt;</command> itself checkable, instead of adding a <command>&lt;checkbox&gt;</command> inside. See the reference for details. This is not done here, for illustrational purposes.
+	</para></note>
+	<programlisting>
+			&lt;/tab&gt;
+		&lt;/tabbook&gt;
+	&lt;/dialog&gt;
+	</programlisting>
+	<para>
+		That's all for the second page of the <command>&lt;tabbook&gt;</command>, all pages in the <command>&lt;tabbook&gt;</command> and all elements in the <command>&lt;dialog&gt;</command>. We're finished defining what the dialog looks like.
+	</para>
+	<programlisting>
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		Finally we close the <command>&lt;document&gt;</command> tag, and that's it. The GUI is defined. You can save the file now. But how does &r; syntax get generated from the GUI-settings? We'll deal with that in the <link linkend="jstemplate">next chapter</link>. First, however, we'll look into adding a wizard interface, and some general considerations.
+	</para>
+</sect1>
+
+<sect1 id="wizard_interface">
+	<title>Adding a wizard interface</title>
+	<para>
+		Actually we don't have to define an additional <command>&lt;wizard&gt;</command> interface, but here's how that would be done. To add a wizard interface, you'll add a <command>&lt;wizard&gt;</command> tag at the same level as the <command>&lt;dialog&gt;</command> tag:
+	</para>
+	<programlisting>
+		&lt;wizard label="Two Variable t-Test"&gt;
+			&lt;page id="firstpage"&gt;
+				&lt;text&gt;As a first step, select the two variables you want to compare against
+					each other. And specify, which one you theorize to be greater. Select two-sided,
+					if your theory does not tell you, which variable is greater.&lt;/text&gt;
+				&lt;copy id="main_settings_row"/&gt;
+			&lt;/page&gt;
+	</programlisting>
+	<para>
+		Some of this is pretty self explanatory: We add a <command>&lt;wizard&gt;</command> tag with a <parameter>label</parameter> for the wizard. Since a wizard can hold several pages that are shown one after another, we next define the first <command>&lt;page&gt;</command>, and put an explanatory <command>&lt;text&gt;</command> note in there. Then we use a <command>&lt;copy&gt;</command> tag. What this does, is really it saves us having to define yet again, what we already wrote for the <command>&lt;dialog&gt;</command>: The copy tag looks for another tag with the same <parameter>id</parameter> earlier in the XML. This happens to be defined in the <command>&lt;dialog&gt;</command> section, and is a <command>&lt;row&gt;</command> in which there are the <command>&lt;varselector&gt;</command>, <command>&lt;varslots&gt;</command> and the <quote>hypothesis</quote> <command>&lt;radio&gt;</command> control. All of this is copied 1:1 and inserted right at the <command>&lt;copy&gt;</command> element.
+	</para>
+	<para>
+		Now to the second page:
+	</para>
+	<programlisting>
+			&lt;page id="secondpage"&gt;
+				&lt;text&gt;Below are some advanced options. It's generally safe not to assume the
+					variables have equal variances. An appropriate correction will be applied then.
+					Chosing "assume equal variances" may increase test-strength, however.&lt;/text&gt;
+				&lt;copy id="varequal"/&gt;
+				&lt;text&gt;Sometimes it's helpful to get an estimate of the confidence interval of
+					the difference in means. Below you can specify whether one should be shown, and
+					which confidence-level should be applied (95% corresponds to a 5% level of
+					significance).&lt;/text&gt;
+				&lt;copy id="frame_conf_int"/&gt;
+			&lt;/page&gt;
+		&lt;/wizard&gt;
+	</programlisting>
+	<para>
+		Much of the same thing here. We add some texts, and in between that <command>&lt;copy&gt;</command> further sections from the dialog interface.
+	</para>
+	<para>
+		You may of course make the wizard interface look very different to the plain dialog, and not use the <command>&lt;copy&gt;</command> tag at all. Be sure, however, to assign corresponding elements the same <parameter>id</parameter> in both interfaces. This is not only used to transfer settings from the dialog interface to the wizard interface and back, when the user switches interfaces (which does not yet happen in the current version of &rkward;), but also simplifies writing your code template (see below).
+	</para>
+</sect1>
+
+<sect1 id="mainxmltips">
+	<title>Some considerations on GUI design</title>
+	<para>
+		This section contains some general considerations on which GUI elements to use where. If this is your first attempt of creating a plugin, feel free to skip over this section, as it isn't relevant to getting a basic GUI working. Come back here, later, to see, whether you can refine your plugin's GUI in some way or another.
+	</para>
+	
+	<sect2 id="radio_vs_checkbox_vs_dropdown">
+		<title>&lt;radio&gt; vs. &lt;checkbox&gt; vs. &lt;dropdown&gt;</title>
+		<para>
+			The three elements <command>&lt;radio&gt;</command>, <command>&lt;checkbox&gt;</command>, <command>&lt;dropdown&gt;</command>, all serve a similar function: To select one out of several options. Obviously, a checkbox only allows to chose between two options: checked or not checked, so you can't use it, if there are more than two options to chose from. But when to use which of the elements? Some rules of thumb:
+		</para>
+		<para>
+			If you find yourself creating a <command>&lt;radio&gt;</command> or <command>&lt;dropdown&gt;</command> with only two options, ask yourself, whether the question is essentially a yes / no type of question. E.g. a choice between <quote>adjust results</quote> and <quote>do not adjust results</quote>, or between <quote>remove missing values</quote> and <quote>keep missing values</quote>. In this case a <command>&lt;checkbox&gt;</command> is the best choice: It uses little space, will have the least words of labels, and is easiest to read for the user. There are very few situations where you should chose a <command>&lt;radio&gt;</command> over a <command>&lt;checkbox&gt;</command>, when there are only two options. An example of that might be: <quote>Method of calculation: 'pearson'/'spearman'</quote>. Here, more methods might be thinkable, and they don't really form a pair of opposites.
+		</para>
+		<para>
+			Chosing between a <command>&lt;radio&gt;</command> and a <command>&lt;dropdown&gt;</command> is mostly a question of space. The <command>&lt;dropdown&gt;</command> has the advantage of using little space, even if there are a lot of options to chose from. On the other hand, a <command>&lt;radio&gt;</command> has the advantage of making all possible choices visible to the user at once, without clicking on the dropdown arrow. Generally, if there are six or more options to chose from, a <command>&lt;dropdown&gt;</command> is preferable. If there are five or less options, a <command>&lt;radio&gt;</command> is the better choice.
+		</para>
+	</sect2>
+</sect1>
+</chapter>
+
+<chapter id="jstemplate">
+<title>Generating R code from GUI settings</title>
+<sect1 id="sect_generating_R_code"><title>Using JavaScript in RKWard plugins</title>
+	<para>
+		Now we have a GUI defined, but we still need to generate some &r; code from that. For that, we need another text file, <filename>code.js</filename>, located in the same directory as the <link linkend="mainxml"><filename>description.xml</filename></link>. You may or may not be familiar with JavaScript (or, to be technically precise: ECMA-script). Documentation on JS can be found in abundance, both in printed form, and on the internet (e.g.: <ulink url="https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide">https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide</ulink>). But for most purposes you will not need to know much about JS at all, as we'll only use some very basic features.
+	</para>
+	<tip>
+		<para>
+			After reading this chapter, have a look at the <link linkend="rkwarddev"><application>rkwarddev</application> package</link> as well. It provides some &r; functions to create JavaScript code commonly used in &rkward;. It can also autodetect variables used in a plugin XML file and create basic JavaScript code from that for you to start with.
+		</para>
+	</tip>
+	<para>
+		For the two variable t-test, the <filename>code.js</filename> file looks as follows (with comments in between):
+	</para>
+	<sect2 id="sect_JS_preprocess"><title>preprocess()</title>
+		<programlisting>
+function preprocess () {
+}
+		</programlisting>
+		<para>
+			The JS file is organized into three separate functions: <function>preprocess()</function>, <function>calculate()</function>, and <function>printout()</function>. This is because not all code is needed at all stages. Currently the preprocess-function is not really used in many places (typically you will omit it altogether).
+		</para>
+	</sect2>
+	<sect2 id="sect_JS_calculate"><title>calculate()</title>
+		<programlisting>
+function calculate () {
+	echo ('res &lt;- t.test (x=' + getValue ("x") + ', y=' + getValue ("y") + ', hypothesis="' + getValue ("hypothesis") + '"' + getValue ("varequal"));
+	var conflevel = getValue ("conflevel");
+	if (conflevel != "0.95") echo (', conf.level=' + conflevel);
+	echo (')\n');
+}
+		</programlisting>
+		<para>
+			This function generates the actual R syntax to be run from the GUI settings. Let's look at this in detail: The code to be used is generated using <function>echo()</function> statement. Looking at the <function>echo()</function> statement step by step, the first part of it is
+		</para>
+		<screen>
+res &lt;- t.test (
+		</screen>
+		<para>
+			as plain text. Next we need to fill in the value, the user selected as the first variable. We fetch this using <function>getValue ("x")</function>, and append it to the string to be <quote>echoed</quote>. This prints out the value of the GUI-element with <parameter>id=</parameter><replaceable>"x"</replaceable>: our first <command>&lt;checkbox&gt;</command>. Next, we append a ', ', and do the same to fetch the value of the element <replaceable>"y"</replaceable> - the second <command>&lt;checkbox&gt;</command>. For the hypothesis (the <command>&lt;radio&gt;</command> group), and the equal variances <command>&lt;checkbox&gt;</command>, the procedure is very similar.
+		</para>
+		<para>
+			Note that instead of concatenating the output snippets with <quote>+</quote>, you can also use several <function>echo()</function> statments. Everything is printed on a single line. To produce a line break in the generated code, insert a <replaceable>"\n"</replaceable> in the echoed string. In theory, you can even produce many lines with a single echo-statement, but please keep it to one line (or less) of generated code per <function>echo()</function>.
+		</para>
+		<para>
+			It gets a little more tricky for the confidence level. For reasons of aesthetics, we don't want to explicitly specify the confidence level to use, if it corresponds to the default value. Hence, instead of printing the value unconditionally, we first fetch into a variable. Then we check, whether that variable differs from <replaceable>"0.95"</replaceable> and if so print out an additional argument. Finally, we echo a closing bracket and a line break: <replaceable>")\n"</replaceable>. That's all for the calculate function.
+		</para>
+	</sect2>
+	<sect2 id="sect_JS_printout"><title>printout()</title>
+		<programlisting>
+function printout () {
+	echo ('rk.header ("Two Variable t-Test")\n');
+	echo ('rk.print (res)\n');
+}
+		</programlisting>
+		<para>
+			And this was all there is to the printout function in most cases. <function>rk.header()</function> prints a standard headline for the results. You can also add some more information to this, if you like, e.g.:
+		</para>
+		<programlisting>
+function printout () {
+	makeHeaderCode ("Two Variable t-Test", new Array ("Assume equal variances",
+		getValue ("varequal"), "Confidence level", getValue ("conflevel")))
+	echo ('rk.print (res)\n');
+}
+		</programlisting>
+		<para>
+			<function>rk.print()</function> utilizes the R2HTML package to provide HTML formatted output. Another helpful function is <function>rk.results()</function>, which can also output different kinds of result tables. If in doubt, however, just use <function>rk.print()</function>, and be done with. <function>makeHeaderCode()</function> is a JS level helper function to create a call to <function>rk.header()</function> (just take a look at the generated code). In some cases you may want to call <function>echo ('rk.header (...)')</function> directly to print a header for your output.
+		</para>
+		<para>
+			Note that internally, the output is just a plain HTML document at this point of time. Therefore you might be tempted to add custom HTML using <function>rk.cat.output()</function>. While this will work, please don't do this. The output format may change (e.g. to ODF) in the future, so it's best not to introduce HTML specific code. Rather keep things simple with <function>rk.header()</function>, <function>rk.print()</function>, <function>rk.results()</function>, and -- if needed -- <function>rk.print.literal()</function>. If those don't seem to satisfy your formatting needs, contact us on the mailing list for help.
+		</para>
+		<para>
+			Congratulations! You created your first plugin. Read on in the next chapters for more advanced concepts.
+		</para>
+	</sect2>
+</sect1>
+
+<sect1 id="jsconventions">
+<title>Conventions, policies, and background</title>
+	<para>
+		There are many ways to write &r; code for a certain task, and there are even more ways to generate this &r; code from JS. How exactly you do it, is left up to you. Still there are a number of considerations that you should follow, and background information you should understand.
+	</para>
+
+	<sect2 id="policylocal">
+	<title>Understanding the <function>local()</function> environment</title>
+		<para>
+			More often than not you will have to create one or more temporary &r; objects in the code generated by your plugin. Normally, you do not want those to be placed in the user's workspace, potentially even overwriting user variables. Hence, all plugin generated code is run in a <function>local()</function> environment (see &r; help page on function <function>local()</function>). This means, all variables you create are temporary and will not be saved permanently.
+		</para>
+		<para>
+			If the user explicitly asks for a variable to be saved, you will need to assign to that object using <quote>.GlobalEnv$objectname &lt;- value</quote>. In general, do not use the <quote>&lt;&lt;-</quote> operator. It will not necessarily assign in .GlobalEnv.
+		</para>
+		<para>
+			One important pitfall is using <function>eval()</function>. Here, you need to note that eval will by default use the current environment for evaluation, i.e. the local one. This will work well most of the times, but but not always. Thus, if you need to use <function>eval()</function>, you will probably want to specify the <parameter>envir</parameter> parameter: <function>eval(..., envir=globalenv()</function>).
+		</para>
+	</sect2>
+
+	<sect2 id="policyformatting">
+	<title>Code formatting</title>
+		<para>
+			The most important thing is for your generated &r; code to work. But please also keep an eye on formatting. Some considerations:
+		</para>
+		<para>
+			Normal top-level &r; statements should be left aligned.
+		</para>
+		<para>
+			Statements in a lower block should be indented with one tab (see example below).
+		</para>
+		<para>
+			If you do very complex calculations, add a comment here and there, esp. to mark up logical sections.
+		</para>
+		<para>
+			For example, generated code might look like this. The same code without indentation or comments would be pretty hard to read, despite its modest complexity:
+		</para>
+		<programlisting>
+# first determine the wobble and rotation
+my.wobble &lt;- wobble (x, y)
+my.rotation &lt;- wobble.rotation (my.wobble, z)
+
+# boggling method needs to be chosen according to rotation
+if (my.rotation &gt; wobble.rotation.limit (x)) {
+	method &lt;- "foo"
+	result &lt;- boggle.foo (my.wobble, my.rotation)
+} else {
+	method &lt;- "bar"
+	result &lt;- boggle.bar (my.wobble, my.rotation)
+}
+		</programlisting>
+	</sect2>
+
+	<sect2 id="policysimplicity">
+	<title>Dealing with complex options</title>
+		<para>
+			Many plugins can do more than one thing. For instance, the <quote>Descriptive Statistics</quote> plugin can compute mean, range, sum, product, median, length, etc. However, typically the user will only chose to have some of those calculations performed. In this case, please try to keep the generated code as simple as possible. It should only contain portions relevant to the options that are actually selected. To achieve this, here is an example of a common design patterns as you would use it (in JS):
+		</para>
+		<programlisting>
+function calculate () {
+	echo ('x &lt;- &lt;' + getValue ("x") + ')\n');
+	echo ('results &lt;- list ()\n');
+
+	if (getValue ("domean")) echo ("results$'Mean value' &lt;- mean (x)\n");
+	if (getValue ("domedian")) echo ("results$'Median' &lt;- median (x)\n");
+	if (getValue ("dosd")) echo ("results$'Standard deviation' &lt;- sd (x)\n");
+	//...
+}
+		</programlisting>
+	</sect2>
+
+</sect1>
+
+<sect1 id="jstips">
+<title>Tips and tricks</title>
+	<para>
+		Here are a few assorted tricks which may make writing plugins less tedious:
+	</para>
+	<para>
+		If you need the value of a GUI setting at several places in you plugin's code, consider assigning it to a variable in JS, and using that instead of fetching it again and again with getValue. This is faster, more readable, and less typing all at the same time:
+	</para>
+	<programlisting>
+function calculate () {
+	var narm = "";	// na.rm=FALSE is the default in all functions below
+	if (getValue ("remove_nas") == "1") {
+		$narm = ", na.rm=TRUE";
+	}
+	// ...
+	echo ("results$foo &lt;- foo (x" + narm + ")\n");
+	echo ("results$bar &lt;- bar (x" + narm + ")\n");
+	echo ("results$foobar &lt;- foobar (x" + narm "\n");
+	// ...
+}
+	</programlisting>
+</sect1>
+</chapter>
+
+<chapter id="pluginhelp">
+	<title>Writing a help page</title>
+	<para>
+		When your plugin basically works, the time has come to provide a help page. While typically you will not want to explain all the underlying concepts in depth, you may want to add some more explanation for some of the options, and link to related plugins and &r; functions.
+	</para>
+	<tip>
+		<para>
+			After reading this chapter, have a look at the <link linkend="rkwarddev"><application>rkwarddev</application> package</link> as well. It provides some &r; functions to create most of &rkward;'s XML tags for you. It's also capable of creating basic help file skeletons from existing plugin XML files for you to start with.
+		</para>
+	</tip>
+	<para>
+		You may recall putting this inside your plugin XML (if you haven't put this in, do so now):
+	</para>
+	<programlisting>
+&lt;document&gt;
+	[...]
+	&lt;help file="filename.rkh" /&gt;
+	[...]
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		Where, obviously, you'd replace <filename>filename</filename> with a more appropriate name. Now it's time to create this <literal role="extension">.rkh</literal> file. Here is a self-descriptive example:
+	</para>
+	<programlisting>
+&lt;!DOCTYPE rkhelp&gt;
+&lt;document&gt;
+	&lt;summary&gt;
+In this section, you'll put some short, very basic information about what the plugin does.
+This section will always show up on the very top of the help page.
+	&lt;/summary&gt;
+
+	&lt;usage&gt;
+The usage section may contain a little more practical information. It does not explain all
+the settings in detail (that's done in the "settings" section), however.
+
+To start a new paragraph, insert an empty line, as shown above.
+This line, in contrast, will be in the same paragraph.
+
+In all sections you can insert some simple HTML code, such as &lt;b&gt;bold&lt;/b&gt; or
+&lt;i&gt;italic&lt;/i&gt; text. Please keep formatting to the minimum needed, however.
+
+The usage section is always the second section shown in a help page.
+	&lt;/usage&gt;
+
+	&lt;section id="sectionid" title="Generic section" short_title="Generic"&gt;
+If you need to, you can add additional sections between the usage and settings sections.
+However, usually, you will not need this while documenting plugins. The "id"-attribute
+provides an anchor point to jump to this section from the navigation menu. The "short_title"
+attribute provides a short title to use in the navigation bar. This is optional, by default
+the main "title" will be used both as a heading to the section, and as the link name in the
+navigation bar.
+
+In any section you may want to insert links to further information. You do this by adding
+
+&lt;link href="URL"&gt;link name&lt;/link&gt;
+
+Where URL could be an external link such as http://rkward.sourceforge.net .
+Several special URLs are supported in the help pages:
+
+&lt;link href="rkward://page/path/page_id"/&gt;
+
+This links to a top level rkward help page (not for a plugin).
+
+&lt;link href="rkward://component/[namespace/]component_id"/&gt;
+
+This links to the help page of another plugin. The [namespace/] part may be omitted
+(in this case, rkward is assumed as the standard namespace, e.g.:
+&lt;link href="rkward://component/import_spss"/&gt; or
+&lt;link href="rkward://component/rkward/import_spss"/&gt; are equivalent).
+The component_id is the same that you specified in the <link linkend="pluginmap">.pluginmap</link>.
+
+&lt;link href="rkward://rhelp/rfunction"/&gt;
+
+Links to the R help page on "rfunction".
+
+Note that the link names will be generated automatically for these types of links.
+	&lt;/section&gt;
+
+	&lt;settings&gt;
+		&lt;caption id="id_of_tab_or_frame"/&gt;
+		&lt;setting id="id_of_element"&gt;
+Description of the GUI element identified by the given id
+		&lt;/setting&gt;
+		&lt;setting id="id_of_elementb" title="description"&gt;
+Usually the title of the GUI element will be extracted from the
+<link linkend="mainxml">XML definition of the plugin</link>, automatically. However,
+for some GUI elements, this description may not be enough to identify them, reliably.
+In this case, you can add an explicit title using the "title" attribute.
+		&lt;/setting&gt;
+		&lt;setting id="id_of_elementc"&gt;
+Description of the GUI element identified by "id_of_elementc"
+		&lt;/setting&gt;
+		[...]
+	&lt;/settings&gt;
+
+	&lt;related&gt;
+The related section typically just contains some links, such as:
+
+&lt;ul&gt;
+	&lt;li&gt;&lt;link href="rkward://rhelp/mean"/&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;link href="rkward://rhelp/median"/&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;link href="rkward://component/related_component"/&gt;&lt;/li&gt;
+&lt;/ul&gt;
+	&lt;/related&gt;
+
+	&lt;technical&gt;
+The technical section (optional, always last) may contain some technical details of the plugin
+implementation, which are of interest only to RKWard developers. This is particularly relevant
+for plugins that are designed to be embedded in many other plugins, and could detail, which
+options are available to customize the embedded plugin, and which code sections contain which
+R code.
+	&lt;/technical&gt;
+&lt;/document&gt;
+	</programlisting>
+</chapter>
+
+
+<chapter id="logic">
+<title>Logic interactions between GUI elements</title>
+<sect1 id="sect_GUI_logic"><title>GUI logic</title>
+	<para>
+		All the basic concepts of creating a plugin for &rkward; have been described in the previous chapters. Those basic concepts should be sufficient for many -- if not most -- cases. However, sometimes you want more control over how your plugin's GUI behaves.
+	</para>
+	<para>
+		For instance, suppose you want to extend the t-test example used in this documentation to allow both: comparing a variable against another variable (as shown), and comparing a variable against a constant value. Now, one way of doing this would be to add a radio-control that switches between the two modes, and adding a spinbox to enter the constant value to compare against. Consider this simplified example:
+	</para>
+	<programlisting>
+&lt;!DOCTYPE rkplugin&gt;
+&lt;document&gt;
+	&lt;code file="code.js"/&gt;
+
+	&lt;dialog label="T-Test"&gt;
+		&lt;row&gt;
+			&lt;varselector id="vars"/&gt;
+			&lt;column&gt;
+				&lt;varslot id="x" types="number" source="vars" required="true" label="compare"/&gt;
+				&lt;radio id="mode" label="Compare against"&gt;
+					&lt;option value="variable" checked="true" label="another variable (select below)"/&gt;
+					&lt;option value="constant" label="a constant value (set below)"/&gt;
+				&lt;/radio&gt;
+				&lt;varslot id="y" types="number" source="vars" required="true" label="variable"/&gt;
+				&lt;spinbox id="constant" initial="0" label="constant" /&gt;
+			&lt;/column&gt;
+		&lt;/row&gt;
+	&lt;/dialog&gt;
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		So far so good, but there are a number of problems with this GUI. First, both the varslot and the spinbox are always shown, whereas only one of the two is really used. Worse, the varslot always requires a valid selection, even if you compare against a constant. Obviously, if we create a multi-purpose GUI like this, we want more flexibility. Enter: the <command>&lt;logic&gt;</command> section (inserted at the same level as <command>&lt;code&gt;</command>, <command>&lt;dialog&gt;</command>, or <command>&lt;wizard&gt;</command>).
+	</para>
+	<programlisting>
+	[...]
+	&lt;code file="code.js"/&gt;
+
+	&lt;logic&gt;
+		&lt;convert id="varmode" mode="equals" sources="mode.string" standard="variable" /&gt;
+		&lt;convert id="constmode" mode="equals" sources="mode.string" standard="constant" /&gt;
+
+		&lt;connect client="y.visible" governor="varmode" /&gt;
+		&lt;connect client="constant.visible" governor="constmode" /&gt;
+	&lt;/logic&gt;
+
+	&lt;dialog label="T-Test"&gt;
+	[...]
+	</programlisting>
+	<para>
+		The first two lines inside the logic section are <command>&lt;convert&gt;</command> tags. Those basically provide two new boolean (on or off, true or false) properties, which can be used later on. The first property (<replaceable>"varmode"</replaceable>) is true, whenever the upper radio button is selected and the second whenever the lower radio button is selected. How is this done?
+	</para>
+	<para>
+		First, under <parameter>sources</parameter>, the source properties to work on are listed (in this case only one each; you could list several as <parameter>sources=</parameter><replaceable>"mode.string;somethingelse"</replaceable>, then <replaceable>"varmode"</replaceable> would only be true, if both <replaceable>"mode.string"</replaceable> and <replaceable>"somethingelse"</replaceable> are equal to the string <replaceable>"variable"</replaceable>). Note that in this case we don't just write <replaceable>"mode"</replaceable> (as we would in <function>getValue("mode")</function>, but <replaceable>"mode.string"</replaceable>. This is actually the internal way a radio control works: It has a property <quote>string</quote>, which holds its string value. <function>getValue("mode")</function> is just a shorthand, and equivalent to <function>getValue("mode.string")</function>. See the reference for all properties of the different GUI elements.
+	</para>
+	<para>
+		Second, we set the mode of conversion to <parameter>mode=</parameter><replaceable>"equals"</replaceable>. This means, we want to check, whether the sources are equal to a certain value. Finally standard is the value to compare against, so with <parameter>standard=</parameter><replaceable>"variable"</replaceable>, we check whether the property <replaceable>"mode.string"</replaceable> is equal to the string <replaceable>"variable"</replaceable> (the value of the upper radio option). If it is equal, then the property varmode is true, else it is false.
+	</para>
+	<para>
+		The next line is basically the same, but reversed. Here we define a property (<replaceable>"constmode"</replaceable>) which becomes true, if the second radio option is selected.
+	</para>
+	<para>
+		Now to the real stuff: We <command>&lt;connect&gt;</command> the <replaceable>"varmode"</replaceable> property to y.visible, which controls whether the varslot <replaceable>"y"</replaceable> is shown or not. Note that any element which is made invisible is implicitly non-required. Thus, if the upper radio-option is selected, the varslot <replaceable>"y"</replaceable> is required, and visible. Else it is not required and hidden.
+	</para>
+	<para>
+		We do just the reverse for the spinbox. So in effect, either the varslot is shown and required, <emphasis>or</emphasis> the spinbox is shown and required - depending on which option is selected in the radio control. The GUI is changing itself according to the radio option. Try the example, if you like.
+	</para>
+	<note>
+		<para>
+			In the above example, instead of defining two properties <replaceable>"varmode"</replaceable> and <replaceable>"constmode"</replaceable>, we could also have used the negation of <replaceable>"varmode"</replaceable>, like this:
+		</para>
+	</note>
+	<programlisting>
+	&lt;connect client="constant.visible" governor="varmode.not" /&gt;
+	</programlisting>
+	<para>
+		Once again, for a complete list of properties, refer to the <link linkend="reference">reference</link>. One more property, however, is special in that all GUI elements have it: <quote>enabled</quote>. This is slightly less drastic that <quote>visible</quote>. It does not show/hide the GUI element, but only enables/disables it. Disabled elements are typically shown grayed out, and do not react to user input.
+	</para>
+</sect1>
+<sect1 id="logic_scripted">
+<title>Scripted GUI logic</title>
+	<para>
+		While connecting properties as described above is often enough, sometimes it is more flexible or more convenient to use JS to script the GUI logic. In this way, the above example could be re-written as:
+	</para>
+	<programlisting>
+	[...]
+	&lt;code file="code.js"/&gt;
+
+	&lt;logic&gt;
+		&lt;script&gt;&lt;![CDATA[
+			// ECMAScript code in this block
+			// the top-level statement is only called once
+			gui.addChangeCommand ("mode.string", "modeChanged ()");
+
+			// this function is called whenever the "mode" was changed
+			modeChanged = function () {
+				var varmode = (gui.getValue ("mode.string") == "variable");
+				gui.setValue ("y.enabled", varmode);
+				gui.setValue ("constant.enabled", !varmode);
+			}
+		]]&gt;&lt;/script&gt;
+	&lt;/logic&gt;
+
+	&lt;dialog label="T-Test"&gt;
+	[...]
+	</programlisting>
+	<para>
+		The first line of code tells &rkward; to call the function <function>modeChanged()</function> whenever the value of the <parameter>id=</parameter><replaceable>"mode"</replaceable> radio box changes. Inside this function, we define a helper-variable <replaceable>"varmode"</replaceable> which is true when the mode is <replaceable>"variable"</replaceable>, false is it is <replaceable>"constant"</replaceable>. Then we use <function>gui.setValue()</function> to set the and <quote>enabled</quote> properties of <replaceable>"y"</replaceable> and <replaceable>"constant"</replaceable>, in just the same way as we did using <command>&lt;connect&gt;</command> statements, before.
+	</para>
+	<para>
+		The scripted approach to GUI logic becomes particularly useful when you want to change the available option according to the type of object that the user has selected. See <link linkend="guilogic_functions">the reference</link> for available functions.
+	</para>
+	<para>
+		Note that the scripted approach to GUI logic can be mixed with <command>&lt;connect&gt;</command> and <command>&lt;convert&gt;</command>-statements if you like. Also note that the <command>&lt;script&gt;</command> tag allows to specify a script file name in addition to or as an alternative to inlining the script code. Typically, inlining the script code as shown above is most convenient, however.
+	</para>
+</sect1>
+</chapter>
+
+<chapter id="embedding">
+<title>Embedding Plugins into Plugins</title>
+<sect1 id="sect_embedding"><title>Use cases for embedding</title>
+	<para>
+		When writing plugins, you will often find that you're creating a number of plugins that only differ in some respects, but have a lot more in common. For instance, for plotting, there are a number of generic &r; options that can be used with mostly all types of plots. Should you create a GUI and JS-template for those over and over again?
+	</para>
+	<para>
+		Obviously that would be quite a hassle. Fortunately, you don't have to do that. Rather you create the common functionality once, and later you can embed it into several plugins. In fact it is possible to embed any plugin into any other plugin, even if the original author of the embedded plugin never thought, somebody would want to embed their plugin into another one.
+	</para>
+</sect1>
+<sect1 id="embedding_dialog">
+<title>Embedding inside a dialog</title>
+	<para>
+		Ok, enough said. How does it work? Simple: Just use the <command>&lt;embed&gt;</command> tag. Here's a stripped down example:
+	</para>
+	<programlisting>
+&lt;dialog&gt;
+	&lt;tabbook&gt;
+		&lt;tab [...]&gt;
+			[...]
+		&lt;/tab&gt;
+		&lt;tab label="Plot Options"&gt;
+			&lt;embed id="plotoptions" component="rkward::plot_options"/&gt;
+		&lt;/tab&gt;
+		&lt;tab [...]&gt;
+			[...]
+		&lt;/tab&gt;
+	&lt;/tabbook&gt;
+&lt;/dialog&gt;
+	</programlisting>
+	<para>
+		What happens here, is that the entire GUI or the plot options plugin (except of course for the standard elements like <guibutton>Submit</guibutton> button, etc.) is embedded right into your plugin (try it!).
+	</para>
+	<para>
+		As you can see the syntax of the <command>&lt;embed&gt;</command>-tag is fairly simple. It takes an <parameter>id</parameter> as most elements. The parameter component specifies which plugin to embed, as defined in the <link linkend="pluginmap">.pluginmap</link> file (<replaceable>"rkward::plot_options"</replaceable> is the result of concatenating the namespace <quote>rkward</quote>, a separator <quote>::</quote>, and the name of the component <quote>plot_options</quote>).
+	</para>
+</sect1>
+<sect1 id="embedding_code">
+<title>Code generation when embedding</title>
+	<para>
+		So far so good, but what about the generated code? How are the code for the embedding and embedded plugin merged? In the embedding plugin's JS code, simply write something like this:
+	</para>
+	<programlisting>
+function printout () {
+	// ...
+	echo ("myplotfunction ([...]" + getValue ("plotoptions.code.printout"); + ")\n");
+	// ...
+}
+	</programlisting>
+	<para>
+		So essentially, we're fetching the code generated by the embedded plugin just like we're fetching any other GUI setting. Here the string <replaceable>"plotoptions.code.printout"</replaceable> can be deparsed to: <quote>The printout section of the generated code of the element with the <parameter>id</parameter> plotoptions</quote> (plotoptions is the ID we gave for the <command>&lt;embed&gt;</command> tag above). And yes, if you want advanced control, you can even fetch the values of individual GUI elements inside the embedded plugin (but not the other way around, as the embedded plugin does not know anything about its surroundings).
+	</para>
+</sect1>
+<sect1 id="embedding_wizard">
+<title>Embedding inside a wizard</title>
+	<para>
+		If your plugin provides a wizard GUI, embedding works basically in the same way. You'll generally use:
+	</para>
+	<programlisting>
+	&lt;wizard [...]&gt;
+		[...]
+		&lt;page id="page12"&gt;
+			[...]
+		&lt;/page&gt;
+		&lt;embed id="plotoptions" component="rkward::plot_options"/&gt;
+		&lt;page id="page13"&gt;
+			[...]
+		&lt;/page&gt;
+		[...]
+	&lt;/wizard&gt;
+	</programlisting>
+	<para>
+		If the embedded plugin provides a wizard interface, its pages will be inserted right between <replaceable>"page12"</replaceable> and <replaceable>"page13"</replaceable> of your plugin. If the embedded plugin provides a dialog interface only, a single new page will be added between your pages <replaceable>"page12"</replaceable> and <replaceable>"page13"</replaceable>. The user will never notice.
+	</para>
+</sect1>
+<sect1 id="embedding_as_button">
+<title>Less embedded embedding: Further Options button</title>
+	<para>
+		While embedding is cool, you should be careful not to overdo it. Too many functions inside a GUI just make it hard to find the relevant options. Of course, sometimes you may want to embed a great deal of options (like all the options to <function>plot()</function>), but as those are really optional, you don't want them prominently in your GUI.
+	</para>
+	<para>
+		An alternative is to embed those options <quote>as a button</quote>:
+	</para>
+	<programlisting>
+&lt;dialog&gt;
+	&lt;tabbook&gt;
+		[...]
+		&lt;tab label="Options"&gt;
+			[...]
+			&lt;embed id="plotoptions" component="rkward::plot_options" as_button="true" label="Specify plotting options"/&gt;
+		&lt;/tab&gt;
+		[...]
+	&lt;/tabbook&gt;
+&lt;/dialog&gt;
+</programlisting>
+	<para>
+		In this case, a single push button will be added to your plugin, labelled <guibutton>Specify plotting options</guibutton>. When you press that button, a separate dialog will come up, with all the options of the embedded plugin. Even while this embedded GUI is not visible most of the time, you can fetch its settings just as described <link linkend="embedding_code">above</link>.
+	</para>
+	<para>
+		<caution>
+			<remark>
+				Probably the <quote>button</quote> approach should only ever be used for plugins that can never be invalid (for missing/bad settings). Otherwise the user would not be able to submit the code, but might have a hard time finding out, the reason for that is hidden behind some button.
+			</remark>
+		</caution>
+	</para>
+</sect1>
+<sect1 id="embedding_incomplete">
+<title>Embedding/defining incomplete plugins</title>
+	<para>
+		Some plugins -- and as a matter of fact, the plot_options used as an example above, is one of them -- are not complete by themselves. They simply do not have the GUI elements to select some important values. They are meant to be used only embedded into other plugins.
+	</para>
+	<para>
+		In how far is the plot_options plugin incomplete? Well, for some option settings, it needs to know the name of the objects/expressions for the x and y axes (actually it will do fine if it only has either, but it needs at least one to function properly). However, it does not have a mechansim of selecting those objects, or entering them any other way. So how does it know about them?
+	</para>
+	<para>
+		In the logic section of the plot_options plugin there are two additional lines, not covered, yet:
+	</para>
+	<programlisting>
+	&lt;logic&gt;
+		&lt;external id="xvar" /&gt;
+		&lt;external id="yvar" /&gt;
+
+		[...]
+	&lt;/logic&gt;
+	</programlisting>
+	<para>
+		This defines two additional properties in the plot_options plugin, whose sole purpose is to be connected to some (yet unknown) properties of the embedding plugin. In the plot_options plugin those two properties are simply used like any other, and for instance there are calls to <function>getValue("xvar")</function> in the plot_options JS template.
+	</para>
+	<para>
+		Now, for the incomplete plugin there is no way of knowing, where it will be embedded, and what the relevant settings in the embedding plugin will be called. So we need to add two additional lines in the embedding plugin's logic section as well:
+	</para>
+	<programlisting>
+	&lt;logic&gt;
+		[...]
+
+		&lt;connect client="plotoptions.xvar" governor="xvarslot.available" /&gt;
+		&lt;connect client="plotoptions.yvar" governor="yvarslot.available" /&gt;
+	&lt;/logic&gt;
+	</programlisting>
+	<para>
+		This is nothing new in principle, we've covered <command>&lt;connect&gt;</command> statements in the <link linkend="logic">chapter of GUI logic</link>. You simply connect the values in two varlots (called <replaceable>"xvarslot"</replaceable> and <replaceable>"yvarslot"</replaceable> in this example) to the receiving <quote>external</quote> properties of the embedded plugin. That's it. Everything else is taken care of automatically.
+	</para>
+</sect1>
+</chapter>
+
+<chapter id="plugin_series">
+<title>Dealing with many similar plugins</title>
+<sect1 id="sect_similar_plugins"><title>Overview on different approaches</title>
+	<para>
+		Sometimes, you may wish to develop plugins for a series of similar functions. As an example, consider the distribution plots. These generate fairly similar code, and of course it's desirable to make the graphical interfaces look similar to each other. Finally large sections of the help files can be identical. Only a few parameters are different for each plugin.
+	</para>
+	<para>
+		The naive approach to this is to develop one plugin, then basically copy and paste the entire contents of the <literal role="extension">.js</literal>, <literal role="extension">.xml</literal>, and <literal role="extension">.rkh</literal> files, then changing the few portions that are different. However, what if sometime later you find a spelling mistake that has been copied and pasted to all plugins? What if you want to add support for a new feature? You'd have to visit all plugins again, and change each single one. A tiresome and tedious process.
+	</para>
+	<para>
+		A second approach would be to use <link linkend="embedding">embedding</link>. However, in some cases this does not lend itself well to the problem at hand, mostly because the <quote>chunks</quote> you can embed are sometimes too large to be useful, and it places some constraints on the layout. For these cases, the concepts <link linkend="include_js">including <literal role="extension">.js</literal> files</link> <link linkend="include_xml">including <literal role="extension">.xml</literal> files</link> and <link linkend="snippets">snippets</link> can be very useful (but see the <link linkend="include_snippets_vs_embedding">thoughts on when it is preferable to use embedding</link>).
+	</para>
+	<para>
+		One word of caution, before you begin reading, though: These concepts can help making it simpler to deal with many similar plugins, and can improve maintainability and readability of those plugins. However, overdoing it can easily lead to the reverse effect. Use with some caution.
+	</para>
+</sect1>
+<sect1 id="include_js">
+<title>Using the JS include statement</title>
+	<para>
+		You can easily include one script file into another in &rkward; plugins. The value of this becomes immediately obvious, if some sections of your JS code are similar across plugins. You can simply define those sections in a separate <literal role="extension">.js</literal> file, and include this in all the plugin <literal role="extension">.js</literal> files. For example, as in:
+	</para>
+	<programlisting>
+// this is a file called "common_functions.js"
+
+function doCommonStuff () {
+	// perhaps fetch some options, etc.
+	// ...
+	echo ("# This is R code you want in several different plugins\n");
+	// ...
+}
+	</programlisting>
+	<programlisting>
+// this is one of your regular plugin <literal role="extension">.js</literal> files
+
+// include the common functions
+include ("common_functions.js");
+
+function calculate () {
+	// do something
+	// ...
+
+	// insert the common code
+	doCommonStuff ();
+}
+	</programlisting>
+	<para>
+		Note that sometimes it's even more useful to reverse this, and define the <quote>skeleton</quote> of <function>preprocess()</function>, <function>calculate()</function>, and <function>printout()</function> functions is a common file, and make these call back for those part which are different across plugins. E.g.:
+	</para>
+	<programlisting>
+// this is a file called "common_functions.js"
+
+function calculate () {
+	// do some things which are the same in all plugins
+	// ...
+
+	// add in something that is different across plugins
+	getSpecifics ();
+
+	// ...
+}
+	</programlisting>
+	<programlisting>
+// this is one of your regular plugin <literal role="extension">.js</literal> files
+
+// include the common functions
+include ("common_functions.js");
+
+// note: no calculate() function is defined in here.
+// it in the common_functions.js, instead.
+
+function getSpecifics () {
+	// print some R code
+}
+	</programlisting>
+	<para>
+		One issue you should be aware of when using this technique is variable scoping. See the JS manual on variable scopes.
+	</para>
+	<para>
+		This technique is heavily used in the distribution plot and distribution CLT plot plugins, so you may want to look there for examples.
+	</para>
+</sect1>
+
+<sect1 id="include_xml">
+<title>Including <literal role="extension">.xml</literal> files</title>
+	<para>
+		Basically the same feature of including files is also available for use in the <literal role="extension">.xml</literal> and <literal role="extension">.rkh</literal> files. At any place in these files you can place an <command>&lt;include&gt;</command> tag as shown below. The effect is that the entire contents of that XML file (to be precise: everything within the <command>&lt;document&gt;</command> tag of that file) is included verbatim at this point in the file. Note that you can only include another XML file.
+	</para>
+	<programlisting>
+&lt;document&gt;
+	[...]
+	&lt;include file="another_xml_file.xml"/&gt;
+	[...]
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		The attribute <parameter>file</parameter> is the filename relative to the directory the current file is located in.
+	</para>
+</sect1>
+
+<sect1 id="snippets">
+<title>Using &lt;snippets&gt;</title>
+	<para>
+		While including files as shown in the <link linkend="include_xml">previous section</link> is fairly powerful, it become most useful when used in combination with <command>&lt;snippets&gt;</command>. Snippets are really smaller sections which you can insert at another point in the file. An example illustrates this best:
+	</para>
+	<programlisting>
+&lt;document&gt;
+	&lt;snippets&gt;
+		&lt;snippet id="note"&gt;
+			&lt;frame&gt;
+				&lt;text&gt;
+		This will be inserted at two places in the GUI
+				&lt;/text&gt;
+			&lt;/frame&gt;
+		&lt;/snippet&gt;
+	&lt;/snippets&gt;
+	&lt;dialog label="test"&gt;
+		&lt;column&gt;
+			&lt;insert snippet="note"/&gt;
+			[...]
+			&lt;insert snippet="note"/&gt;
+		&lt;/column&gt;
+	&lt;/dialog&gt;
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		Hence, you define the snippet at one place at the top of the XML file, and then you <command>&lt;insert&gt;</command> it at any place(s) you wish.
+	</para>
+	<para>
+		While this example is not too useful in itself, think about combining this with an <command>&lt;include&gt;</command>d <literal role="extension">.xml</literal> file. Note that you can also place snippets for the <literal role="extension">.rkh</literal> file in the same file. You'd simply <command>&lt;include&gt;</command> the file there as well, and <command>&lt;insert&gt;</command> the relevant snippet:
+	</para>
+	<programlisting>
+&lt;!-- This is a file called "common_snippets.xml" --&gt;
+&lt;document&gt;
+	&lt;snippet id="common_options"&gt;
+		&lt;spinbox id="something" [...]/&gt;
+		[...]
+	&lt;/snippet&gt;
+	&lt;snippet id="common_note"&gt;
+		&lt;text&gt;An important note for this type of plugin&lt;/text&gt;
+	&lt;/snippet&gt;
+
+	&lt;snippet id="common_help"&gt;
+		&lt;setting id="something"&gt;This does something&lt;/setting&gt;
+		[...]
+	&lt;/snippet&gt;
+&lt;/document&gt;
+	</programlisting>
+	<programlisting>
+&lt;!-- This is the .xml file of the plugin --&gt;
+&lt;document&gt;
+	&lt;snippets&gt;
+		&lt;!-- Import the common snippets --&gt;
+		&lt;include file="common_snippets.xml"/&gt;
+	&lt;/snippets&gt;
+
+	&lt;dialog label="test2"&gt;
+		&lt;insert snippet="common_note"/&gt;
+		&lt;spinbox id="something_plugin_specific" [...] /&gt;
+		&lt;insert snippet="common_options"/&gt;
+	&lt;/dialog&gt;
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		Similar to <link linkend="include_js">inclusion in JS</link>, the reverse approach is often even more useful:
+	</para>
+	<programlisting>
+&lt;!-- This is a file called "common_layout.xml" --&gt;
+&lt;document&gt;
+	&lt;column&gt;
+		&lt;insert snippet="note"&gt;
+		[...]
+		&lt;insert snippet="plugin_parameters"&gt;
+	&lt;/column&gt;
+	[...]
+&lt;/document&gt;
+	</programlisting>
+	<programlisting>
+&lt;!-- This is the .xml file of the plugin --&gt;
+&lt;document&gt;
+	&lt;snippets&gt;
+		&lt;snippet id="note"&gt;
+			&lt;text&gt;The note used for this specific plugin&lt;/text&gt;
+		&lt;/snippet&gt;
+
+		&lt;snippet id="plugin_parameters"&gt;
+			&lt;frame label="Parameters specific to this plugin"&gt;
+				[...]
+			&lt;/frame&gt;
+		&lt;/snippet&gt;
+	&lt;/snippets&gt;
+
+	&lt;dialog label="test3"&gt;
+		&lt;include file="common_layout.xml"/&gt;
+	&lt;/dialog&gt;
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		Finally, it is also possible to <command>&lt;insert&gt;</command> snippets into other snippets, provided that: a) there is only one level of nesting, and b) the <command>&lt;snippets&gt;</command> section is placed at the top of the file (before a nested snippet is inserted); this is because <command>&lt;insert&gt;</command> statements are resolved from top to bottom.
+	</para>
+</sect1>
+
+<sect1 id="include_snippets_vs_embedding">
+<title>&lt;include&gt; and &lt;snippets&gt; vs. &lt;embed&gt;</title>
+	<para>
+		At first glance, <command>&lt;include&gt;</command> and <command>&lt;snippets&gt;</command> provides functionality rather similar to <link linkend="embedding">embedding</link>: It allows to reuse some portions of code across plugins. So what's the difference between these approaches, and when should you use which?
+	</para>
+	<para>
+		The key difference between these concepts is that embeddable plugins are a more tight bundle. They combine a complete GUI, code to generate &r; code from this, and a help page. In contrast, include and insert allow much more fine grained control, but at the price of less modularity.
+	</para>
+	<para>
+		That is, a plugin embedding another plugin will typically not need to know much about the internal details of the embedded plugin. A prime example is the plot_options plugin. Plugins wishing to embed this do not necessarily need to know about all the options provided, or how they are provided. This is a good thing, as otherwise a change in the plot_options plugin might make it necessary to adjust all plugins embedding this (a lot). In contrast, include and insert really exposes all the internal details, and plugins using this will -- for example -- need to know the exact ids and perhaps even the type of the elements used.
+	</para>
+	<para>
+		Hence the rule of thumb is this: include and insert are great if the relevant options are only needed for a clearly limited group of plugins. Embedded plugins are better, if the group of plugins it may be useful to is not clearly defined, and if the functionality can easily be modularized. Another rule of thumb: If you can put the common portions into a single <quote>chunk</quote>, then do so, and use embedding. If you need lots of small snippets to define the common portions -- well, use <command>&lt;snippets&gt;</command>. A final way to look at it: If all plugins provide <emphasis>highly</emphasis> similar functionality, includes and inserts are probably a good idea. If they merely share one or two common <quote>modules</quote>, embedding is likely better.
+	</para>
+</sect1>
+</chapter>
+
+<chapter id="specialized_plugins">
+<title>Concepts for use in specialized plugins</title>
+<para>
+This chapter contains information on some topics that are useful only to certain classes of plugins.
+</para>
+
+<sect1 id="preview_plots">
+	<title>Preview functionality for graphing plugins</title>
+	<para>
+		A very useful feature for all plugins generating a plot/graph is to provide an automatically updating preview. To do so, you will need two things: Adding a <command>&lt;preview&gt;</command> checkbox to your <link linkend="mainxml">GUI definition</link>, and adjusting the <link linkend="jstemplate">generated code</link> for the preview. We will deal with both in turn.
+	</para>
+	<para>
+		Adding a <command>&lt;preview&gt;</command> checkbox is simple. Just place the following somewhere in your GUI. It will take care of all the behind-the-scenes magic of creating a preview device, updaing the preview whenever the setting have changed, etc. Example:
+	</para>
+	<programlisting>
+&lt;document&gt;
+	[...]
+	&lt;dialog [...]&gt;
+		[...]
+		&lt;preview id="preview"/&gt;
+		[...]
+	&lt;/dialog&gt;
+	[...]
+&lt;/document&gt;
+	</programlisting>
+	<para>
+		And that's it for the GUI definition.
+	</para>
+	<para>
+		Adjusting the JS template is a little more work. You will have to create a new function called <function>preview()</function> in addition to the <function>preprocess()</function>, <function>calculate()</function>, etc. functions. This function should generate the code needed to produce the plot, and only that. Esp. no printing of headers, <function>rk.graphics.on()</function>, or similar calls. Below is an example of the typical pattern that you will use:
+	</para>
+	<programlisting>
+function preprocess () {
+	// the "somepackage" is needed to create the plot
+	ecoh ("require (somepackage)\n");
+}
+
+function printout () {
+	// all the real work is moved to a custom defined function doPrintout (), below
+
+	doPrintout (true);	// true in this case means: We want all the headers that should be printed in the output
+}
+
+function preview () {
+	// we call all stages of the general code. Only the printout () function need to be slightly different
+	preprocess ();
+	// calculate (); in this example the plugin has no calculate () function.
+	doPrintout (false);
+}
+
+function doPrintout (full) {
+	// this function takes care of generating the code for the printout() section. If "full" is set to true,
+	// it generates the full code, including headers. If full is set to false, only the essentials will
+	// be generated.
+
+	if (full) {
+		echo ('rk.header ("An example plot")\n\n');
+		echo ('rk.graph.on ()\n');
+	} 
+
+	// only the following section will be generated for full==false
+	echo ('try ({plot (5, 5)})\n');
+
+	if (full) {
+		echo ('rk.graph.off ()\n');
+	}
+}
+	</programlisting>
+	<para>
+		That's it, your plugin should now be preview-enabled.
+	</para>
+</sect1>
+
+<sect1 id="contextualized_plugins">
+	<title>Context-dependent plugins</title>
+	<para>
+		So far we have assumed, all plugins are always meaningful, and all placed in the main menu. However, some plugins are meaningful only (or additionally) in a certain context. For instance a plugin to export the contents of an &r; X11 graphics device is obviously most useful, when placed in the menu of an X11 device, not in the main menubar. Also, such a plugin should know about the device number that it should operate on, without having to ask the user about this.
+	</para>
+	<para>
+		We call such plugins context-dependent. Correspondingly, in the <link linkend="pluginmap">.pluginmap file</link>, they are not (or not only) placed in the main <command>&lt;hierarchy&gt;</command> but rather into a <command>&lt;context&gt;</command> element. So far only two different contexts are supported (more will come later): x11 and file import. We'll deal with those in turn. Even if you are only interested in the import context, please also read the section on the x11 context, as this is slightly more elaborate.
+	</para>
+
+	<sect2 id="context_x11">
+		<title>X11 device context</title>
+		<para>
+			To use a plugin in the context of an x11 device - that is place it in the menu bar of the window you get when you call <function>x11()</function> in the console, first declare it as usual in the <link linkend="pluginmap">.pluginmap file</link>:
+		</para>
+		<programlisting>
+&lt;document [...]&gt;
+	&lt;components&gt;
+		[...]
+		&lt;component id="my_x11_plugin" file="my_x11_plugin.xml" label="An X11 context plugin"/&gt;
+		[...]
+	&lt;/components&gt;
+		</programlisting>
+		<para>
+			However, you do not need to define it in the hierarchy (you can, if it is also meaningful as a top-level plugin):
+		</para>
+		<programlisting>
+	&lt;hierarchy&gt;
+		[...]
+	&lt;/hierarchy&gt;
+		</programlisting>
+		<para>
+			Instead, add a definition of the "x11" context, and add it to the menus there:
+		</para>
+		<programlisting>
+	&lt;context id="x11"&gt;
+		[...]
+		&lt;menu id="edit"&gt;
+			[...]
+			&lt;entry id="my_x11_plugin"/&gt;
+		&lt;/menu&gt;
+	&lt;/context&gt;
+&lt;/document&gt;
+		</programlisting>
+		<para>
+			In the <link linkend="logic">logic section of the plugin xml</link>, you can now declare two <command>&lt;external&gt;</command> properties: <parameter>devnum</parameter> and <parameter>context</parameter>. <parameter>context</parameter> (if declared) will be set to <replaceable>"x11"</replaceable> when the plugin is invoked in this context. <parameter>devnum</parameter> will be set to the number of the graphics device to operate on. And that's all.
+		</para>
+	</sect2>
+
+	<sect2 id="context_import">
+		<title>Import data context</title>
+		<para>
+			Before reading this section, please make sure to read the section on the <link linkend="context_x11">X11 device context</link>, as that explains the basic concepts.
+		</para>
+		<para>
+			The <replaceable>"import"</replaceable> context is used to declare import file filter plugins. You simply place those in a context with <parameter>id=</parameter><replaceable>"import"</replaceable> in the <literal role="extension">.pluginmap</literal> file. However, there is one additional twist when declaring these plugins: In order to offer a unified file selection dialog for all supported file types, you need to declare one additional bit of information on your component:
+		</para>
+		<programlisting>
+&lt;document [...]&gt;
+	&lt;components&gt;
+		[...]
+		&lt;component id="my_xyz_import_plugin" file="my_xyz_import_plugin.xml" label="Import XYZ files"&gt;
+			&lt;attribute id="format" value="*.xyz *.zyx" label="XYZ data files"/&gt;
+		&lt;/component&gt;
+		[...]
+	&lt;/components&gt;
+	&lt;hierarchy&gt;
+		[...]
+	&lt;/hierarchy&gt;
+	&lt;context id="import"&gt;
+		[...]
+		&lt;menu id="import"&gt;
+			[...]
+			&lt;entry id="my_xyz_import_plugin"/&gt;
+		&lt;/menu&gt;
+	&lt;/context&gt;
+	[...]
+&lt;/document&gt;
+		</programlisting>
+		<para>
+			The attribute line simply says, that the associate filename extensions for XYZ files are <literal role="extension">*.xyz</literal> or <literal role="extension">*.zyx</literal>, and that the filter should be labelled <quote>XYZ data files</quote> in the file selection dialog.
+		</para>
+		<para>
+			You can declare two <command>&lt;external&gt;</command> properties in your plugin. <parameter>filename</parameter> will be set to the selected file name, and <parameter>context</parameter> will be set to <replaceable>"import"</replaceable>.
+		</para>
+	</sect2>
+</sect1>
+
+<sect1 id="current_object">
+<title>Referencing the current object</title>
+	<para>
+		For many plugins it is desirable to work on the <quote>current</quote> object. For instance a <quote>sort</quote> plugin could pre-select the data.frame that is currently being edited for sorting. The name of the current object is available to plugins as a pre-defined property called <parameter>current_object</parameter>. You can connect to this property in the usual way. If no object is current, the property equates to an empty string.
+	</para>
+	<para>
+		Currently the <parameter>current_object</parameter> can only be of class <function>data.frame</function>, but please do not rely on this, since this will be extended to other types of data in the future. Therefore please check any requirements by using appropriate constraints on your <command>&lt;checkbox&gt;</command>s, or by using <link linkend="logic_scripted">GUI logic scripting</link>.
+	</para>
+</sect1>
+
+</chapter>
+
+<chapter id="external_plugins">
+<title>Share your work with others</title>
+<sect1 id="sect_external_plugins"><title>External plugins</title>
+	<para>
+		As of version 0.5.5, &rkward; provides a comfortable way to install additional third party plugins which do not belong to the core package itself. We call these <quote>external plugins</quote>. They come in form of an &r; package and can be managed directly via the usual package management features of &r; and/or &rkward;.
+	</para>
+	<para>
+		This section of the documentation describes how external plugins are to be packaged, so that &rkward; can use them. The plugin creation itself is of course identical to the previous sections. That is, you should probably first write a working plugin, and then check back here to learn how to distribute it.
+	</para>
+	<para>
+		Since external plugins are a relatively young feature, details of this might probably change in future releases. You’re welcome to contribute your ideas to improve the process.
+	</para>
+	<tip>
+		<para>
+			These docs explain the details of external plugins so you can learn how they work. In addition to that, also have a look at the <link linkend="rkwarddev"><application>rkwarddev</application> package</link>, which was designed to automate a lot of the writing process.
+		</para>
+	</tip>
+</sect1>
+<sect1 id="why_external_plugins">
+<title>Why external plugins?</title>
+	<para>
+		The number of packages to extend the functionality of &r; is immense already, and climbing. On one hand, we want to encourage you to write plugins for even the most specialised tasks you need solved. On the other hand, the average user should not get lost in huge menu trees full of unknown statistical terms. Therefore it seemed reasonable to keep the plugin handling in &rkward; quite modular as well. The &rkward; team maintains its own public package repository at <ulink url="http://rkward.sf.net/R">http://rkward.sf.net/R</ulink>, designated to host your external plugins.
+	</para>
+	<para>
+		As a rule of thumb, plugins that seem to serve a widely used purpose (e.g. t-Tests) should become part of the core package, while those who serve a rather limited group of people with special interests should be provided as an optional package. For you as a plugin author it’s best practice to just start with an external plugin.
+	</para>
+</sect1>
+  
+<sect1 id="structure_of_a_plugin_package">
+<title>Structure of a plugin package</title>
+	<para>For external plugins to install and work properly, they must follow some structural guidelines regarding their file hierarchy. </para>
+    
+	<sect2 id="file_hierarchy"><title>File hierarchy</title>
+		<para>
+			Lets have a look at the prototypic file hierarchy of an elaborate plugin archive. You don’t have to include all of these directories and/or files for a plugin to work (read on to learn what’s absolutely necessary), consider this a <quote>best practice</quote> example:
+		</para>
+		<programlisting>
+	plugin_name/
+		inst/
+			rkward/
+				plugins/
+					plugin_name.xml
+					plugin_name.js
+					plugin_name.rkh
+					...
+				tests/
+					testsuite_name/
+						RKTestStandards.sometest_name.rkcommands.R
+						RKTestStandards.sometest_name.rkout
+						...
+					testsuite.R
+				plugin_name.pluginmap
+				...
+	ChangeLog
+	README
+	AUTHORS
+	LICENSE
+	DESCRIPTION
+		</programlisting>
+		<note>
+			<para>
+				In this example, all occasions of <token>plugin_name</token>, <token>testsuite_name</token> and <token>sometest_name</token> are to be replaced with their correct names, accordingly.
+			</para>
+		</note>
+		<tip>
+			<para>
+				You don't have to create this file hierarchy by hand. If you use the function <function>rk.plugin.skeleton()</function> from the <link linkend="rkwarddev"><application>rkwarddev</application> package</link>, it will automatically create all necessary files and directories for you.
+			</para>
+		</tip>
+		<sect3 id="basic_plugin_components">
+		<title>Basic plugin components</title>
+			<para>
+				It is mandatory to include at least three files: a <link linkend="pluginmap">.pluginmap</link>, a plugin <link linkend="mainxml">.xml</link> description and a plugin <link linkend="jstemplate">.js</link> file. That is, even the "plugins" directory is optional. It might just help to give your files some order, especially if you include more that one plugin/dialog in the archive, which is of course no problem. You can have as many directories for the actual plugin files as you see fit, they just have to resemble the <link linkend="pluginmap">.pluginmap</link>, respectively. It is also possible to even include several <literal role="extension">.pluginmap</literal> files, if it fits your needs, but you should include them all in <quote>plugin_name.pluginmap</quote> then.
+			</para>
+			<para>
+				Each &r; package must have a valid <filename>DESCRIPTION</filename> file, which is also crucial for &rkward; recognizing it as a plugin provider. Most of the information it carries is also needed in the plugin <link linkend="meta-information">Meta-information</link>, but in a different format (the &r; documentation explains <ulink url="http://cran.r-project.org/doc/manuals/R-exts.html#The-DESCRIPTION-file">the <filename>DESCRIPTION</filename> file in detail</ulink>).
+			</para>
+			<para>
+				In addition to the general contents of a <filename>DESCRIPTION</filename> file, make sure to also include the line <quote>Enhances: rkward</quote>. This will cause &rkward; to automatically scan the package for plugins if it is installed. An example <filename>DESCRIPTION</filename> file looks like this:
+			</para>
+			<programlisting>
+	Package: SquaretheCircle
+	Type: Package
+	Title: Square the circle
+	Version: 0.1-3
+	Date: 2011-09-19
+	Author: E.A. Dölle &lt;doelle@eternalwondermaths.example.org&gt;
+	Maintainer: A. Assistant &lt;alterego@eternalwondermaths.example.org&gt;
+	Enhances: rkward
+	Description: Squares the circle using Heisenberg compensation.
+	License: GPL
+	LazyLoad: yes
+	URL: http://eternalwondermaths.example.org/23/stc.html
+	Authors@R: c(person(given="E.A.", family="Dölle", role="aut",
+			email="doelle@eternalwondermaths.example.org"),
+			person(given="A.", family="Assistant", role=c("cre",
+			"ctb"), email="alterego@eternalwondermaths.example.org"))
+			</programlisting>
+			<tip>
+				<para>
+					You don't have to write this file by hand. If you use the function <function>rk.plugin.skeleton()</function> from the <link linkend="rkwarddev"><application>rkwarddev</application> package</link> and provide all necessary information via the <quote>about</quote> option, it will automatically create a working <filename>DESCRIPTION</filename> file for you.
+				</para>
+			</tip>
+		</sect3>
+		<sect3 id="additional_information">
+		<title>Additional information (optional)</title>
+			<para>
+				<filename>ChangeLog</filename>, <filename>README</filename>, <filename>AUTHORS</filename>, <filename>LICENSE</filename> should be self-explaining and are entirely optional. Actually, they won’t be interpreted by &rkward;, so they are rather meant to carry additional information that might be relevant e.g. for distributors. Most of their relevant content (author credits, licence terms etc.) will be included in the actual plugin files anyway, though (see the <link linkend="meta-information">section on meta-information</link>). Note that all of these files could also be placed somewhere in the "inst" directory, if you want them not only to be present in the source archive but the installed package as well.
+			</para>
+		</sect3>
+		<sect3 id="automated_plugin_testing">
+		<title>Automated plugin testing (optional)</title>
+			<para>
+				Another optional directory is "tests", which is meant to provide files needed for <ulink url="http://sourceforge.net/apps/mediawiki/rkward/index.php?title=Automated_Plugin_Testing">automated plugin testing</ulink>. These tests are helpful to quickly check if your plugins still work with new versions of &r; or &rkward;. If you want to include tests, you should really restrain yourself to the naming scheme and hierarchy shown here. That is, tests should reside in a directory called <filename>tests</filename>, which includes a file <filename>testsuite.R</filename> and a folder with tests standards named after the appropriate test suite. You can, however, provide more than one test suite; in that case, if you don’t want to append them all in the one <filename>testsuite.R</filename> file, you can split them in e.g. one file for each test suite and create one <filename>testsuite.R</filename> with <function>source()</function> calls for each suite file. In either case, create separate subdirectories with test standards for each defined suite.
+			</para>
+			<para>
+				The benefits of upholding to this structure is that plugin tests can be run simply by calling <function>rktests.makplugintests()</function> from the <ulink url="rkward://rhelp/rkwardtests">rkwardtests</ulink> package without additional arguments. Have a look at the online documentation on <ulink url="http://sourceforge.net/apps/mediawiki/rkward/index.php?title=Automated_Plugin_Testing">Automated Plugin Testing</ulink> for further details.
+			</para>
+		</sect3>
+	</sect2>
+</sect1>
+  
+	<sect1 id="meta-information">
+		<title>Meta-information</title>
+		<para>Each plugin archive should provide some basic meta-information on what it deals with, where to find more information, who maintains it, if it relies on specific &r; packages or other plugins, etc. </para>
+		<para>This information is given at least once in your <literal role="extension">.pluginmap</literal>, and can then be included or overwritten in each plugin <literal role="extension">.xml</literal> file (which might be useful if that particular plugin file was contributed by someone else, for instance). </para>
+		<para>To achieve this, the <command>&lt;about&gt;</command> tag is used. The overall structure of this tag looks something like this: </para>
+		<programlisting>
+	&lt;about&gt;
+		&lt;author /&gt;
+		&lt;author /&gt;
+		...
+		&lt;dependencies&gt;
+			&lt;package /&gt;
+			&lt;package /&gt;
+			...
+			&lt;pluginmap /&gt;
+			&lt;pluginmap /&gt;
+			...
+		&lt;/dependencies&gt;
+	&lt;/about&gt;
+		</programlisting>
+		<para>That is, the <command>&lt;about&gt;</command> tag contains <command>&lt;author&gt;</command> and <command>&lt;dependencies&gt;</command>, and <command>&lt;dependencies&gt;</command> contains <command>&lt;package&gt;</command> and <command>&lt;pluginmap&gt;</command>. Each of these five tags knows in turn several further attributes (see below). </para>
+		<para>As you can see, you can have more than one entry on authors, needed &r; packages and &rkward; pluginmaps. </para>
+		<para>A full-blown example would look like this: </para>
+		<programlisting>
+&lt;document 
+	namespace="rkward"
+	id="SquaretheCircle_rkward"
+&gt;
+	&lt;about 
+		name="Square the Circle"
+		shortinfo="Squares the circle using Heisenberg compensation."
+		version="0.1-3"
+		releasedate="2011-09-19"
+		url="http://eternalwondermaths.example.org/23/stc.html"
+		license="GPL"
+		category="Geometry"
+	&gt;
+		&lt;author 
+			given="E.A."
+			family="Dölle"
+			email="doelle@eternalwondermaths.example.org"
+			role="aut"
+		 /&gt;
+		&lt;author 
+			given="A."
+			family="Assistant"
+			email="alterego@eternalwondermaths.example.org"
+			role="cre, ctb"
+		 /&gt;
+		&lt;dependencies 
+			rkward_min_version="0.5.3"
+			R_min_verion="2.10"
+		&gt;
+			&lt;package 
+				name="heisenberg"
+				min_version="0.11-2"
+				repository="http://rforge.r-project.org"
+			 /&gt;
+			&lt;package 
+				name="DreamsOfPi"
+				min_version="0.2"
+			 /&gt;
+			&lt;pluginmap 
+				name="heisenberg.pluginmap"
+				url="http://eternalwondermaths.example.org/hsb"
+			 /&gt;
+		&lt;/dependencies&gt;
+	&lt;/about&gt;
+	&lt;components&gt;
+		&lt;component 
+			type="standard"
+			id="SquaretheCircle.SquaretheCircle"
+			file="plugins/SquaretheCircle.xml"
+			label="SquaretheCircle"
+		 /&gt;
+	&lt;/components&gt;
+	&lt;hierarchy&gt;
+		&lt;menu 
+			id="analysis"
+			label="Analysis"
+		&gt;
+			&lt;menu 
+				id="menu_SquaretheCircle.SquaretheCircle"
+				label="Square the Circle"
+			&gt;
+				&lt;entry component="SquaretheCircle.SquaretheCircle" /&gt;
+			&lt;/menu&gt;
+		&lt;/menu&gt;
+	&lt;/hierarchy&gt;
+&lt;/document&gt;
+		</programlisting>
+		<tip><para>You don't have to write this XML code by hand. If you use the function <function>rk.plugin.skeleton()</function> from the <link linkend="rkwarddev"><application>rkwarddev</application> package</link> and provide all necessary information via the <parameter>about</parameter> option, it will automatically create a <literal role="extension">.pluginmap</literal> file with a working &lt;about&gt; section for you.</para></tip>
+		<para>Most of this should explain itself, so we’ll not discuss each and every tag element. But let’s look at some details that probably need some commentary for easier understanding. </para>
+		<para>The <parameter>category</parameter> element in <command>&lt;about&gt;</command> can be defined rather freely, but should be meaningful, as it’s thought to be used to order plugins into groups. All other attributes in this opening tag are mandatory and must be filled with reasonable content. </para>
+		<para>At least one <command>&lt;author&gt;</command> with a valid e-mail address and the role <quote>aut</quote> (<quote>author</quote>) must also be given. In case your plugin causes problems or someone would like to share its gratitude with you, it should be easy to contact someone who’s involved. For further information on other valid roles, like <quote>ctb</quote> for code contributors or <quote>cre</quote> for package maintenance, please refer to the <ulink url="http://stat.ethz.ch/R-manual/R-patched/library/utils/html/person.html">R documentation on <function>person()</function></ulink>. </para>
+		<para>Actually the whole <command>&lt;dependencies&gt;</command> might be left empty if your plugin is supposed to run with any &rkward; version and standard &r; installation. But please be reasonable here as well. The inclusion of any <command>&lt;package&gt;</command> or <command>&lt;pluginmap&gt;</command> tags is of course optional as well, depending on the needs of your plugins. All the <parameter>min_version</parameter> and <parameter>max_version</parameter> information can be omitted, as well. They are obviously useful if your plugin is known to rely on certain versions of an &r; package, for instance. </para>
+		<para>If you need an &r; package that is probably not hosted on an official CRAN mirror, you can specify a repository where it can be found in the <command>&lt;package&gt;</command> tag. &rkward; will check whether this repository is already defined in its configuration, and if not, add it, but only after the user has given its explicit permission to that. </para>
+		<para>The <parameter>id</parameter>" element in the <command>&lt;pluginmap&gt;</command> tag refers to the ID given in the top level <command>&lt;document&gt;</command> tag of the pluginmap that you need. </para>
+	</sect1>
+	<sect1 id="building_the_plugin_package">
+		<title>Building the plugin package</title>
+		<para>As explained earlier, external &rkward; plugins are in effect &r; packages, and therefore the packaging process is identical. In contrast to "real" &r; packages, a pure plugin package doesn't carry any further &r; code (although you can of course add &rkward; plugins to usual &r; packages as well, using the same methods explained here). This should make it even easier to create a functioning package, as long as you have a valid <filename>DESCRIPTION</filename> file and adhere to the file hierarchy explained in <link linkend="structure_of_a_plugin_package">previous sections</link>.</para>
+		<para>The easiest way to actually build and test your plugin is to use the <application>R</application> command on the command line, for example:</para>
+		<para><userinput>
+			<command>R</command> <option>CMD build</option> <parameter><filename>SquaretheCircle</filename></parameter>
+		</userinput></para>
+		<para><userinput>
+			<command>R</command> <option>CMD INSTALL</option> <parameter><filename>SquaretheCircle_0.1-3.tar.gz</filename></parameter>
+		</userinput></para>
+		<tip><para>You don't have to build the package like this on the command line. If you use the function <function>rk.build.package()</function> from the <link linkend="rkwarddev"><application>rkwarddev</application> package</link>, it will build and/or check your plugin package for you.</para></tip>
+	</sect1>
+</chapter>
+
+<chapter id="rkwarddev">
+	<title>Plugin development with the <application>rkwarddev</application> package</title>
+	<sect1 id="rkdev_overview"><title>Overview</title>
+		<para>Writing external plugins involves writing files in three languages (XML, JavaScript and R) and the creation of a standardized hierarchy of directories. To make this a lot easier for willing plugin developers, we're providing the <application>rkwarddev</application> package. It provides a number of simple &r; functions to create the XML code for all dialog elements like tabbooks, checkboxes, dropdownlists or filebrowsers, as well as functions to create JavaScript code and &rkward; help files to start with. The function <function>rk.plugin.skeleton()</function> creates the expected directory tree and all necessary files where they are supposed to be.</para>
+		<para>This package is not installed by default, but has to be installed manually from <ulink url="http://rkward.sourceforge.net/R/">&rkward;'s own repository</ulink>. You can either do that by using the GUI interface (<menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure packages</guimenuitem></menuchoice>), or from any running &r; session:</para>
+		<programlisting>
+		install.packages("rkwarddev", repos="http://rkward.sf.net/R")
+		library(rkwarddev)
+		</programlisting>
+		<para><application>rkwarddev</application> depends on another small package called <quote>XiMpLe</quote>, which is a very simple XML parser and generator and also present in the same repository.</para>
+		<para>The full <ulink url="http://rkward.sourceforge.net/R/pckg/rkwarddev/rkwarddev.pdf">documentation in PDF format</ulink> can also be found there. A more detailed introduction to working with the package can be found in the <ulink url="http://rkward.sourceforge.net/R/pckg/rkwarddev/rkwarddev_vignette.pdf">rkwarddev vignette</ulink>.</para>
+	</sect1>
+
+	<sect1 id="rkdev_example"><title>Practical example</title>
+		<para>To get you an idea how <quote>scripting a plugin</quote> looks like, compared to the direct approach you have seen in the previous chapters, we'll create the full t-test plugin once again -- this time only with the &r; functions of the <application>rkwarddev</application> package.</para>
+
+		<tip><para>The package will add a new GUI dialog to &rkward; under <menuchoice><guimenu>File</guimenu><guimenuitem>Export</guimenuitem><guimenuitem>Create &rkward; plugin skeleton</guimenuitem></menuchoice>. Like the name suggests, you can create plugin skeletons for further editing with it. This dialog itself was in turn generated by an <application>rkwarddev</application> script which you can find in the <quote>demo</quote> directory of the installed package and package sources, as an additional example. You can also run it by calling <function>demo("skeleton_dialog")</function></para></tip>
+
+		<sect2 id="rkdev_gui"><title>GUI description</title>
+		<para>You will imediately notice that the workflow is considerably different: Contrary to writing the XML code directly, you do not begin with the <command>&lt;document&gt;</command> definition, but directly with the plugin elements you'd like to have in the dialog. You can assign each interface element -- be it checkboxes, dropdown menus, variable slots or anything else -- to individual &r; objects, and then combine these objects to the actual GUI. The package has functions for <link linkend="interfaceelements">each XML tag</link> that can be used to define the plugin GUI, and most of them even have the same name, only with the prefix <function>rk.XML.*</function>. For example, defining a <command>&lt;varselector&gt;</command> and two <command>&lt;checkbox&gt;</command> elements for the <replaceable>"x"</replaceable> and <replaceable>"y"</replaceable> variable of the t-test example can be done by:</para>
+		<programlisting>
+variables &lt;- rk.XML.varselector(id.name="vars")
+var.x &lt;- rk.XML.varslot("compare", source=variables, types="number", required=TRUE, id.name="x")
+var.y &lt;- rk.XML.varslot("against", source=variables, types="number", required=TRUE, id.name="y")
+		</programlisting>
+		<para>The most interesting detail is probably <parameter>source=</parameter><replaceable>variables</replaceable>: A prominent feature of the package is that all functions can generate automatic IDs, so you don't have to bother with either thinking of <parameter>id</parameter> values or remembering them to refer to a specific plugin element. You can simply give the &r; objects as reference, as all functions who need an ID from some other element can also read it from these objects. <function>rk.XML.varselector()</function> is a little special, as it usually has no specific content to make an ID from (it can, but only if you specify a label), so we have to set an ID name. But <function>rk.XML.varslot()</function> wouldn't need the <parameter>id.name</parameter> arguments here, so this would suffice:</para>
+		<programlisting>
+variables &lt;- rk.XML.varselector(id.name="vars")
+var.x &lt;- rk.XML.varslot("compare", source=variables, types="number", required=TRUE)
+var.y &lt;- rk.XML.varslot("against", source=variables, types="number", required=TRUE)
+		</programlisting>
+		<para>In order to recreate the example code to the point, you'd have to set all ID values manually. But since the package shall make our lives easier, from now on we will no longer care about that.</para>
+		<para>If you want to see how the XML code of the defined element looks like if you exported it to a file, you can just call the object by its name. So, if you now called <quote>var.x</quote> in your &r; session, you should see something like this:</para>
+		<programlisting>
+&lt;varslot id="vrsl_compare" label="compare" source="vars" types="number" required="true" /&gt;
+		</programlisting>
+		<para>Some tags are only useful in the context of others. Therefore, for instance, you won't find a function for the <command>&lt;option&gt;</command> tag. Instead, both radio buttons and dropdown lists are defined including their options as a named list, where the names represent the labels to be shown in the dialog, and their value is a named vector which can have two entries, <parameter>val</parameter> for the value of an option and the boolean <parameter>chk</parameter> to specify if this option is checked by default.</para>
+		<programlisting>
+test.hypothesis &lt;- rk.XML.radio("using test hypothesis",
+	options=list(
+		"Two-sided"=c(val="two.sided"),
+		"First is greater"=c(val="greater"),
+		"Second is greater"=c(val="less")
+	)
+)
+		</programlisting>
+		<para>The result looks like this:</para>
+		<programlisting>
+&lt;radio id="rad_usngtsth" label="using test hypothesis"&gt;
+	&lt;option label="Two-sided" value="two.sided" /&gt;
+	&lt;option label="First is greater" value="greater" /&gt;
+	&lt;option label="Second is greater" value="less" /&gt;
+&lt;/radio&gt;
+		</programlisting>
+		<para>All that's missing from the elements of the <quote>Basic settings</quote> tab is the checkbox for paired samples, and the structuring of all of these elements in rows and columns:</para>
+		<programlisting>
+check.paired &lt;- rk.XML.cbox("Paired sample", value="1", un.value="0")
+basic.settings &lt;- rk.XML.row(variables, rk.XML.col(var.x, var.y, test.hypothesis, check.paired))
+		</programlisting>
+		<para><function>rk.XML.cbox()</function> is a rare exception where the function name does not contain the full tag name, to save some typing for this often used element. This is what <function>basic.settings</function> now contains:</para>
+		<programlisting>
+&lt;row id="row_vTFSPP10TF"&gt;
+	&lt;varselector id="vars" /&gt;
+	&lt;column id="clm_vrsTFSPP10"&gt;
+		&lt;varslot id="vrsl_compare" label="compare" source="vars" types="number" required="true" /&gt;
+		&lt;varslot id="vrsl_against" label="against" source="vars" types="number" required="true" /&gt;
+		&lt;radio id="rad_usngtsth" label="using test hypothesis"&gt;
+			&lt;option label="Two-sided" value="two.sided" /&gt;
+			&lt;option label="First is greater" value="greater" /&gt;
+			&lt;option label="Second is greater" value="less" /&gt;
+		&lt;/radio&gt;
+		&lt;checkbox id="chc_Pardsmpl" label="Paired sample" value="1" value_unchecked="0" /&gt;
+	&lt;/column&gt;
+&lt;/row&gt;
+		</programlisting>
+		<para>In a similar manner, the next lines will create &r; objects for the elements of the <quote>Options</quote> tab, introducing functions for spinboxes, frames and stretch:</para>
+		<programlisting>
+check.eqvar &lt;- rk.XML.cbox("assume equal variances", value="1", un.value="0")
+conf.level &lt;- rk.XML.spinbox("confidence level", min=0, max=1, initial=0.95)
+check.conf &lt;- rk.XML.cbox("print confidence interval", val="1", chk=TRUE)
+conf.frame &lt;- rk.XML.frame(conf.level, check.conf, rk.XML.stretch(), label="Confidence Interval")
+		</programlisting>
+		<para>Now all we need to do is to put the objects together in a tabbook, and place that in a dialog section:</para>
+		<programlisting>
+full.dialog &lt;- rk.XML.dialog(
+	label="Two Variable t-Test",
+	rk.XML.tabbook(tabs=list("Basic settings"=basic.settings, "Options"=list(check.eqvar, conf.frame)))
+)
+		</programlisting>
+		<para>We can also create the wizard section with its two pages using the same objects, so their IDs will be extracted for the <command>&lt;copy&gt;</command> tags:</para>
+		<programlisting>
+full.wizard &lt;- rk.XML.wizard(
+		label="Two Variable t-Test",
+		rk.XML.page(
+			rk.XML.text("As a first step, select the two variables you want to compare against
+				each other. And specify, which one you theorize to be greater. Select two-sided,
+				if your theory does not tell you, which variable is greater."),
+			rk.XML.copy(basic.settings)),
+		rk.XML.page(
+			rk.XML.text("Below are some advanced options. It's generally safe not to assume the
+				variables have equal variances. An appropriate correction will be applied then.
+				Chosing \"assume equal variances\" may increase test-strength, however."),
+			rk.XML.copy(check.eqvar),
+			rk.XML.text("Sometimes it's helpful to get an estimate of the confidence interval of
+				the difference in means. Below you can specify whether one should be shown, and
+				which confidence-level should be applied (95% corresponds to a 5% level of
+				significance)."),
+			rk.XML.copy(conf.frame)))
+		</programlisting>
+		<para>That's it for the GUI. The global document will be combined in the end by <function>rk.plugin.skeleton()</function>.</para>
+		</sect2>
+
+		<sect2 id="rkdev_jscode"><title>JavaScript code</title>
+			<para>Until now, using the <application>rkwarddev</application> package might not seem to have helped so much. This is going to change right now.</para>
+			<para>First of all, just like we didn't have to care about IDs for elements when defining the GUI layout, we don't have to care about JavaScript variable names in the next step. If you want more control, you can write plain JavaScript code and have it pasted to the generated file. But it's probably much more efficient to do it the <application>rkwarddev</application> way.</para>
+			<para>Most notably you don't have to define any variable yourself, as <function>rk.plugin.skeleton()</function> can scan your XML code and automatically define all variables you will probably need -- for instance, you wouldn't bother to include a checkbox if you don't use its value or state afterwards. So we can start writing the actual &r; code generating JS immediately.</para>
+			<tip><para>The function <function>rk.JS.scan()</function> can also scan existing XML files for variables.</para></tip>
+			<para>The package has some functions for JS code constructs that are commonly used in &rkward; plugins, like the <function>echo()</function> function or <function>if() {...} else {...}</function> conditions. There are some differences between JS and R, e.g., for <function>paste()</function> in &r; you use the comma to concatenate character strings, whereas for <function>echo()</function> in JS you use <quote>+</quote>, and lines must end with a semicolon. By using the &r; functions, you can almost forget about these differences and keep writing &r; code.</para>
+			<para>These functions can take different classes of input objects: Either plain text, &r; objects with XML code like above, or in turn results of some other JS functions of the package. In the end, you will always call <function>rk.paste.JS()</function>, which behaves similar to <function>paste()</function>, but depending on the input objects it will replace them with their XML ID, JavaScript variable name or even complete JavaScript code blocks.</para>
+			<para>For the t-test example, we need two JS objects: One to calculate the results, and one to print them in the <function>printout()</function> function:</para>
+		<programlisting>
+JS.calc &lt;- rk.paste.JS(
+	echo("res &lt;- t.test (x=", var.x, ", y=", var.y, ", hypothesis=\"", test.hypothesis, "\""),
+	ite(id(check.paired), echo(", paired=TRUE")),
+	ite(id("!", check.paired, " &amp;&amp; ", check.eqvar), echo(", var.equal=TRUE")),
+	ite(id(conf.level, " != \"0.95\""), echo(", conf.level=", conf.level)),
+	echo(")\n"), level=2)
+
+JS.print &lt;- rk.paste.JS(echo("rk.print (res)\n"), level=2)
+		</programlisting>
+		<para>As you can see, <application>rkwarddev</application> also provides an &r; implementation of the <function>echo()</function> function. It returns exactly one character string with a valid JS version of itself. You might also notice that all of the &r; objects here are the ones we created earlier. They will automatically be replaced with their variable names, so this should be quite intuitive. Whenever you need just this replacement, the function <function>id()</function> can be used, which also will return exactly one character string from all the objects it was given (you could say it behaves like <function>paste()</function> with a very specific object substitution).</para>
+		<para>The function name <function>ite()</function> is an abbreviation for <quote>if, then, else</quote>, and these three conditional statements are exactly what its three optional arguments are for -- although our example only uses two, so we're dealing with three <quote>if, then</quote> conditions here. Maybe it's best to just look at the above <quote>JS.calc</quote> object, which now contains a character string with this content:</para>
+		<programlisting>
+	echo("res &lt;- t.test (x=" + vrslCompare + ", y=" + vrslAgainst + ", hypothesis=\"" + radUsngtsth + "\"");
+	if(chcPardsmpl) {
+		echo(", paired=TRUE");
+	} else {}
+	if(!chcPardsmpl &amp;&amp; chcAssmqlvr) {
+		echo(", var.equal=TRUE");
+	} else {}
+	if(spnCnfdnclv != "0.95") {
+		echo(", conf.level=" + spnCnfdnclv);
+	} else {}
+	echo(")\n");
+		</programlisting>
+		</sect2>
+
+		<sect2 id="rkdev_pluginmap"><title>Plugin map</title>
+		<para>This section is very short: We don't need to write a pluginmap at all, as it can be generated automatically by <function>rk.plugin.skeleton()</function>. The menu hierarchy can be specified via the <parameter>pluginmap</parameter> option:</para>
+			<programlisting>
+	[...]
+	pluginmap=list(
+		name="Two Variable t-Test",
+		hierarchy=list("analysis", "means", "t-Test"))
+	[...]
+			</programlisting>
+		</sect2>
+
+		<sect2 id="rkdev_rkh"><title>Help page</title>
+			<para>This section is very short as well: <function>rk.plugin.skeleton()</function> can't write a whole help page from the information it has. But it can scan the XML document also for elements which probably deserve a help page entry, and automatically create a help page template for our plugin. All we have to do afterwards is to write some lines for each listed section.</para>
+			<tip><para>The function <function>rk.rkh.scan()</function> can also scan existing XML files to create a help file skeleton.</para></tip>
+		</sect2>
+
+		<sect2 id="rkdev_plugin_generator"><title>Generate the plugin files</title>
+			<para>Now comes the final step, in which we'll hand over all generated objects to <function>rk.plugin.skeleton()</function>:</para>
+			<programlisting>
+plugin.dir &lt;- rk.plugin.skeleton("t-Test",
+	xml=list(
+		dialog=full.dialog,
+		wizard=full.wizard),
+	js=list(
+		results.header="Two Variable t-Test",
+		calculate=JS.calc,
+		printout=JS.print),
+	pluginmap=list(
+		name="Two Variable t-Test",
+		hierarchy=list("analysis", "means", "t-Test")),
+	load=TRUE,
+	edit=TRUE,
+	show=TRUE)
+			</programlisting>
+			<para>The files will be created in a temporal directory by default. The last three options are not necessary, but very handy: <parameter>load=</parameter><replaceable>TRUE</replaceable> will automatically add the new plugin to &rkward;s configuration (since it's in a temp dir and hence will cease to exist when &rkward; is closed, it will automatically be removed again by &rkward; during its next start), <parameter>edit=</parameter><replaceable>TRUE</replaceable> will open all created files for editing in &rkward; editor tabs, and <parameter>show=</parameter><replaceable>TRUE</replaceable> will attempt to directly launch the plugin, so you can examine what it looks like without a klick. You might consider adding <parameter>overwrite=</parameter><replaceable>TRUE</replaceable> if you're about to run your script repeatedly (e.g. after changes to the code), as by default no files will be overwritten.</para>
+			<para>The result object <quote>plugin.dir</quote> contains the path to the directory in which the plugin was created. This can be useful in combination with the function <function>rk.build.package()</function>, to build an actual &r; package to share your plugin with others -- e.g. by sending it to the &rkward; development team to be added to our plugin repository.</para>
+		</sect2>
+		<sect2 id="rkdev_ttest_script"><title>The full script</title>
+		<para>To recapitulate all of the above, here's the full script to create the working t-test example. Adding to the already explained code, it also loads the package if needed, and it uses the <function>local()</function> environment, so all the created objects will not end up in your current workspace (except for <quote>plugin.dir</quote>):</para>
+		<programlisting>
+require(rkwarddev)
+
+local({
+	variables &lt;- rk.XML.varselector(id.name="vars")
+	var.x &lt;- rk.XML.varslot("compare", source=variables, types="number", required=TRUE)
+	var.y &lt;- rk.XML.varslot("against", source=variables, types="number", required=TRUE)
+	test.hypothesis &lt;- rk.XML.radio("using test hypothesis",
+		options=list(
+			"Two-sided"=c(val="two.sided"),
+			"First is greater"=c(val="greater"),
+			"Second is greater"=c(val="less")
+		)
+	)
+	check.paired &lt;- rk.XML.cbox("Paired sample", value="1", un.value="0")
+	basic.settings &lt;- rk.XML.row(variables, rk.XML.col(var.x, var.y, test.hypothesis, check.paired))
+
+	check.eqvar &lt;- rk.XML.cbox("assume equal variances", value="1", un.value="0")
+	conf.level &lt;- rk.XML.spinbox("confidence level", min=0, max=1, initial=0.95)
+	check.conf &lt;- rk.XML.cbox("print confidence interval", val="1", chk=TRUE)
+	conf.frame &lt;- rk.XML.frame(conf.level, check.conf, rk.XML.stretch(), label="Confidence Interval")
+
+	full.dialog &lt;- rk.XML.dialog(
+		label="Two Variable t-Test",
+		rk.XML.tabbook(tabs=list("Basic settings"=basic.settings, "Options"=list(check.eqvar, conf.frame)))
+	)
+
+	full.wizard &lt;- rk.XML.wizard(
+			label="Two Variable t-Test",
+			rk.XML.page(
+				rk.XML.text("As a first step, select the two variables you want to compare against
+					each other. And specify, which one you theorize to be greater. Select two-sided,
+					if your theory does not tell you, which variable is greater."),
+				rk.XML.copy(basic.settings)),
+			rk.XML.page(
+				rk.XML.text("Below are some advanced options. It's generally safe not to assume the
+					variables have equal variances. An appropriate correction will be applied then.
+					Chosing \"assume equal variances\" may increase test-strength, however."),
+				rk.XML.copy(check.eqvar),
+				rk.XML.text("Sometimes it's helpful to get an estimate of the confidence interval of
+					the difference in means. Below you can specify whether one should be shown, and
+					which confidence-level should be applied (95% corresponds to a 5% level of
+					significance)."),
+				rk.XML.copy(conf.frame)))
+
+	JS.calc &lt;- rk.paste.JS(
+		echo("res &lt;- t.test (x=", var.x, ", y=", var.y, ", hypothesis=\"", test.hypothesis, "\""),
+		ite(id(check.paired), echo(", paired=TRUE")),
+		ite(id("!", check.paired, " &amp;&amp; ", check.eqvar), echo(", var.equal=TRUE")),
+		ite(id(conf.level, " != \"0.95\""), echo(", conf.level=", conf.level)),
+		echo(")\n"), level=2)
+
+	JS.print &lt;- rk.paste.JS(echo("rk.print (res)\n"), level=2)
+
+	plugin.dir &lt;&lt;- rk.plugin.skeleton("t-Test",
+		xml=list(
+			dialog=full.dialog,
+			wizard=full.wizard),
+		js=list(
+			results.header="Two Variable t-Test",
+			calculate=JS.calc,
+			printout=JS.print),
+		pluginmap=list(
+			name="Two Variable t-Test",
+			hierarchy=list("analysis", "means", "t-Test")),
+		load=TRUE,
+		edit=TRUE,
+		show=TRUE,
+		overwrite=TRUE)
+})
+		</programlisting>
+		</sect2>
+
+	</sect1>
+</chapter>
+
+<appendix id="reference">
+<title>Reference</title>
+
+<sect1 id="propertytypes"><title>Types of properties/Modifiers</title>
+<para>
+	At some places in this introduction we've talked about <quote>properties</quote> of GUI elements or otherwise. In fact there are several different types of properties. Usually you do not need to worry about this, as you can use common sense to connect any property to any other property. However, internally, there are different types of properties. What this matters for, is when fetching some special values in the JS-template. In getValue ("id") statements you can also specify some so called <quote>modifiers</quote> like this: <function>getValue ("id.modifier")</function>. This modifier will affect, in which way the value is printed. Read on for the list of properties, and the modifiers they each make available:
+</para>
+<variablelist>
+<varlistentry>
+<term>String properties</term>
+<listitem><para>The most simple type of property, used to simply hold a piece of text. It does not provide any modifiers. If you attempt to fetch modified values from the JS template, it will return the usual value, and a warning will be written to the terminal you're running rkward from.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>Boolean properties</term>
+<listitem><para>Properties that can either be on or off, true or false. For instance the properties created by &lt;convert&gt;-tags, also the property accompanying a &lt;checkbox&gt; (see below). The following values will be returned according to the given modifier:
+	<variablelist>
+	<varlistentry>
+	<term>No modifier ("")</term>
+	<listitem><para>By default the property will return the string "TRUE", if it is true, and "FALSE" otherwise. Boolean properties attached to a checkbox behave slightly differently, and return the strings you specified in the "value" and "value_unchecked" attributes.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"true"</term>
+	<listitem><para>Return the string as if the property was true, even if it is false</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"false"</term>
+	<listitem><para>Return the string as if the property was false, even if it is true</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"not"</term>
+	<listitem><para>This actually returns another Boolean property, which is the reverse of the current (i.e. false if true, true if false)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"numeric"</term>
+	<listitem><para>Return the string "1" if the property is true, or "0" if it is false</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>Integer properties</term>
+<listitem><para>A property designed to hold an integer value (but of course it still returns a numeric character string to the JS-template). It does not accept any modifiers. Used in &lt;spinbox&gt;es (see below)</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>Real number properties</term>
+<listitem><para>A property designed to hold a real number value (but of course it still returns a numeric character string to the JS-template). It does not accept any modifiers. Used in &lt;spinbox&gt;es (see below)</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>RObject properties</term>
+<listitem><para>A property designed a selection of one or more &r; objects. Used most prominently in varselectors and varslots.  The following values will be returned according to the given modifier:
+	<variablelist>
+	<varlistentry>
+	<term>No modifier ("")</term>
+	<listitem><para>By default the property will the full name of the selected object. If more than one object is selected, the object names will be separated by line breaks ("\n").</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"shortname"</term>
+	<listitem><para>Like above, but returns only short name(s) for the object(s). For instance an object inside a list would only be given the name it has inside the list, without the name of the list.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"label"</term>
+	<listitem><para>Like above, but returns the &rkward; label(s) of the object(s) (if no label availabe, this is the same as shortname)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>Code properties</term>
+<listitem><para>A property held by plugins that generated code. This is important for embedding plugins, in order to embed the code generated by the embedded plugin into the code generated by the embedding (top-level) plugin. The following values will be returned according to the given modifier:
+	<variablelist>
+	<varlistentry>
+	<term>No modifier ("")</term>
+	<listitem><para>Returns the full code, i.e. the sections "preprocess", "calculate", "printout", and (but not "preview") concatenated to one string.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"preprocess"</term>
+	<listitem><para>Returns only the preprocess section of the code</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"calculate"</term>
+	<listitem><para>Returns only the calculate section of the code</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"printout"</term>
+	<listitem><para>Returns only the printout section of the code</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>"preview"</term>
+	<listitem><para>Returns the preview section of the code</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
+<sect1 id="globalxmlelements">
+	<title>General purpose elements to be used in any XML file (<literal role="extension">.xml</literal>, <literal role="extension">.rkh</literal>, <literal role="extension">.pluginmap</literal>)</title>
+	<variablelist>
+	<varlistentry>
+	<term>&lt;snippets&gt;</term>
+	<listitem><para>Allowed as a direct child of the &lt;document&gt; node and only there. Should be placed near the top of the file. See <link linkend="snippets">section on using snippets</link>. Only one &lt;snippets&gt; element may be present. Optional, no attributes.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;snippet&gt;</term>
+	<listitem><para>Defines a single snippet. Allowed only as a direct child of the &lt;snippets/&gt; element. Attributes:
+		<variablelist>
+		<varlistentry>
+		<term>&lt;id&gt;</term>
+		<listitem><para>An identifier string for the snippet. Required.</para></listitem>
+		</varlistentry>
+		</variablelist></para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;insert&gt;</term>
+	<listitem><para>Insert the contents of a &lt;snippet&gt;. Allowed anywhere. Attributes:
+		<variablelist>
+		<varlistentry>
+		<term>&lt;snippet&gt;</term>
+		<listitem><para>The identifier string of the snippet to insert. Required.</para></listitem>
+		</varlistentry>
+		</variablelist></para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;include&gt;</term>
+	<listitem><para>Include the contents of another XML file (everything inside the &lt;document&gt; element of that file). Allowed anywhere. Attributes:
+		<variablelist>
+		<varlistentry>
+		<term>&lt;file&gt;</term>
+		<listitem><para>The filename, relative to the directory, the current file is in. Required.</para></listitem>
+		</varlistentry>
+		</variablelist></para></listitem>
+	</varlistentry>
+	</variablelist>
+</sect1>
+
+<sect1 id="xmlelements"><title>Elements to be used in the XML description of the plugin</title>
+<para>Properties held by the elements are listed in a <link linkend="elementproperties">separate section</link>.</para>
+
+<sect2 id="generalelements"><title>General elements</title>
+<variablelist>
+<varlistentry>
+<term>&lt;document&gt;</term>
+<listitem><para>Needs to be present in each description.xml-file as the root-node. No special function. No attributes</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;code&gt;</term>
+<listitem><para>Defines where to look for the JS template to the plugin. Use only once per file, as a direct child of the document-tag. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;file&gt;</term>
+	<listitem><para>Filename of the JS template, relative to the directory the plugin-xml is in</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;help&gt;</term>
+<listitem><para>Defines where to look for the help file for the plugin. Use only once per file, as a direct child of the document-tag. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;file&gt;</term>
+	<listitem><para>Filename of the help file, relative to the directory the plugin-xml is in</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;copy&gt;</term>
+<listitem><para>Can be used as a child (direct or indirect) of the main layout elements, i.e. &lt;dialog&gt; and &lt;wizard&gt;. This is used to copy an entire block a xml elements 1:1. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;id&gt;</term>
+	<listitem><para>The ID to look for. The &lt;copy&gt; tag will look for a previous XML element that has been given the same ID, and copy it including all descendant elements.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;copy_element_tag_name&gt;</term>
+	<listitem><para>In some few cases, you will want an almost literal copy, but change the tag-name of the element to copy. The most important example of this is, when you want to copy an entire &lt;tab&gt; from a dialog interface to the &lt;page&gt; of a wizard interface. In this case, you'd set coyp_elemnent_tag_name="page" to do this conversion automatically.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+</variablelist>
+</sect2>
+
+<sect2 id="interfaceelements"><title>Interface definitions</title>
+<variablelist>
+<varlistentry>
+<term>&lt;dialog&gt;</term>
+<listitem><para>Defines a dialog-type interface. Place the GUI-definition inside this tag. Use only once per file, as a direct child of the document-tag. At least one of "dialog" or "wizard" tags is required for a plugin. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Caption for the dialog</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;wizard&gt;</term>
+<listitem><para>Defines a wizard-type interface. Place the GUI-definition inside this tag. Use only once per file, as a direct child of the document-tag. At least one of "dialog" or "wizard" tags is required for a plugin. Accepts only &lt;page&gt; or &lt;embed&gt;-tags as direct children. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Caption for the wizard</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+</variablelist>
+</sect2>
+
+<sect2 id="layoutelements"><title>Layout elements</title>
+<para>All elements in this section accept an attribute id="identifierstring". This attribute is optional for all elements. It can be used, for example, to hide/disable the entire layout element and all the elements contained therein (see <link linkend="logic">chaper GUI logic</link>). The id-string may not contain "." (dot) or ";" (semicolon), and should generally be limited to alphanumeric characters and the underscore ("_"). Only the additional attributes are listed.</para>
+<variablelist>
+<varlistentry>
+<term>&lt;page&gt;</term>
+<listitem><para>Defines a new page inside a wizard. Only allowed as a direct child of a &lt;wizard&gt; element.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;row&gt;</term>
+<listitem><para>All direct children of a "row" tag will be placed left-to-right.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;column&gt;</term>
+<listitem><para>All direct children of a "column" tag will be placed top-to-bottom.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;stretch&gt;</term>
+<listitem><para>By default, elements in the GUI take up all the space that's available. For instance, if you have two columns side by side, the left one is packed with elements, but the right one only contains a lonely <command>&lt;radio&gt;</command>, the <command>&lt;radio&gt;</command> control will expand vertically, even though it does not really need the available space, and it will look ugly. In this case you really want to add a "blank" below the <command>&lt;radio&gt;</command>. For this, use the &lt;stretch&gt; element. It will simply use up some space. Don't overuse this element, usually it's a good idea for GUI elements to get all the available space, only sometimes will the layout become spaced out. The &lt;stretch&gt; element does not take any arguments, not even an "id". Also you can place no children inside the &lt;stretch&gt; element (in other words, you'll only ever use it as "&lt;stretch/&gt;")</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;frame&gt;</term>
+<listitem><para>Draws a frame/box around its direct children. Can be used to visually group related options. Layout inside a frame is top-to-bottom, unless you place a &lt;row&gt; inside. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Caption for the frame (optional)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;checkable&gt;</term>
+	<listitem><para>Frames can be made checkable. In this case, all contained elements will be disabled when the frame is unchecked, and enabled, when it is checked. (optional, defaults to "false")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;checked&gt;</term>
+	<listitem><para>For checkable frames only: Should the frame be checked by default? Defaults to "true". Not interpreted for non-checkable frames.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;tabbook&gt;</term>
+<listitem><para>Organizes elements in a tabbook. Accepts only &lt;tab&gt;-tags as direct children.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;tab&gt;</term>
+<listitem><para>Defines a page in a tabbook. Place the GUI-definition for the tab inside this tag. May be used only as a direct child of a &lt;tabbook&gt; tag. A &lt;tabbook&gt; should have at least two defined tabs. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Caption for the tab page (required)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;text&gt;</term>
+<listitem><para>Shows the text enclosed in this tag in the GUI. Line breaks are interpreted as hard line breaks! Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;type&gt;</term>
+	<listitem><para>Type of the text. One of "normal", "warning" or "error". This influences the look of the text (optional, defaults to normal)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+</variablelist>
+</sect2>
+
+<sect2 id="activeelements"><title>Active elements</title>
+<para>All elements in this section accept an attribute id="identifierstring". This attribute is required for all elements. Only the additional attributes are listed. The id-string may not contain "." (dots).</para>
+<variablelist>
+<varlistentry>
+<term>&lt;varselector&gt;</term>
+<listitem><para>Provides a list of available objects from which the user can select one or more. Requires one or more &lt;varslot&gt;s as a counterpart to be useful. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the varselector (optional, defaults to "Select variable(s)")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;varslot&gt;</term>
+<listitem><para>Used in conjunction with a "varselector" to allow the user to select one or more variables. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the varslot (recommended, defaults to "Variable:")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;source&gt;</term>
+	<listitem><para>The varselector to fetch the selection from (required, unless you connect manually)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;required&gt;</term>
+	<listitem><para>Whether - for submitting the code - it is required that this varslot holds a valid value. See <link linkend="elementproperties">required-property</link> (optional, defaults to false)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;multi&gt;</term>
+	<listitem><para>Whether the varslot holds only one (default, "false"), or several objects</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min_vars&gt;</term>
+	<listitem><para>Only meaningful if multi="true": Minimum number of vars to be selected for the selection to be considered valid (optional, defaults to "1")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min_vars_if_any&gt;</term>
+	<listitem><para>Only meaningful if multi="true": Some varslots may be considered valid, if, for instance, the varslot is either empty, or holds at least two values. This specifies how many variables have to be selected if any at all (2 in the example). (optional, defaults to "1")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max_vars&gt;</term>
+	<listitem><para>Only meaningful if multi="true": Maximum number of variables to select (optional, defaults to "0", which means no maximum)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;classes&gt;</term>
+	<listitem><para>If you specify one or more &r; classnames (separated by spaces (" ")), here, the varslot will only accept objects belonging to those classes (otional, <emphasis>use with great care</emphasis>, the user should not be prevented from making valid choices, and &r; has <emphasis>a lot</emphasis> of different classes!)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;types&gt;</term>
+	<listitem><para>If you specify one or more variables types (separated by spaced (" ")), here, the varslot will only accept objects of those types. Valid types are "unknown", "number", "string", "factor", "invalid". (Optional, <emphasis>use with great care</emphasis>, the user should not be prevented from making valid choices, and rkward does not always know the type of a variable)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;num_dimensions&gt;</term>
+	<listitem><para>The number of dimensions, an object needs to have. "0" (the default) means, any number of dimensions is acceptable. (optional, defaults to "0")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min_length&gt;</term>
+	<listitem><para>The minimum length, an object needs to have in order to be acceptable. (optional, defaults to "0")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max_length&gt;</term>
+	<listitem><para>The maximum length, an object needs to have in order to be acceptable. (optional, defaults to the largest integer number representable on the system)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;radio&gt;</term>
+<listitem><para>Defines a group of radio-exclusive buttons (only one can be selected at a time). Requires at least two &lt;option&gt;-tags as direct children. No other tags are allowed as children. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the radio control (recommended, defaults to "Select one:")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;dropdown&gt;</term>
+<listitem><para>Defines a group of options of which one and only one can be selected at the same time, using a dropdown list. This is functionally equivalent to a &lt;radio&gt;, but looks different. Requires at least two &lt;option&gt;-tags as direct children. No other tags are allowed as children. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the dropdown list (recommended, defaults to "Select one:")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;option&gt;</term>
+<listitem><para>Can only be used as a direct child of a &lt;radio&gt; or &lt;dropdown&gt; element. Represents one selectable option in a radio control or dropdown list. Specifying the "id" parameter for the &lt;option&gt; elements is optional (and in fact it's recommended, not to set an "id", unless you plan to really use it to disable single options). Only the parent element (&lt;radio&gt; or &lt;dropdown&gt;) needs one. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the option (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;value&gt;</term>
+	<listitem><para>The string value the parent element will return if this option is checked/selected (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;checked&gt;</term>
+	<listitem><para>Whether the option should be checked/selected by default "true" or "false". Only one button in a &lt;radio&gt; may be set to <parameter>checked=</parameter><replaceable>"true"</replaceable>. If no option is set to checked, the first option in the parent element will be checked/selected automatically. (optional, default to "false")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;checkbox&gt;</term>
+<listitem><para>Defines a checkbox, i.e. a single option that can either be set to on or off. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the checkbox (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;value&gt;</term>
+	<listitem><para>The value the checkbox will return if checked (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;value_unchecked&gt;</term>
+	<listitem><para>The value that will be returned if the checkbox is not checked (optional, defauls to "", i.e. an empty string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;checked&gt;</term>
+	<listitem><para>Whether the option should be checked by default "true" or "false" (optional, default to "false")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;frame&gt;</term>
+<listitem><para>The frame element is generally used as a pure layout element, and is listed in the section on <link linkend="layoutelements">layout elements</link>. However, it can also be
+made checkable, thus acting like a simple checkbox at the same time.
+</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;input&gt;</term>
+<listitem><para>Defines a free text input field. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the input field (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;initial&gt;</term>
+	<listitem><para>Initial text of the text field (optional, defaults to "", i.e. an empty string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;size&gt;</term>
+	<listitem><para>One of "small", "medium", or "large". "large" defines a multi-line input field, "small", and "medium" are single line fields (optional, defaults to "medium")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;required&gt;</term>
+	<listitem><para>Whether - for submitting the code - it is required that this input is not empty. See <link linkend="elementproperties">required-property</link> (optional, defaults to false)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;browser&gt;</term>
+<listitem><para>An element designed to select a single filename (or directory name). Note that this field will take any string, even though it is meant to be used for files, only:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the browser (optional, defaults to "Enter filename")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;initial&gt;</term>
+	<listitem><para>Initial text of the browser (optional, defaults to "", i.e. an empty string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;type&gt;</term>
+	<listitem><para>One of "file", "dir", or "savefile". To select an existing file, existing directory, or non-existing file, respectively (optional, defaults to "file")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;allow_urls&gt;</term>
+	<listitem><para>Whether (non-local) urls can be selected (optional, defaults to "false")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;filter&gt;</term>
+	<listitem><para>File type filter, e.g. ("*.txt *.csv" for .txt and .csv files. Try not to induce limits unless absolutely needed, though) (optional, defaults to "", i.e. all files)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;required&gt;</term>
+	<listitem><para>Whether - for submitting the code - it is required that the field is not empty. Note that this does not necessarily mean, the selected filename is valid! See <link linkend="elementproperties">required-property</link> (optional, defaults to true)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;saveobject&gt;</term>
+<listitem><para>An element designed to select the name of an &r; object to save to (i.e. generally not already existing, in contrast to a varslot):
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the input (optional, defaults to "Save to:")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;initial&gt;</term>
+	<listitem><para>Initial text of the input (optional, defaults to "my.data")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;required&gt;</term>
+	<listitem><para>Whether - for submitting the code - it is required that the field holds a permissible object name. See <link linkend="elementproperties">required-property</link> (optional, defaults to true)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;checkable&gt;</term>
+	<listitem><para>In many use cases, saving to an &r; object is optional. In these cases, a checkbox can be integrated into the saveobject-element using this attribute. When set to true, the saveobject will be activated / deactivated by the checkbox. See the <link linkend="elementproperties">active-property</link> of saveobject (optional, defaults to false)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;checked&gt;</term>
+	<listitem><para>For checkable saveobject-elements, only: Whether the control is checked/enabled by default (optional, defaults to false)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;spinbox&gt;</term>
+<listitem><para>A spinbox in which the user can select a numeric value, using either direct keyboard input or small up/down arrows. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label for the spinbox (recommend, default to "Enter value:")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min&gt;</term>
+	<listitem><para>The lowest value the user is allowed to enter in the spinbox (optional, defaults to the lowest value technically representable in the spinbox)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max&gt;</term>
+	<listitem><para>The largest value the user is allowed to enter in the spinbox (optional, defaults to the highest value technically representable in the spinbox)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;initial&gt;</term>
+	<listitem><para>The initial value shown in the spinbox (optional, defaults to "0")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;type&gt;</term>
+	<listitem><para>One of "real" or "integer". Whether the spinbox will accept real numbers or only integers (optional, defaults to "real")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;default_precision&gt;</term>
+	<listitem><para>Only meaningful if the spinbox is of type="real". Specifies the default number of decimal places shown in the spinbox (only this many trailing zeros will be shown). When the user presses the up/down arrows, this decimal place will be changed. The user may still be able to enter values with a higher precision, however (see below) (optional, defaults to "2")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max_precision&gt;</term>
+	<listitem><para>The maximum number of digits that can be meaningfully represented (optional, defaults to "8")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;formula&gt;</term>
+<listitem><para>This advanced element allows the user to select a formula/set of interactions from selected variables. For instance for a GLM, this element can be used to allow the user to specify the interaction-terms in the model. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;fixed_factors&gt;</term>
+	<listitem><para>The ID of the varslot holding the selected fixed factors (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;dependent&gt;</term>
+	<listitem><para>The ID of the varslot holding the selected dependent variable (required)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;embed&gt;</term>
+<listitem><para>Embed a different plugin into this one (see <link linkend="embedding">chapter on embedding</link>). Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;component&gt;</term>
+	<listitem><para>The registered name of the component to embed (see <link linkend="pluginmap">chapter on registering components</link> (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;as_button&gt;</term>
+	<listitem><para>If set to "true", only a pushbutton will be placed in the embedding GUI, the embedded GUI will only be shown (in a separate window) when the pushbutton is pressed (optional, default is "false")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Only meaningful if as_button="true": The label of the button (recommend, default is "Options")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;preview&gt;</term>
+<listitem><para>Checkbox to toggle preview functionality (see <link linkend="preview_plots">chapter on graph previews</link>). Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;label&gt;</term>
+	<listitem><para>Label of the box (optional, default is "Preview")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+</variablelist>
+</sect2>
+
+<sect2 id="logicelements"><title>Logic section</title>
+<variablelist>
+<varlistentry>
+<term>&lt;logic&gt;</term>
+<listitem><para>The containing element for the logic section. All elements below are allowed only inside the &lt;logic&gt; element. Only one &lt;logic&gt; element is allowed per document, as a direct child of the &lt;document&gt; element. The logic section applies to both &lt;dialog&gt; and &lt;wizard&gt; GUIs in the same way.</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>&lt;external&gt;</term>
+<listitem><para>Creates a new (string) property that is supposed to be connected to an outside property if the plugin gets embedded. See <link linkend="embedding_incomplete">section on "incomplete" plugins</link>. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;id&gt;</term>
+	<listitem><para>The ID of the new property (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;default&gt;</term>
+	<listitem><para>The default string value of the new property, i.e. the value used, if the property is not connected to an outside property (optional, defaults to an empty string)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>&lt;set&gt;</term>
+<listitem><para>Set a property to a fixed value (of course, if you additionally connect the property to some other property, the value does not remain fixed). For instance, if you embed a plugin, but want to hide some of its elements, you might set the visibility property of those elements to false. Useful esp. for embedded/embedding plugins. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;id&gt;</term>
+	<listitem><para>The ID of the property to set (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;to&gt;</term>
+	<listitem><para>The string value to set the property to (required). Note: For boolean properties such as visibility, enabledness, you'll typically set the to attribute to either to="true" or to="false".</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>&lt;convert&gt;</term>
+<listitem><para>Create a new boolean properties that depends on the state of one or more different properties. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;id&gt;</term>
+	<listitem><para>The ID of the new property (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;sources&gt;</term>
+	<listitem><para>The ids of the properties this property will depend on. One or more properties may be specified, separated by ";" (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;mode&gt;</term>
+	<listitem><para>The mode of conversion/operation. One of "equals", "notequals", "range", "and", "or". If in mode equals, the property will only be true, if the value of all of its sources equals the attribute standard (see below). If in at mode notequals, the property will only be true, if the value of all of its sources are different from the attribute standard (see below). If in mode range, the sources have to be numeric (integer or real). The property will only be true, if all sources are in the range specified by the attributes min and max (see below). If in mode and, the sources have to be boolean properties. The property will only be true, if all the sources are true simultaniously. If in mode or, the sources have to be boolean properties. The property will only be true, if at least one of the sources is true. (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;standard&gt;</term>
+	<listitem><para>Only meaningful in modes equals or notequals: the string value to compare against (required if in one of these modes)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;min&gt;</term>
+	<listitem><para>Only meaningful in mode range: the minimum value to compare against (optional, defaults to the lowest floating point number representable on the machine)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;max&gt;</term>
+	<listitem><para>Only meaningful in mode range: the maximum value to compare against (optional, defaults to the largest floating point number representable on the machine)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;require_true&gt;</term>
+	<listitem><para>If set to "true", the property will become required, and will only be considered valid, if its state is true/on. Hence, if the property is false, it will block the <guibutton>Submit</guibutton> button (optional, defaults to "false".
+		<caution><remark>If you use this, make sure the user can easily detect what's wrong, such as by showing an explanatory &lt;text&gt;)</remark></caution></para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>&lt;connect&gt;</term>
+<listitem><para>Connects two properties. The client property will be changed whenever the governor property changes (but not the other way around!). Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>&lt;client&gt;</term>
+	<listitem><para>The ID of the client property, i.e. the property that will be adjusted (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;governor&gt;</term>
+	<listitem><para>The ID of the governor property, i.e. the property that will adjusts the client property. This may include a modifier (required)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>&lt;reconcile&gt;</term>
+	<listitem><para>If "true", the client property will make adjust the governor property on connection in such a way that the governor property will only accept values that are also acceptable by the client (e.g. suppose the governor is a numeric property with min value "0", and the client is a numeric property with min value "100". The min of both properties will be adjusted to 100, if reconcile="true"). Generally works only for properties of the same basic type (optional, default to "false")</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+</variablelist>
+</sect2>
+
+</sect1>	<!-- Elements in main XML -->
+
+<sect1 id="elementproperties"><title>Properties of plugin elements</title>
+<para>All <link linkend="layoutelements">layout elements</link>, and all <link linkend="activeelements">active elements</link> hold the following properties, accessible via "id_of_element.name_of_property":
+</para>
+<variablelist>
+<varlistentry>
+<term>visible</term>
+<listitem><para>Whether the GUI element is visible or not (boolean)</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>enabled</term>
+<listitem><para>Whether the GUI element is enabled or not (boolean)</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>required</term>
+<listitem><para>Whether the GUI element is required (to hold a valid setting) or not. Note that any element which is disabled or hidden is also implicity non-required (boolean).</para></listitem>
+</varlistentry>
+</variablelist>
+<para>
+In addition to this, some elements have additional properties you can connect to. Most active elements also have a "default" property whose value will be returned on calls to getValue ("..."), if no specific property was named, as described below.
+</para>
+<variablelist>
+<varlistentry>
+<term>&lt;text&gt;</term>
+<listitem><para>Default property is text
+	<variablelist>
+	<varlistentry>
+	<term>text</term>
+	<listitem><para>The text displayed (text)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;varselector&gt;</term>
+<listitem><para>No default property
+	<variablelist>
+	<varlistentry>
+	<term>selected</term>
+	<listitem><para>The objects currently selected. You probably do not want to use this. Used internally (RObject)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>root</term>
+	<listitem><para>The root/parent object of the objects offered for selection (RObject)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;varslot&gt;</term>
+<listitem><para>Default property is "available"
+	<variablelist>
+	<varlistentry>
+	<term>available</term>
+	<listitem><para>All objects held in the varslot (RObject)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>selected</term>
+	<listitem><para>Of the objects held in the varslot, those that are currently selected. You probably do not want to use this. Used internally (RObject)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>source</term>
+	<listitem><para>A copy of the objects selected in the corresponding varselector. You probably do not want to use this. Used internally (RObject)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;radio&gt;</term>
+<listitem><para>Default property is "string"
+	<variablelist>
+	<varlistentry>
+	<term>string</term>
+	<listitem><para>The value of the currently selected option (string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>number</term>
+	<listitem><para>The number of the currently selected option (options are numbered top-to-bottom, starting at 0) (integer)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;dropdown&gt;</term>
+<listitem><para>Default property is "string"
+	<variablelist>
+	<varlistentry>
+	<term>string</term>
+	<listitem><para>The value of the currently selected option (string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>number</term>
+	<listitem><para>The number of the currently selected option (options are numbered top-to-bottom, starting at 0) (integer)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;option&gt;</term>
+<listitem><para>No default property. "enabled" is the *only* property. It does not have the "visible" or "required" properties.
+	<variablelist>
+	<varlistentry>
+	<term>enabled</term>
+	<listitem><para>Whether this single option should be enabled or disabled. In most cases you will enable/disable the entire &lt;radio&lt; or &lt;dropdown&lt;, instead. But this can be used to dynamically set the enabledness of a single option inside a &lt;radio&lt; or &lt;dropdown&lt; (bool)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;checkbox&gt;</term>
+<listitem><para>Default property is "state"
+	<variablelist>
+	<varlistentry>
+	<term>state</term>
+	<listitem><para>State of the checkbox (on or off). Note that useful modifiers of this property (as of all boolean properties) are "not" and "numeric" (see <link linkend="propertytypes">types of properties</link>). (boolean)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;frame&gt;</term>
+<listitem><para>No default property.
+	<variablelist>
+	<varlistentry>
+	<term>checked</term>
+	<listitem><para>Available for checkable frames, only: state of the checkbox (on or off). Note that useful modifiers of this property (as of all boolean properties) are "not" and "numeric" (see <link linkend="propertytypes">types of properties</link>). (boolean)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;input&gt;</term>
+<listitem><para>Default property is "text"
+	<variablelist>
+	<varlistentry>
+	<term>text</term>
+	<listitem><para>Current text in the input field (string)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;browser&gt;</term>
+<listitem><para>Default property is "selection"
+	<variablelist>
+	<varlistentry>
+	<term>selection</term>
+	<listitem><para>Current text (selected file name) in the browser (string)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;saveobject&gt;</term>
+<listitem><para>Default property is "selection"
+	<variablelist>
+	<varlistentry>
+	<term>selection</term>
+	<listitem><para>Full name of the selected object (string; read-only - to set this programmatically, use "parent", and "objectname")</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>parent</term>
+	<listitem><para>The parent object of the selected object. This is always an existing &r; object of a type that can contain other objects (e.g. a list or data.frame). When set to an empty string or an invalid object, ".GlobalEnv" is assumed (RObject)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>objectname</term>
+	<listitem><para>The base-name of the selected object, i.e. the string entered by the user (changed to a valid &r; name, if necessary) (string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>active</term>
+	<listitem><para>For checkable saveobjects, only: Whether the control is checked/enabled. Always true for non-checkable saveobjects (bool)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;spinbox&gt;</term>
+<listitem><para>Default property is either "int" or "real" depending on the spinbox's mode
+	<variablelist>
+	<varlistentry>
+	<term>int</term>
+	<listitem><para>Integer value held by the spinbox, or nearest integer, if in real mode (integer)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>real</term>
+	<listitem><para>Real value held by the spinbox (and integer, if in integer) (real)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;formula&gt;</term>
+<listitem><para>Default property is "model"
+	<variablelist>
+	<varlistentry>
+	<term>model</term>
+	<listitem><para>The current model string (string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>table</term>
+	<listitem><para>The data.frame holding the required variables. If variables from only one data.frame are used, the name of that data.frame is returned. Otherwise a new data.frame is constructed as required (string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>labels</term>
+	<listitem><para>If variables from multiple data.frames are involved, their names may get mangled (for instance, if both data.frames contain a variable named "x"). This returns a list with the mangled names as indices and the descriptive label as value (string)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>fixed_factors</term>
+	<listitem><para>The fixed factors. You probably do not want to use this. Used internally (RObject)</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>dependent</term>
+	<listitem><para>The dependent variable(s). You probably do not want to use this. Used internally (RObject)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;embed&gt;</term>
+<listitem><para>No default property
+	<variablelist>
+	<varlistentry>
+	<term>code</term>
+	<listitem><para>The code generated by the embedded plugin (code)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;preview&gt;</term>
+<listitem><para>Default property is "state"
+	<variablelist>
+	<varlistentry>
+	<term>state</term>
+	<listitem><para>Whether the preview box is checked (not necessarily whether the preview has already been shown) (boolean)</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;convert&gt;</term>
+<listitem><para>This element (used in the &lt;logic&gt; section) is special, in that is technically *is* a property, instead of just holding one or more properties. It is of boolean kind. Note that useful modifiers of this property (as of all boolean properties) are "not" and "numeric" (see <link linkend="propertytypes">types of properties</link>)</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
+<sect1 id="pluginmapelements"><title>Elements for use in <literal role="extension">.pluginmap</literal> files</title>
+<variablelist>
+<varlistentry>
+<term>&lt;document&gt;</term>
+<listitem><para>Needs to be present in each <literal role="extension">.pluginmap</literal> file as the root-node (exactly once). Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>base_prefix</term>
+	<listitem><para>Filenames specified in the pluginmap file are assumed to be relative to the directory of the <literal role="extension">.pluginmap</literal> file + the prefix you specify here. Useful, esp., if all your components are located below a single subdirectory.	</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>namespace</term>
+	<listitem><para>A namespace for the component ids. When looking up components for embedding, the components will beretrievable via a string "namespace::component_id". Set to "rkward" for now.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;components&gt;</term>
+<listitem><para>Needs to be present exactly once as a direct child of the &lt;document&gt; element. Contains the individual &lt;component&gt;-elements described below. No attributes.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;component&gt;</term>
+<listitem><para>One or more &lt;component&gt; elements should be given as direct children of the &lt;components&gt; element (and only there). Registers a component/plugin with rkward. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>type</term>
+	<listitem><para>For future extension: The type of component/plugin. Always set to "standard" for now (the only type currently supported).</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>id</term>
+	<listitem><para>The ID by which this component can be retrieved (for placing it in the menu (see below), or for embedding). See &lt;document/gt;-namespace above.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>file</term>
+	<listitem><para>Required at least for components of type="standard": The filename of the XML file describing the GUI.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>label</term>
+	<listitem><para>The label for this component, when placed in the menu hierarchy.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;attribute&gt;</term>
+<listitem><para>Defines an attribute of a component. Only meaningful for <link linkend="context_import">import plugins</link> so far. Only allowed as a direct child of &lt;component&gt;. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>id</term>
+	<listitem><para>Id of the attribute</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>value</term>
+	<listitem><para>Value of the attribute</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>labels</term>
+	<listitem><para>Label associated with the attribute</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;hierarchy&gt;</term>
+<listitem><para>Needs to be present exactly once as a direct child of the &lt;document&gt; element. Described where the components declared above should be placed in the menu hierarchy. Accepts only &lt;menu&gt; elements as direct children. No attributes.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;menu&gt;</term>
+<listitem><para>One or more &lt;menu&gt; elements should be given as direct children of the &lt;hierarchy&gt; element. Declares a new (sub-)menu. If a menu by the given ID (see below) already exists, the two menus are merged. The &lt;menu&gt; element is allowed either as a direct child of the &lt;hierarchy&gt; element (top level menu), or as the direct child on any other &lt;menu&gt; element (sub-menu). Conversely, the &lt;menu&gt; element accepts other &lt;menu&gt; elements or &lt;entry&gt; elements as children. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>id</term>
+	<listitem><para>An identifier string of the menu. Useful, when menu definitions are read from several <literal role="extension">.pluginmap</literal> files, to make sure plugins can be placed in the same menu(s). Some menu-ids such as "file" refer to predefined menus (in this case the "File" menu). Be sure to check with existing <literal role="extension">.pluginmap</literal> files to use consistent ids.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>label</term>
+	<listitem><para>A label for the menu.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>index</term>
+	<listitem><para>Useful, when menu definitions are read from several <literal role="extension">.pluginmap</literal> files, to have control over the order in which (sub-)menus are placed inside a hierarchy level. Note that the index is not absolute (since more than one <literal role="extension">.pluginmap</literal> file may be read, more than one element at this hierarchy level may have the same id), but you can safely assume that an element with index="4" will be placed somewhere below an element which index="3" and above one with index="5" (optional, default is "-1", for add at end).</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;entry&gt;</term>
+<listitem><para>A menu entry, i.e. a menu option to invoke a plugin. May be used only as a direct child of a &lt;menu&gt; element, accepts no child elements. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>component</term>
+	<listitem><para>The ID of the component that should be invoked, when this menu entry is activated.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>index</term>
+	<listitem><para>See &lt;menu index="..."&gt; above.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;context&gt;</term>
+<listitem><para>Declares the entries in a <link linkend="contextualized_plugins">context</link>. Only allowed as a direct child of the &lt;document&gt; tag. Accepts only &lt;menu&gt; tags as direct children. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>id</term>
+	<listitem><para>The ID of the context. Only two contexts are implemented so far: "x11" and "import".</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;require&gt;</term>
+<listitem><para>Include another <literal role="extension">.pluginmap</literal> file. This <literal role="extension">.pluginmap</literal> file is only loaded once, even if it is &lt;require&gt;d from several other files. The most important use case is to include a pluginmap file, which declares some comopnents, which are embedded by components declared in this <literal role="extension">.pluginmap</literal>. &lt;require&gt;-elements are only allowed as direct children of the &lt;document&gt;-node. Attributes:
+	<variablelist>
+	<varlistentry>
+	<term>file</term>
+	<listitem><para>The filename of the <literal role="extension">.pluginmap</literal> to include. This is seen relative to the directory of the current <literal role="extension">.pluginmap</literal> file + the base_prefix (see above, &lt;document&gt;-element).</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
+<sect1 id="helpfileelements"><title>Elements for use in .rkh (help) files</title>
+<variablelist>
+<varlistentry>
+<term>&lt;document&gt;</term>
+<listitem><para>Needs to be present in each <literal role="extension">.xml</literal> file as the root-node (exactly once). No attributes.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;title&gt;</term>
+<listitem><para>Title of the help page. This is <emphasis>not</emphasis> interpreted for help pages for a plugin (this takes the title from the plugin itself), only for stand-alone pages. No attributes. The text contained within the &lt;title&gt; tag will become the caption of the help page. May only be defined once, as a direct child of the &lt;document&gt; node.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;summary&gt;</term>
+<listitem><para>A short summary of the help page (or what this plugin is used for). This will always be shown at the top of the help page. No attributes. The text contained within the &lt;summary&gt; tag will be displayed. Recommended but not required. May only be defined once, as a direct child of the &lt;document&gt; node.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;usage&gt;</term>
+<listitem><para>A slightly more elaborate summary of the usage. This will always be shown directly after the &lt;summary&gt;. No attributes. The text contained within the &lt;usage&gt; tag will be displayed. Recommended for plugin help pages, but not required. May only be defined once, as a direct child of the &lt;document&gt; node.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;section&gt;</term>
+<listitem><para>A general purposes section. May be used any number of times as a direct child of the &lt;document&gt; node. These sections are displayed in the order of their definition, but all <emphasis>after</emphasis> the &lt;usage&gt; section and <emphasis>before</emphasis> the &lt;settings&gt; section. The text contained within the &lt;sectoin&gt; tag will be displayed.
+	<variablelist>
+	<varlistentry>
+	<term>id</term>
+	<listitem><para>An identifier needed to jump to this section from the navigation bar (or a link). Needs to be unique within the file. Required, no default.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>title</term>
+	<listitem><para>The title (caption) of this section. Required, no default.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>short_title</term>
+	<listitem><para>A short title suitable to be displayed in the navigation bar. Optional, defaults to the full title.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;settings&gt;</term>
+<listitem><para>Defines the section containing reference on the various GUI settings. Only meaningful and only used for plugin related help pages. Use as a direct child of the &lt;document&gt;. May contain only &lt;setting&gt; and &lt;caption&gt; elements as direct children. No attributes.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;setting&gt;</term>
+<listitem><para>Explains a single setting in the GUI. Only allowed as a direct child of the &lt;settings&gt; element. The text contained within the element is displayed.
+	<variablelist>
+	<varlistentry>
+	<term>id</term>
+	<listitem><para>The ID of the setting in the plugin .xml. Required, no default.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>title</term>
+	<listitem><para>An optional title for the setting. If omitted (omission is recommended in most cases), the title will be taken from the plugin .xml.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;caption&gt;</term>
+<listitem><para>A caption to visually group several settings. May only be used as a direct child of the &lt;settings&gt; element.
+	<variablelist>
+	<varlistentry>
+	<term>id</term>
+	<listitem><para>The ID of the corresponding element (typically a &lt;frame&gt;, &lt;page&gt; or &lt;tab&gt;) in the plugin .xml.</para></listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>title</term>
+	<listitem><para>An optional title for the caption. If omitted (omission is recommended in most cases), the title will be taken from the plugin .xml.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;related&gt;</term>
+<listitem><para>Defines a section containing links to further related information. Will always be displayed after the &lt;settings&gt; section. No attributes. The text contained within the &lt;related&gt; tag will be displayed. Typically this will contain an HTML-style list. Recommended for plugin help pages, but not required. May only be defined once, as a direct child of the &lt;document&gt; node.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;technical&gt;</term>
+<listitem><para>Defines a section containing technical information of no relevance to end users (such as internal structure of the plugin). Will always be displayed last in a help page. No attributes. The text contained within the &lt;related&gt; tag will be displayed. Not required, and not recommended for most plugin help pages. May only be defined once, as a direct child of the &lt;document&gt; node.</para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;link&gt;</term>
+<listitem><para>A link. Can be used in any of the sections described above.
+	<variablelist>
+	<varlistentry>
+	<term>href</term>
+	<listitem><para>The target url. Note that several rkward specific URLs are available. See <link linkend="pluginhelp">section on writing help pages</link> for details.</para></listitem>
+	</varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry>
+<term>&lt;various html tags&gt;</term>
+<listitem><para>Most basic html tags are allowed within the sections. Please keep manual formatting to a minimum, however.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
+<sect1 id="guilogic_functions"><title>Functions available for GUI logic scripting</title>
+<variablelist>
+<varlistentry><term>Class "Component"</term>
+<listitem><para>Class which represents a single component or component-property. The most important instance of this class is the variable "gui" which is predefined as the root property of the current component. The following methods are available for instances of class "Component":
+	<variablelist>
+	<varlistentry><term>absoluteId(base_id)</term><listitem><para>Returns the absolute ID of <emphasis>base_id</emphasis>, or - if base_id is omitted - the identifier of the component.</para></listitem></varlistentry>
+	<varlistentry><term>getValue(id)</term><listitem><para>Returns the value of the given child property. Returns the value of this property, if ID is omitted.</para></listitem></varlistentry>
+	<varlistentry><term>setValue(id, value)</term><listitem><para>Set the value of the given child property to <emphasis>value</emphasis>.</para></listitem></varlistentry>
+	<varlistentry><term>getChild(id)</term><listitem><para>Return an instance of the child-property with the given <emphasis>id</emphasis>.</para></listitem></varlistentry>
+	<varlistentry><term>addChangeCommand(id, command)</term><listitem><para>Execute <emphasis>command</emphasis> whenever the child property given by <emphasis>id</emphasis> changes.</para></listitem></varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry><term>Class "RObject"</term>
+<listitem><para>Class which represents a single &r; object. An instance of this class can be obtained by using <command>makeRObject(objectname)</command>. The following methods are available for instances of class "RObject": <warning><remark>If any commands are still pending in the backend, the information provided by these methods can be out-of-date by the time that the plugin code is run. Do <emphasis>not</emphasis> rely on it for critical operations (risking loss of data).</remark></warning>
+	<variablelist>
+	<varlistentry><term>getName()</term><listitem><para>Returns the absolute name of the object.</para></listitem></varlistentry>
+	<varlistentry><term>exists()</term><listitem><para>Returns whether the object exists. You should generally check this before using any of the methods listed below.</para></listitem></varlistentry>
+	<varlistentry><term>dimensions()</term><listitem><para>Returns an array of dimensions (similar to <command>dim()</command> in R).</para></listitem></varlistentry>
+	<varlistentry><term>classes()</term><listitem><para>Returns an array of classes (similar to <command>class()</command> in R).</para></listitem></varlistentry>
+	<varlistentry><term>isClass(class)</term><listitem><para>Returns true, if the object is of class <emphasis>class</emphasis>.</para></listitem></varlistentry>
+	<varlistentry><term>isDataFrame()</term><listitem><para>Returns true, if the object is a data.frame.</para></listitem></varlistentry>
+	<varlistentry><term>isMatrix()</term><listitem><para>Returns true, if the object is a matrix.</para></listitem></varlistentry>
+	<varlistentry><term>isList()</term><listitem><para>Returns true, if the object is a list.</para></listitem></varlistentry>
+	<varlistentry><term>isFunction()</term><listitem><para>Returns true, if the object is a function.</para></listitem></varlistentry>
+	<varlistentry><term>isEnvironment()</term><listitem><para>Returns true, if the object is an environment.</para></listitem></varlistentry>
+	<varlistentry><term>isDataNumeric()</term><listitem><para>Returns true, if the object is a vector of numeric data.</para></listitem></varlistentry>
+	<varlistentry><term>isDataFactor()</term><listitem><para>Returns true, if the object is a vector of factor data.</para></listitem></varlistentry>
+	<varlistentry><term>isDataCharacter()</term><listitem><para>Returns true, if the object is a vector of character data.</para></listitem></varlistentry>
+	<varlistentry><term>isDataLogical()</term><listitem><para>Returns true, if the object is a vector of logical data.</para></listitem></varlistentry>
+	<varlistentry><term>parent()</term><listitem><para>Returns an instance of "RObject" representing the parent of this object.</para></listitem></varlistentry>
+	<varlistentry><term>child(childname)</term><listitem><para>Returns an instance of "RObject" representing the child <emphasis>childname</emphasis> of this object.</para></listitem></varlistentry>
+	</variablelist></para></listitem>
+</varlistentry>
+<varlistentry><term>Class "RObjectArray"</term>
+<listitem><para>An array of RObject instances. An instance of this class can be obtained by using <command>makeRObjectArray(objectnames)</command>. It is particularly useful when dealing with varslots which allow to select multiple objects.</para></listitem>
+</varlistentry>
+<varlistentry><term>include()-function</term>
+<listitem><para><command>include(filename)</command>can be used to include a separate JS file.</para></listitem>
+</varlistentry>
+</variablelist>
+</sect1>
+
+</appendix>
+
+<appendix id="troubleshooting">
+<title>Troubleshooting during plugin development</title>
+<para>
+So you've read all the documentation, did everything right, and still can't get it to work? Don't worry, we'll work it out. First thing to do is: Run rkward in a terminal/console, and watch out for messages on the console. As a general rule of thumb, you should not see any output when your plugin gets invoked, or at any other time (other than the startup message). If there is one, it's likely related to your plugin. See if it gets you anywhere.
+</para>
+<para>
+If everything seems fine on the console, try to increase the debug-level with <command>rkward --debug-level 3</command> (you may also use debug-level 4, or even 5, but as this always generates <emphasis>a lot</emphasis> of output, try a lower level at first). Not all messages shown at higher debug levels neccessarily indicate a problem, but chance are, your problem shows up somewhere between the messages.
+</para>
+<para>
+If you still can't find out what's wrong, don't despair. We know this is complicated stuff, and - after all - possibly you've also come across a bug in &rkward;, and &rkward; needs to be fixed. Just write to the development mailing list, and tell us about the problem. We'll be happy to help you.
+</para>
+<para>
+Finally, even if you found out how to do it on your own, but found the documentation to be not-so-helpful or even wrong in some respects, please tell us on the mailing list as well, so we can fix/improve the documentation.
+</para>
+</appendix>
+
+<appendix id="license">
+<title>License</title>
+<para>&underFDL;</para>
+</appendix>
+
+&documentation.index;
+</book>
+<!--
+Local Variables:
+mode: sgml
+sgml-minimize-attributes:nil
+sgml-general-insert-case:lower
+sgml-indent-step:0
+sgml-indent-data:nil
+End:
+-->

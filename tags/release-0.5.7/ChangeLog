@@ -1,0 +1,817 @@
+--- Version 0.5.7 - Oct-23-2011
+- Fixed: Would not system-defined text color for argument hints
+- Do not treat arrays (which are not a matrix) as hierarchical named objects in the object browser
+- Do not analyse more than 100000 name child-objects per object (avoids hangs on such extreme data)
+- Fixed: Problems with using mclapply() inside RKWard
+- Offer to add a new library location, automatically, if location selected for installation is not writable
+- Reworked package installation / update dialog
+- Fixed: Integrated help browser would not update navigation history when following page internal links
+- Documentation on writing RKWard plugins is now accessible, locally
+- The file filter for R script files is now configurable, and includes *.Rhistory, by default
+- More obvious coloring of variable entry fields requiring user input in plugins
+- Default size of the code display in plugin dialogs has been increased
+- Removed support for downloading plugins using GHNS
+- Added support for RKWard plugins shipped inside R packages 
+- Fixed: PDFs and many other types of documents linked from help pages would not be opened, correctly
+- Added support R 2.14.x
+- Removed option to set options("printcmd")
+- New option to run arbitrary (setup) commands in each session
+- Added new pseudo graphics device "rk.printer.device" to provide printing via the KDE printer dialog
+- Fixed: Printing was broken when kprinter is not available
+- Support the results list new help.search() in R 2.14.x, which includes vignettes and demos
+- rk.edit.files() and rk.show.files() gain parameter "prompt", which can be used to suppress user prompt
+- Added function rk.demo(), which is similar to demo(), but opens the example script in a script editor window
+- Fixed: Some plugin dialogs would not become visible, or be shown in very small size, with some window managers
+- Fixed: Potential crash when using context menus with "focus follows mouse" window activation policy
+- Added shortcut Ctrl+Enter to insert a line break and submit from a script editor
+- Reduce CPU usage while idle
+- Bar plot, dot chart, pie chart, and Pareto plot plugins gain more tabulation options
+- rk.results() now prints rownames, where appropriate
+- "frame" elements in plugins can now be made checkable
+- Disabling or hiding a plugin component makes it non-required, implicitly
+- Box plot gains option to dogde grouped boxes
+- Simplify internal handling of system() and system2() output
+- Simplify code produced by several plugins
+- Fixed: Occasional duplication of first letter of keyword, when using "Copy lines to output" from the console window
+
+--- Version 0.5.6 - May-30-2011
+- Fixed: Would crash when searching for a term with quotes in the help search window
+- Add simple man page for command line options
+- Fixed: Potential crash when creating plots from a tcl/tk based GUI
+- Fix compilation on FreeBSD
+- Replace the R console's "Copy selection cleaned" action with "Copy commands, only", which will omit any non-command regions in the copy
+- Add "Copy lines to output" action to copy highlighted lines from the R console or script editors to the output window
+- R commands and their output can be "carbon copied" to the output window
+- On Windows, RKWard will detect, and offer to disable "native" file system dialogs
+- Object browsers that show only the global environment now hide the ".GlobalEnv" item
+- Fixed: Function argument hints would not be shown in some corner cases
+- Added function rk.print.code() to write highlighted R code to the output window
+- Box plot plugin gains support for grouped outcome data
+- Fixed: Pressing Ctrl+C would not reset syntactically incomplete commands in the R console
+- Crosstabs N to 1 plugin gains options to compute proportions and margins (thanks to Andrés Necochea)
+- Added convenience R function rk.list() to allow simplification of plugin code
+- Added stack-based window switching using Ctrl+(Shift)+Tab; this replaces the old "Next Window" and "Previous Window" actions
+- Fixed: Graphics device windows would disappear when trying to attach them to the main window with some versions of Qt
+- Fixed: tcl/tk widgets would lock up after running commands in the R Console
+- Provide a template for bug reports, containing standardized information on the RKWard setup in Help->Report Bug...
+- When loading a (local) workspace, change the working directory to the directory of the workspace (configurable)
+- Include the sidebar position of tool windows when saving / restoring the workplace layout
+- "Pending jobs" tool window is not longer shown in the bottom sidebar by default
+- Support removing individual tool windows from the sidebars, completely
+- Add an action to interrupt all (current and pending) commands
+- Fixed: When saving the workplace while closing the session, the workplace layout would not always be saved correctly
+- File browser context menu gains many more KDE standard actions (KDE 4.3 and above, only)
+- Auxiliary binaries rkward.bin and rkward.rbackend are no longer installed into /usr[/local]/bin/ on Unix
+- Fixed: Object name completion would abort early in the script editor with KDE 4.4
+- Support function argument hinting for R primitives
+- Support package namespaces in object name completion and workspace browser
+- Support S4 slots in object name completion and workspace browser
+- More correct handling of quotes in object name completion
+- Support plot history for ggplot2 plots
+- Be less pro-active about fetching structure information on R objects in the workspace
+- Allow to browse arbitrarily deeply nested environments in the object browser
+
+--- Version 0.5.5 - Mar-15-2011
+- Fixed: Crash when several environments on the search path have the same name
+- Re-organize the default toolbar actions of the main window
+- Detached windows are now restored in detached state when restoring the workplace layout
+- Workplace layout is now saved in a separate file, instead of in a hidden object inside the .RData file
+- Added R functions rk.save.workplace() and rk.restore.workplace() to save / restore a set of document windows
+- RKWard now tries to detect, when a workspace has been moved to a new directory, and adjust the paths restored script editor windows, accordingly
+- Fixed: Potential crashes when changing length of a data.frame that is currently opened for editing from R code
+- All pages in the package installation dialog now support sorting and keyboard search
+- Fixed: Converting from factor to string in the data editor set values to numeric, internally
+- Allow entering factor labels instead of only numbers, when editing factors in the data editor
+- Display logical values as "TRUE" and "FALSE" in data editor, and accept "T"/"TRUE"/"F"/"FALSE" in addition to "0"/"1" while editing
+- Add support for R functions loadhistory(), savehistory(), history(), and timestamp ()
+- Do not load .RData file from current directory by default (configurable)
+- Fixed: On Windows, a wrong locale for LC_NUMERIC would be applied, resulting in malfunction of pdf() and postscript()
+- Fixed: Did not use system configured background color in data editor
+- Fixed: New columns would be always be added to the right, instead of to the left, in the data editor
+- Fixed: Would crash when trying to edit 0 row data.frame
+- Fixed: Output generated by external processes (system()) was not shown on the console
+- Fixed: Converting a variable to factor in the editor would drop existing levels, silently, and lead to NAs
+- Fixed: Cursor would keep jumping to the end, when typing a filename in the filename selection field in plugins
+- Fixed: Submit button would not become enabled in "Basic Statistics" plugin
+- Moved automated testing framework moved to a dedicated R package "rkwardtests", and added documentation
+- Support pasting to the middle of the current command line in the R Console
+- Better handling of script-editor commands while the R Console is busy
+- Correct interleaving of multi-line commands and the corresponding output in the R Console
+- Fixed: Portions of multi-line commands entered on the R Console would be run twice under some circumstances
+- Fixed: Lockups or crashes when using packages RGtk2 or rJava on the X11 platform
+- Fixed: R task callback handlers were not called
+- GUI frontend and R backend now run in separate processes
+- Re-write of large portions of the R embedding code
+- Fixed: Did not respect system settings for tooltip background color in some styles
+- Fixed: Installation would continue, seemingly successfully, even if R support libraries could not be installed
+- Fixed: Function argument hints would sometimes persist after closing a script window
+- Fixed: Would fail to analyse structure of ReferenceClass-objects
+- Fixed: "Vector" mode in "Paste special" action did not work correctly
+- Attempt to save workspace on crashes
+- Also try to relay SIGABRT and SIGILL to the proper signal handlers
+- Removed the remainder of the PHP scripting backend
+- Fixed: Would crash on tcl/tk events in some cases
+
+--- Version 0.5.4 - Oct-04-2010
+- Fixed: Running user commands would crash with R 2.12.0
+- Added full-featured plot history for the onscreen graphics device
+- Fixed: Potential crash when editing data-frame with duplicate column names
+- Added option to specify default onscreen graphics dimensions
+- Fixed: Graphics windows used to assume a minimum size of 640*480 pixels, even if a smaller size was specified
+- Added option to disable function argument hinting
+- New functions rk.show.message() and rk.show.question() for user interaction from R code
+- New options for scripting GUI logic in plugins
+- The current object of an active data editor can be referenced in plugins
+- Fixed: Placement of several menu items was broken - again - with KDE 4.4 and above
+- Allow sorting of results in help search window
+- Fixed: CPU usage would go to 100% for no good reason under certain circumstances
+- The save-object selector in plugins now allows to save as part of a data.frame / list
+- Fixed: On some systems, dev.off() would spawn two new graphics windows
+- Support row names in the data.frame-editor
+- Fixed: When starting with an empty table, RKWard would sometimes claim that this object has been removed
+- Fixed: Would crash when trying to configure toolbars under certain circumstances (workaround for bug in kdelibs)
+- Fixed: Crash while analysing some objects returned by XML::xmlParseTree() for invalid XML
+- Fixed: Error while installing packages with R 2.11.0, when archiving packages in a non-existing directory
+- Added option to autosave script files (enabled by default)
+- The tabbar in the main window now shows a context menu with options to close/detach a window
+- The tabs in the main window can now be re-ordered by dragging with the mouse (left click if compiled with Qt 4.5 or above, middle click for earlier versions)
+- Added alternating row backgrounds in data.frame-editor
+
+--- Version 0.5.3 - Apr-30-2010
+- Fixed: Windows->Activate->Window left / right actions were always disabled
+- File browser window saves settings on exit
+- Several windows-specific bugs were fixed
+- Plugin dialogs are shown with a larger initial size
+- Add close buttons to each tab in the main document view area (not available in KDE 4.0)
+- Make "print", "export as HTML", "dynamic word wrap", and "increase/descress font size" available for the console window
+- Use a native menu, instead of the default TclTk-menu
+- Fixed: Newly created variables were not properly updated when closing and re-opening the editor
+- Added "paste special" action to script editor and console for pasting R vectors and matrices from spreadsheets
+- Fix order of menus for detached windows
+- File->Open R Script File now allows to specify the character encoding to use
+- Fixed: No entries were added the recent script/workspaces actions after "save as"
+- Initialize the output file with an appropriate encoding specification
+- Add SVG support to export (graphics) plugin
+- Add basic settings format settings for graphics output
+- Convert all plugins to use ECMAscript instead of PHP; RKWard no longer depends on PHP
+- Fixed: Frequent crashes while running automated plugintests
+- Fixed: Filenames without extension would not be shown in file dialogs
+- Fixed: Calling "fix(my.fun)" would remove comments
+- Fixed: Removing "@CRAN@" from the repositories would break package installation
+
+--- Version 0.5.2 - Oct-26-2009
+- Add Stata data file import plugin (by Michael Ash)
+- All directly accessible plugins now have at least one automated test
+- Add support for the dynamic help server introduced in R 2.10.0
+- Assorted minor fixes and improvements to several plugins
+- Fix deadlock while handling some Tcl events
+- Plugin dialogs close automatically after submitting (by default)
+- Fetching object structure is much faster for very large data.frames
+- Fix crash when loading certain packages on Windows
+- Fix some potential path issues on Windows
+- "Analysis" menu was restructured, slightly
+- Debug output (previously sent to stderr) is now written to a temporary file
+- On plugin help pages, display a link to invoke the plugin
+- Tolerate missing libraries in testing framework
+- Double-clicking an item in the workspace browser now opens an object viewer, or (if possible) editor
+- Safeguard against removal of essential packages via the GUI
+- Add context menu action to unload packages in the workspace browser window
+- Add shortcut to the load / unload packages dialog also in the workspace menu and the workspace browser context menu
+- Make toolbar buttons configurable
+- Fixed: Console window would sometimes remain in partially active state after piping commands
+
+--- Version 0.5.1 - Aug-04-2009
+- Support compilation on Windows
+- Add framework for automated plugin testing, and some first plugin tests
+- New command line option "--evaluate <Rcode>" mostly for the purpose of automated testing
+- Remove support for R 2.6.x and earlier
+- Add basic checks for a correct installation of the RKWard resource files
+- Remove "What to expect" dialog at startup
+- Make keyboard shorcuts configurable
+- Add option to add only single line commands from script editor to the console history
+- Add action to change working directory to that of the current script file
+- Fixed: No warning was shown, when an open script file was changed on disk, externally
+- Fixed: Opening most file types (e.g. PDF) from the help browser was broken
+- Fixed: Make built-in editor work again for file.edit ()
+- More plugins now write a header to the output window
+- Add convenience function "makeHeaderCode()" for use inside plugins
+- Adjust some icons
+- Plugins can be invoked from R code (mostly for internal purposes)
+- Add "Run again" link for plugin generated output
+- Fixed: All objects in .Globalenv would be revisited if a single object was added / removed
+- Fixed: Screen device in rkward was not seen as interactive by R
+
+--- Version 0.5.0d - May-10-2009
+- Fixed: Container of detached windows would sometimes remain after reattaching
+- Fixed: Global toolbar style was not honored
+- Fixed: Auto-scroll missing in progress dialogs and data editor
+- Fix jumping toolbar
+- Fixed: Several harmless warnings were silenced
+- Fixed: Argument hints would always stay on top regardless of focus
+- Fix crash when reaching bottom of command history in context sensitive search
+- Fix crash while inserting rows in a data.frame with string variables
+
+--- Version 0.5.0c - Mar-30-2009
+- Fix assorted installation problems
+- Updated translations: German, Spanish
+- Fix immediate crash issue with R 2.9.0 (requires recompilation against R 2.9)
+- Fixed some shortcut problems with KDElibs 4.2.x
+- Fixed: Several icons would not be loaded
+- Fix device window capturing Qt 4.4.3 (possibly other versions were broken as well)
+- Fix device window capturing with R 2.8.0
+- Extended boxplot plugin
+- Support data.frames in barplot plugin
+- New set of plugins: Item Response Theory (by Meik Michalke)
+
+--- Version 0.5.0b - Apr-20-2008
+- Support compilation with R 2.7
+- New plugin: Hodrick-Prescott Filter
+- Fix a problem with plugin help pages not loading correctly
+- Better resize handling in progress and R input (readline()) dialogs
+- Somewhat better handling of the R event loop (esp. when calling "require(not_yet_installed_package)")
+
+--- Version 0.5.0a - Jan-23-2008
+- Fixed: no objects were selectable in most varslots
+- Compilation: check for minimum kdelibs version during cmake stage
+
+--- Version 0.5.0 - Jan-21-2008
+- add support for a focus-follows-mouse activation behavior of the MDI windows (Settings->General)
+- ability to mark arbitrary "blocks" in script editor and run them with a shortcut
+- make sure that R only handles SIGSEV, when the R thread is active. Should give better backtraces and less hangs
+- object viewer was redesigned to use space better, and only fetch the print-representation when needed
+- more icons added
+- data.frame editor can be set to read-only mode
+- code completion in script editor shows icons for the different object types
+- settings dialog is now shown in "page tree" mode
+- port to KDE 4
+
+---- KDE 3 versions
+
+--- Version 0.4.9b - May-10-2009
+- Workaround: Deactivate all filemanagement shortcuts in the File Browser. These would sometimes trigger when they should not.
+- Fix crash while inserting rows in a data.frame with string variables
+- Fix immediate crash issue with R 2.9.0 (requires recompilation against R 2.9)
+- Fix device window capturing with R 2.8.0
+- Extended boxplot plugin
+- Support data.frames in barplot plugin
+- New set of plugins: Item Response Theory (by Meik Michalke)
+
+--- Version 0.4.9a - Apr-20-2008
+- Support from compilation with R 2.7
+- New plugin: Hodrick-Prescott Filter
+- Fixed some lockups during startup
+
+--- Version 0.4.9 - Jan-14-2008
+- Improved user interface for CSV import plugin
+- Support drawing grids in histogram and stripchart plots
+- New plugin: Levene test
+- New plugin: Jarque-Bera test (by Germán Márquez Mejía)
+- Fixed: Crosstabs plugin produces better output
+- Fixed: use.value.labels option was wrong in SPSS import plugin
+- Fixed: SPSS tables would only be imported to the workspace, when the edit option was checked
+- Fixed: correct installation of rkward.desktop file
+- Use the KDE default fixed spacing font for command log and object viewer
+
+--- Version 0.4.8a - Nov-11-2007
+- More reliable C stack limit detection on some systems
+- Fixed: Console accepted pasted input while a command is running
+- Fixed: Analysis->Moments->Moment plugin did not use the order-parameter
+- Fixed: Crash on simple assignments in globalenv() with R < 2.4.0
+- Fixed: Meta information (labels) did not get shown correctly in the data editor
+- Add command line option "--debugger" for debugging purposes
+- Fixed: Pressing the add button in a varslot with no object selected could crash RKWard
+
+--- Version 0.4.8 - Oct-03-2007
+- New plugins: pie chart, dot chart, crosstabulation, two time-series tests, and basic linear regression
+- barplot plugin allow specification of custom labels
+- commands run through the console from the script editor will now be added to the command history (this can be turned off in the settings)
+- fixed: promise objects (created by delayedAssign()) directly in globalenv() would be forced early
+- make wrapper script work, when konsole is not installed
+- correct syntax highlighting for ::: and NA_integer_ and others
+- silence some GCC 4.2 warnings
+- fixed: crash when editing a data.frame with logicals (logicals are still mishandled, but less severe)
+- fixed: would not work with R 2.6
+- new translation: Simplified Chinese (contributed by Roy Qu)
+- more compilation fixes for GCC 4.3
+- object viewer also shows summary information, gains an update button, and MDI integration
+- CLT plugins allow drawing grid
+- add max.print option to R-Backend settings dialog
+- syntax highlighting is minimally faster for long outputs
+- graphics export plugin gains option for EPS compatibility
+- fixed: inserting / removing rows in the data editor in the presence of invalid fields in later rows would lead to a crash
+- fix some internal problems with enabledness/disabledness of plugin components
+- some complex plotting plugins now start up noticeably faster
+- fixed: sometimes detecting created X11() windows would fail, esp. under high load
+- create the workspace browser only when it is first shown
+- support for including files and snippets in xml files
+- all file selection line edits gain filename-completion
+- add a basic file selector window
+- show the focus indication (thin red border) also for detached windows
+- tool windows can be closed and detached in the same way as regular windows
+- fix a crash with detached tool windows
+- add command line option --disable-stack-check for systems where R C stack checking is buggy
+- the modifier "not" for boolean properties returns a (negated) boolean sub-propery instead of just a string
+- add possibility to blacklist packages from fetching structure information. Package GO is blacklisted by default.
+- when fetching the structure of "promise" R objects, don't keep them in memory
+- optimize the function to retrieve the structure of R objects (for display in the object browser, and completion)
+- Messages, warnings, and errors for plugin commands are shown in the output, instead of in a dialog
+
+--- Version 0.4.7a - May-07-2007
+- add sanity check for the detected stack limits
+- fixed: one some systems rkward would crash or not compile due to missing fortran symbols
+- fixed: starting the scatterplot plugin in wizard mode would crash rkward
+- tab-completion in the console will do partial completion, if all potential completions have a common start
+- fixed: file-name completion would always assume the home directory as the current directory
+- update turkish translation
+- compilation fix for FreeBSD (thanks to Thierry Thomas)
+- fixed: when executing commands line by line from the script editor, line breaks would be omitted
+
+--- Version 0.4.7 - Apr-11-2007
+- some fixes for GCC 4.3
+- fixed: the presence of user objects called "missing", "assign", or "get" would confuse some RKWard internals
+- several existing plugins have been improved in various ways
+- use maximum permissible width in the object viewer
+- fix a crash that occurred during startup under some circumstances
+- when flushing the output, also delete all graphs
+- add support for a "technical details" section in plugin help files
+- add option to enable / disable single options of a radio or dropdown control in plugins
+- t-test plugin now also allows to calculate a paired test
+- show current working directory in the statusbar
+- add run selection action to all HTML windows
+- add custom icons for run line/selection/all
+- make sure not to run parts of an incomplete user command. It would lead to all sorts of subtle problems
+- if an incomplete command was piped through the console, the console does not become blocked for piping
+- make "run current line" advance the cursor to next line after running
+- warnings and errors are highlighted in command log / console (warnings only for R >= 2.5.x)
+- plugin generated commands are run in a local() environment, allowing for more concise code
+- also support filename completion in the console (mode of completion is determined by heuristic means)
+- initial support for R's Sys.setlocale(), and encoding of CHARSXPs
+- in help files, a short title for sections (for the navigation bar) can be defined
+- the currently active window is now highlighted using a thin red border
+- fixed: changing the type of a column in the data editor was broken
+- fixed: quitting while a plugin was still active would sometimes crash rkward
+- new shortcuts for window navigation: next/previous window, activate console, activate command log, etc.
+- new functions rk.describe.alternative () and rk.print.literal () for use in plugins
+- new plugin: Phillips-Perron test
+- new plugin: Mood test
+- new plugins: CLT plots for most distributions
+- new plugins: variance tests (F test (var.test), Bartlett test, Fligner test)
+- new plugin: generic plot
+- new plugin: Add grid to plot
+- new plugin: pareto chart
+- new plugin: stem-and-leaf plot
+- make readline dialog store last size and position
+- new plugins: outlier tests (chisq.out.test, dixon.test, grubbs.test, outlier)
+- support R's mechanism for checking the C stack limits (only with R 2.3.x or greater, and not on all platforms)
+- new plugins: support of all tests from moments package
+- several new help pages
+- better error handling in PHP backend
+- fixed: depending on some buffer sizes, plugins could get stuck while generating code
+- fixed: plugin browser type="dir" would not work correctly
+- import SPSS and import CSV plugins gain option to open object for editing, automatically (checked by default)
+- warn when opening very large objects (with more than 250000 fields; this limit is configurable)
+- add a "copy" tag to facilitate writing plugins with both dialog and wizard interfaces
+- fixed: graph previews would stop working when the interface is switched from dialog to wizard or vice versa
+- new options for plugin dialogs: Configure whether code display is shown by default, and at what size
+
+--- Version 0.4.6 - Feb-15-2007
+- make sure any LC_ALL environment setting will not be applied by SCIM plugin (if installed on the system)
+- fix crash after changing storage type of an object in the data editor
+- single line input fields in plugins no longer accept new-lines
+- support for calculating p-values in correlation matrix plugin
+- fixed: pressing F8 in the console would remove input focus from the console
+- pressing tab changes focus while in a single line text input field
+- fix several small problems with detached windows
+- fix a problem with keeping the list of objects up to date
+- improvements to spinbox: step size is adjusted dynamically, and no arbitrary limits in real mode
+- fixed problem with specifying y axis limits in several plugins
+- simplified CSV import plugin
+- new plugin: import SPSS files
+- new documentation pages: console
+- various improvements to existing distribution and distribution plot plugins
+- new plugins: distribution plots: beta, binomial, cauchy, exponential, gamma, geometric, hypergeometric,
+		logistics, lognormal, negative binomail, tukey, uniform, weibull, wilcoxon
+- fixed: installing packages as root would not work, when $R_HOME is not defined
+- new plugin element to select name of an R object to save to
+- new plugin: Ansari-Bradley two-sample test
+- place internal objects .rk.rkreply and .rk.available.packages.cache into rkward package environment
+- support for preview functionality in graphing plugins
+- new plugin: barplot
+- new plugin: export contents of an X11 device to several different file formats
+- plugins can now be context sensitive (e.g. work on a particular x11 device)
+- new plugin: Wilcoxon Rank Sum test and Wilcoxon Exact Rank Sum test
+- new plugin: scatterplot matrix
+- new plugin: correlation matrix plot
+- safer destruction of R backend on quitting
+- fix compilation for the upcoming R 2.5.0
+- show full error message for syntax errors (only if compiled with R 2.4.0 or newer)
+- more correct auto-printing of values for user commands (only if compiled with R 2.4.0 or newer)
+- more correct handling of user commands consisting of several statements (only if compiled with R 2.4.0 or newer)
+- add ability to search command history context sensitively
+- add possibility to use dropdown lists in plugins
+
+--- Version 0.4.5 - Jan-21-2007
+- change shortcuts for Open/Save Workspace to Ctrl+Shift+O/S to avoid clash with Open/Save Script File
+- remove "Configure Packages" option from Workspace menu, as it is also in Settings menu
+- fixed: non-local workspaces would not be loaded
+- fixed: specifying a workspace to load on the command line would only work for full urls
+- new Console RMB actions: "copy selection cleaned" and "run selection"
+- added a basic help system, and some introductory help pages
+- added plugin for skewness and kurtosis
+- added several plugins for distribution analysis
+- added plugins for stripchart & density plot
+- enhancements to existing plot plugins
+- added refresh output and flush output as toolbar actions
+- removed the "output" menu; entries were moved to "Edit" and "View"
+- always show all top level menus
+- code generated for most plugins cleaned and simplified
+- new function rk.results () for use in plugins
+- fix: the output window would not refresh changed plot images (unless closed and reopened)
+- fix several minor issues as identified by the "krazy" source code checker
+- allow varslots to request objects of specified dimensionality and length
+- fixed: integer spinboxes with starting values greater than 1 would get unreasonable change steps
+- fix compilation with some versions of KDE / GCC
+- small improvements to syntax highlighting definition
+- in console, make cursor go to empty next line after pressing enter, before there is output (more like in the real console)
+- add "run selection" option to command log
+- script editor commands are piped through the console (by default; this is configurable)
+- assorted cleanups
+
+--- Version 0.4.2 - Dec-04-2006
+- code generated by scatterplot plugin is simplified somewhat
+- add comment headers to the sections of commands produced by plugins
+- if a user command results in the output html file to be modified, auto-refresh output
+- add RMB menu to script editor windows
+- add options "clear" and "configure" in the console RMB menu, and the command log RMB menu
+- add option to save workplace layout not per workspace, but at the end of the session
+- add options ("printcmd") to settings
+- fix help menu for detached windows
+- R X11 device windows are now managed by rkward, with the following initial features:
+- R X11 device windows: attach to / detach from workplace (they start detached)
+- R X11 device windows: toggle between normal resize mode and (settable) fixed size with scrollbars
+- R X11 device windows: menu options to copy / print / duplicate / save / activate devices
+- fixed: selecting Window->Close in a detached window would only close the internal view, not the window
+- when detaching a window, give it a more reasonable size
+- do not open the same script url twice (instead the corresponding window is raised on the second attempt)
+- fixed: when closing a detached script editor window, you would not be asked to save changes (if any)
+- fixed: occasional crash when re-attaching a script editor window
+- new translations: Greek, Catalan
+- updated translations: German, French
+- added basic plot facility for ECDF (Empirical Cumulative Distribution Function) (menu plots)
+- added ptukey and qtukey (Studentized Range Distribution (Tukey)) (menu distributions)
+- spelling corrections in distributions menu
+- reorganized "Descriptive Statistics" plugin to use tabs for better usability
+- added constant for mad in descriptive statistics plugin
+- fix bug in rk.get.label ()
+- in script editor, do not provide symbol name completion while in comments
+- properly support active bindings in globalenv ()
+- if not started in a tty, spawn a konsole. R will go into non-interactive mode otherwise
+
+--- Version 0.4.1 - Nov-05-2006
+- allow specification of title/subtitle in plot options plugin (currently used by boxplot, and histogram)
+- fix bug in beta probabilities plugin
+- fix (some?) compilation problems with KDE 3.2
+- when packages have been newly installed, show them in the load / unload packages tab immediately
+- fix to plugin input lines sizing, and visibility of scrollbars
+- on startup, show window maximized if no size stored (i.e. very first startup)
+- prevent infinite recursion when parsing structure of environments
+- fix for compilation on 64bit architectures
+- remove misleading "About KDE" dialog, and replace report Bug dialog with correct information
+- don't crash when closing a detached window
+- function argument hinting in the console and script editor
+- as you type completion of R symbol names in the script editor
+- tab completion of R symbol names in the console
+- added R function rk.edit (x) to open object x for editing in rkward
+- fixed: an empty table created before the object list was updated (esp. at startup) would be thought to have been removed in the workspace
+- object data changed in the console (or by other means) is updated to the editor automatically, if the object is opened for editing
+- fixed: back / forward buttons would sometimes remain after closing a help window
+- fix some focus problems
+- provide close buttons in tab bar
+
+--- Version 0.4.0 - Oct-17-2006
+- many new distribution plugins
+- all distribution plugins now use a free-text field, allowing you to enter a vector of probabilties / quantiles
+- another fix to cancelling during readline () calls
+- invalid values are stored in a separate attribute instead of changing the storage mode back and forth
+- storage mode for RKWard meta data was changed
+- RMB option to search help on objects from packages in object browser
+- show tooltip information on objects in object browser
+- do not crash on call to "browser ()"
+- the object browser is updated automatically when needed
+- allow some more configuration in object browser
+- include all package environments in object list
+- use more efficient data passing to synchronize object list
+- add (ugly) items for functions and lists to object browser
+- internal cleanups (partially to make porting to KDE4/Qt4 easier)
+- when saving/loading the workspace, save / restore all windows (not just data editors)
+- remember workspace url after save as
+- fix a long standing (but hard to trigger) crash while closing data editor window
+- fix "Open R Script File" filename ending filter
+- add mismatching brace detection to syntax highlighting
+- yet another crash on more than 100 rows bug fixed
+- RKWard should now be fully UTF-8 aware. All characters are passed to and from R reliably
+
+--- Version 0.3.7 - Sep-17-2006
+- added Turkish translation
+- avoid lockups when cancelling a readline ()
+- show output context (if any) when the backend asks for input via readline ()
+- link against libRblas.so if it is found in the R libs dir (needed for some compiles of R 2.4.0)
+- remove whitespace from start and end of plugin generated commands and do not evaluate empty commands
+- do not raise the command log more than once for a given command producing continuous output
+- small improvements to command history in console
+- deal better with commands producing large amounts of output
+- small fixes in several plugins
+- package installation/update: semi-automate package installation in response to "require ()" calls
+- package installation/update: the online list of available packages is cached up to one hour (and only as long as the relevant options are unchanged)
+- package installation/update: give better progress indication
+- package installation/update: package dependencies are handled correctly when installating new packages
+- package installation/update: packages can be installed to custom library locations
+- fix spurious line breaks in output in command log and console
+- Improved syntax highlighting defintion including code folding
+- fix compilation with GCC 4.1
+- don't crash on more than 100 rows of data in the editor (off by 2 bug in storage allocation)
+- correctly initialize the internal NaN representation (would sometimes be initialized to 0, resulting in 0s not to be shown in the editor)
+- engine status bar label ("R engine busy/idle") now changes background color according to state
+- honor DESTDIR setting while installing rkward R package, and add configure option --with-r-libdir
+- only link against -lRlapack, if that is available
+- commands producing lots of output would sometimes be impossible to interrupt. Fixed
+- show command output immediately in command log
+- remember location where R script/workspace files were last opened, and start file-selection dialogs there
+- sometimes the last level in the factor levels editor got lost. Fixed
+
+--- Version 0.3.6 - Apr-23-2006
+- several fixes to the distributions plugins
+- remove debian dir from source distribution again
+- remove one level of menu nesting for save/load R Objects plugins
+- check for and handle some strange R parse errors that could crash rkward
+- make Ctrl+C copy work in the code window of plugins
+- use KDE standard icons in object lists (need to be replaced by customized icons in the long run)
+- don't try to show higher numeric precision than is actually available
+- fix bug in scatterplot plugin
+- remove configure options --with-r-share and --with-r-doc (obsoleted by improved wrapper script)
+- allow deletion of several rows at once in the data.frame editor and fix some bugs regarding deletion of rows
+- prevent R-Object listviews (Varselector, Workspace Browser) from growing excessively wide
+- make Ctrl+V work in the console
+- middle mouse pastes selection, not global clipboard in the console, as expected
+- clean up output of require (quietly=FALSE)
+- some fixes for R 2.3.0
+- pressing Cancel in readline ("R backend requests information") dialog interrupts the command
+- process R X11 events while modal dialogs (such as "R backend requests information") are shown
+- allow empty input in readline ("R backend requests information") dialog
+- make Ctrl+C/copy work in output and help windows
+
+--- Version 0.3.5 - Apr-16-2006
+- give back focus to the script editor after running line/selection/all
+- reworded exit dialog box
+- show info message, if retrieving context help fails
+- pressing Ctrl+C in the console resets a partial command, if any
+- added syntax highlighting in the console
+- configure: if not overriden, and $KDEDIR is not set, assume --prefix=`kde-config --prefix` instead of /usr/local/kde/
+- remove some GUI clutter for Script File editor
+- rename "Command File" to "Script File"
+- rename "Command Stack" window to "Pending Jobs"
+- backspace or del clear cells in data.frame editor
+- reworked factor levels editor
+- in trailing rows/columns of the data.frame editor, change background color, when selected
+- explicitely set LC_NUMERIC to "C" at startup. R does not work correctly with other settings of LC_NUMERIC
+- many new plugins by Stefan Roediger
+- clean up R temporary files on shutdown
+- when switching between dialog and wizard interfaces, GUI settings are copied
+- fix crash with objects with quotes in their names
+- add options to show help-search and R help index to Help menu
+- complete rework of plugins code
+- plugins can embed other plugins
+- code display (for plugins) gets updated reliably
+- avoid leftover PHP processes if rkward crashes or gets killed
+- autodetection of R_HOME and related variables during configure
+- fix status bar
+- handle non-existing and non-local URLs (links) in help window
+- use a shell wrapper around rkward to do some setup just like R. This should fix a number of minor quirks
+- configure: use single configure option for location of R_HOME, and add check for libR.so
+- yet more code cleanups
+- keep main window caption up to date
+- update tab caption for command editor if filename changes (i.e. saved as)
+- indicate if a document in a command editor is modified (unsaved)
+
+--- Version 0.3.4 - Nov-08-2005
+- assorted bugfixes
+- include debian-dir in source distribution
+- real time display of command output in the console
+- automatically scroll command log to the bottom when new lines are added
+- less verbose output in command log (removed "issuing command", etc.)
+- use KXMLGUI for placing plugins in the menu (mostly an internal change, but menu placement should remain sane, when active window changes, now)
+- help-, output-, and editor-views can be detached to separate windows
+- allow to bypass startup dialog
+- back/forward navigation in help pages
+- can print help pages and output
+- better handling of errors while installing packages
+- limit number of lines to display in console and command log (user setting)
+- remove menu clutter from help window, and output window
+- avoid adding incomplete (multi-line) Console commands to the Command Log
+- Settings->Command Log->show/raise window working again
+- allow loading/saving of command history (console commands)
+- add (meaningful) context menu for console
+- allow interrupting current command running in the console via Ctrl+C
+- add "Command stack" window for advanced control of R backend (cancel commands, pause chain, view stack)
+- modifiy rkward.desktop to always start rkward in a terminal. The backend sometimes behaves strangely, if this is not done.
+- use available.packages instead of CRAN.packages (deprecated in R 2.2.0)
+- fix installation of standard_plugins.pluginmap
+- allow configuration of many R options in Settings->R backend
+- updated French translation
+- make "up"-button work in R-backend repository settings
+- more code cleanups
+
+--- Version 0.3.3 - Oct-06-2005
+- honor debug-level setting everywhere
+- reworked handling of output from R (no more file-sinks)
+- fix display of warning messages (behavior does not match plain R, yet, but is mostly sane)
+- option to change list of package repositories
+- option to archive downloaded packages
+- assorted bugfixes
+- provide context/function help for the console
+- output-window has been switched to KPart-infrastructure
+- command-editor has been switched to KPart-infrastructure completely
+- data-editor uses KPart-infrastructure (better integration)
+- override standard callbacks used by R for ReadConsole, ShowFiles, EditFile(s), ChooseFile, Suicide, CleanUp. No more reliance on stdin
+- some cleanups of dead code
+- plugins can now be placed in different menus
+- keep list of components/plugins and menu-hierarchy in (few) .pluginmap files instead of parsing directory structure
+- improved handling of tcltk windows
+- new icon
+- decrease default debug level
+- don't crash when objects change their type from vector to list/data.frame, etc.
+- graph-creation no longer relies on (removable) R objects (can graph after loading a workspace)
+
+--- Version 0.3.2 - Apr-27-2005
+- overloaded require works properly with character.only=FALSE
+- several API documentation improvement
+- hidden objects get shown/hidden according to configuration setting
+- settings dialog honors KDE-button order
+- R's x11 windows now handle their events (x11-device is now usable)
+- fixed bug in the output (no update on empty output)
+- paste in the console is properly handled
+- r console and command log divorced
+- console can handle incomplete statements (allowing multi-line input)
+- fixed silly crash on incomplete statements
+- updated spanish translation
+- new plugin (graph)
+- reworked the interface to use kparts properly
+
+--- Version 0.3.1 - Mar-26-2005
+- added the possibility to unable widget in plugins.
+- added a new plugin (basic statistics)
+- added icons in the object browser
+- using IDEAI dock mode style
+- new, console-like widget to enter commands manually.
+- added a class to show html help in an mdi child
+- added a new dock to search R help
+- many changes in labels
+- fixed: bug that prevented RKWard to build on some systems
+- added R functions to show graphs in the html output and to print objects (using E. Lecoutre's R2HTML)
+- use a KHTML part to show output (instead of the qt widget)
+
+--- Version 0.3.0 - Nov-12-2004
+- added french and italian translations
+- added toolbars and some icons
+- some small i18n fixes
+- rework of user interface (now using KMDI and IDEAl mode)
+- compilation fix for R 2.0
+- added basic per variable formatting options in the data editor (alignment, precision)
+- fixed: cell last edited did not react to single mouse click
+- fixed: switched to line below after a new row was automatically added
+- fixed: cursor right did not move to next cell when editing last (active) column
+- while editing, tab-key moves to next cell
+
+--- Version 0.2.9 - Sep-22-2004
+- use KDialog::marginHint () and KDialog::spacingHint () in plugins
+- fixed a crash in the formula widget
+- converted plugin element to QWidgets (in preparation for more extensive rework of plugin elements)
+- almost complete rework of data editor
+- added edit support for factors
+- added support for editing factor levels
+- data editor stores data more efficiently
+- renaming columns in a data.frame does not change their position in the frame
+- recursively remove children of removed objects (fixes one of probably many memory leaks)
+- wait for backend-thread to terminate on exit. Avoids crashes when closing RKWard
+- do not crash if loading the "rkward" R package fails, but rather display a nice error-message
+
+--- Version 0.2.8 - Sep-09-2004
+- override for require () to show install-packages dialog, if required package is not installed.
+- Dialog to load/unload packages, update and install packages from CRAN
+- added capability to cancel commands (not properly integrated in the GUI, yet)
+- basic name checking for objects added or renamed by the user
+- remove uneccessary blank are below menu in R-Console window
+- fix R process busy/idle display
+- show error message if loading workspace fails
+- do not ask for save, if workspace is empty
+- results of user-commands get printed if not invisible (i.e. just like in a regular R session)
+- provide at least basic feedback on syntax errors
+- added communication channel from R-backend to RKWard. Initial features:
+	- checking for errors setting up the connection
+	- simple rk.sync for synchronisation of objects modified in the R workspace
+	- rk.get.tempfile.name for generation of a suitable temporary file (e.g. for storing images)
+	- allows for in-place execution of commands or scheduling of commands in the regular stack
+- auto addition of rows/columns when typing on last row/column
+- allow deletion of rows without losing meta-data
+
+--- Version 0.2.7 - Sep-02-2004
+- several compilation fixes for KDE/Qt < 3.2.x (and maybe some new ones were introduced?)
+- slight reorganization of menus
+- added menu option to close all editor windows
+- some improvements in the editing behavior for the table. Some quirks still present
+- renamed windows
+- fixed some typos
+- set initial minimum sizes for object browser and object viewer windows
+- don't show all windows on startup
+- ask whether to save current workspace before loading a new one
+- added command-line option to set, which components to show debug-messages for
+- added option(s) to show/raise watch-window when new commands get displayed
+- formula-widget handles multiple table situation correctly
+- RKVarselector and RKObjectBrowser use a common base class for the list view
+- RKVarselector and dependent widgets get updated when objects get added/removed/modified
+- prevent conversion to factors when creating data.frames for now
+- variables can be added/removed correctly in the data.frame editor. Those changes are propagated to the RObjectBrowser automatically
+- synchronisation from the GUI to the R-workspace is done immediately
+- added ability to spawn separate command-editor window(s) with load/save/print/etc.
+- command-editor part in the watch-window keeps keyboard focus (most of the time)
+
+--- Version 0.2.6a - Aug-30-2004
+- synchronize edited objects before "View"ing them
+- fix small typo
+- quick-and-dirty fix for problem with objects in a new table (e.g. "my.data") never getting synced
+
+--- Version 0.2.6 - Aug-29-2004
+- added error-handling to workspace saving
+- ask whether to save workspace on application quit
+- added menu-entries to clear output-window and watch-log
+- don't duplicate menu-entries when plugins get re-scanned
+- place "Analyse"-menu left of help-menu
+- converted plugins to rely entirely on R for formatting, i.e. the printout ()-section contains pure R-code only
+- wizard-interface is set as default for plugins
+- added access to kate-config dialog in the command-editor part of the interface watch
+- added configuration settings for which types of commands to show in the interface watch
+- added a nice startup-dialog instead of creating an emtpy table unconditionally
+- limit size of upper-half in the data.frame editor
+- added convenience R-library: used to streamline communication with R
+- fix against data being synced over and over again
+
+--- Version 0.2.5 - Aug-24-2004 ---
+- added simple viewer for R-objects
+- added simple browser for objects in the R-workspace
+- allow deletion of columns/objects (finally)
+- allow editing and using several objects/tables
+- added command-line parameter "debug-level"
+- interpret command-line parameter "file"
+- save and restore size of the main window correctly
+- use internal representation of object-tree in the R-workspace
+- store meta-information (labels, etc.) as R-attributes
+- keep track of whether the windows (watch, output) are open
+- new method of access to objects in R: getIntVector
+- use some "global" static pointers instead of passing them around (e.g. for the r-interface)
+- reorganized sources: now using subdirectories for most components
+
+--- Version 0.2.2 - Aug-15-2004 ---
+- added an improved kate syntax-highlighting definition for R
+- output-formatting is done in R instead of PHP
+- added a formula widget for use in plugins (not entirely finished, yet)
+- fixed some small compilation problems
+- added spinbox widget for use in plugins
+- use coloring for "unsatisfied" plugin widgets instead of the "Problems" display
+- added support for wizard-like plugins
+- same plugin can be opened several times at once
+- use katepart for plugin code view, too
+
+--- Version 0.2.1 - Aug-08-2004 ---
+- added "don't show again" setting to initial warning
+- added correlation matrix plugin
+- ask for R_HOME-setting if not availalbe at startup
+- allow direct (read) access of vectors in R
+- support for selection of multiple variables at once
+- use a katepart as the command-editor (provides basic syntax-highlighting)
+- plugins can use a tabbook-layout
+- display status of R-process in the statusbar
+- R-backend allows chains of commands that are guaranteed to be run without other intermitting commands
+- run R in a separate thread
+
+--- Version 0.2.0 - Aug-01-2004 ---
+- Use a PHP-backend for the plugins
+- Run R embedded (currently synchronous)
+- Some changes in plugin-creation
+- Use pretty HTML-output
+- got rid of ui-files
+- added descriptive statistics plugin
+- lots of small changes I didn't document properly
+
+--- Version 0.1.0 - Nov-19-2002 ---
+- Initial features:
+- A simple backend-interface communicating with R via stdin/stdout
+- Asynchronous command stack
+- A simple window for watching communication with R
+- Ability to issue commands manually
+- Editor window including meta information on the variables
+- Copy-and-Paste with some quirks
+- highlighting of invalid data
+- load/save of R-workspace (load only works for RKWard data)
+- Automatic generation of menu-structure and plugin-dialogs from XML-files
+- Supported plugin widgets: textfield, variable-selector, variable-slot, radiobuttons
+- independent samples t-test plugin
