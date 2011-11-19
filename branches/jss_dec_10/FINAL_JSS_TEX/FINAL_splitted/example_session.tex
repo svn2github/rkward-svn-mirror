@@ -8,6 +8,25 @@ analyzing, and visualizing data. In this example, it is assumed that an experime
 treatment was given to 20 test subjects. The objective is to compare the responses 
 before and after the treatment. 
 
+\medskip 
+\begin{figure}[hb!]
+ \centering
+ \includegraphics[width=13.5cm]{./figures/import_data.png}
+ \caption{A) CSV import dialog. Useful defaults for a variety of common text separated value formats can
+  be set using the ``Quick Mode'' selector on the left. Beyond that, many options can be customized. B) Data editor. The imported CSV
+  data from ``experiment.txt'' are presented (data visually trimmed).}
+ \label{fig:import_data}
+\end{figure}
+
+\newpage
+\begin{figure}[ht!]
+ \centering
+ \includegraphics[width=14cm]{./figures/t-test2.png}
+ \caption{A) Student's t-Test dialog for two variables. The bottom area shows the \proglang{R} code corresponding to the settings.
+  B) Test results in tabular HTML format. }
+ \label{fig:t_test}
+\end{figure}
+
 \subsection{Importing data}
 \label{sec:importing_data}
 Suppose that the data was saved as or exported to CSV format, for example, from a 
@@ -30,15 +49,6 @@ read.csv(file=`/media/software/experiment.txt',
 Checking the ``Edit Object'' box automatically opens a data editor tab
 showing the imported data (Figure~\ref{fig:import_data}B).
 
-\begin{figure}[b!]
- \centering
- \includegraphics[width=13.5cm]{./figures/import_data.png}
- \caption{A) CSV import dialog. Useful defaults for a variety of common text separated value formats can
-  be set using the ``Quick Mode'' selector on the left. Beyond that, many options can be customized. B) Data editor. The imported CSV
-  data from ``experiment.txt'' are presented (data visually trimmed).}
- \label{fig:import_data}
-\end{figure}
-\newpage
 \subsection{Conducting a Student's t-Test}
 \label{sec:conducting_ttest}
 To test the hypothesis that the given treatment significantly increased the response, a Student's
@@ -51,14 +61,6 @@ Pressing the ``Submit'' button conducts the test, and opens the output document 
 showing the results, including the date of analysis and relevant test parameters (Figure~\ref{fig:t_test}B).
 
 
-\begin{figure}[b!]
- \centering
- \includegraphics[width=14cm]{./figures/t-test2.png}
- \caption{A) Student's t-Test dialog for two variables. The bottom area shows the \proglang{R} code corresponding to the settings.
-  B) Test results in tabular HTML format. }
- \label{fig:t_test}
-\end{figure}
-
 \subsection{Creating a plot}
 \label{sec:create_plot}
 To visualize the data, ``Boxplot'' is chosen from the ``Plots'' menu
@@ -68,7 +70,7 @@ Checking the ``Preview'' box opens a graphics window showing the boxplot as
 it is configured, and updates the window in real time on any changes to plot parameters.
 The plot can also be exported to several image formats, directly from the preview window (Figure~\ref{fig:boxplot2}).
 
-\begin{figure}[b!]
+\begin{figure}[hb!]
  \centering
  \includegraphics[width=15.4cm]{./figures/boxplot1.png}
  \caption{Boxplot dialog. The first tab ``Variables'' is used to select the variables for analysis. It is possible to
@@ -76,7 +78,7 @@ The plot can also be exported to several image formats, directly from the previe
  \label{fig:boxplot1}
 \end{figure}
 
-\begin{figure}[t!]
+\begin{figure}[ht!]
  \centering
  \includegraphics[width=14.5cm]{./figures/boxplot2.png}
  \caption{Plotted data and plot export dialog. The export dialog (``Device$\rightarrow$Export'') provides numerous 
