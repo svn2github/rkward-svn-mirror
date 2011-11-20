@@ -230,14 +230,6 @@ Plugins consist of four parts as visualized in Figure~\ref{fig:plugin_structure}
 \citep[see Section~\ref{sec:example_plugin} for an example; for a complete
 manual, see][]{Friedrichsmeier2010}:
 
-\begin{figure}[b!]
- \centering
- \includegraphics[clip=true,trim=0cm 6cm 0cm 0cm,width=8cm]{./figures/plugin_structure.pdf}
- \caption{Plugin structure of \pkg{RKWard}. One or more plugins are declared in a ``plugin map''. Each plugin is defined by
- two XML files, and one \proglang{ECMAScript} file.}
- \label{fig:plugin_structure}
-\end{figure}
-
 \begin{itemize}
     \item
     An XML file (Section~\ref{sec:defining_menu_hierarchy}), 
@@ -281,6 +273,14 @@ manual, see][]{Friedrichsmeier2010}:
     plugin. Plugins can be invoked from their help page by clicking on a link near
     the top, which can be useful after following a link from a related help page.
 \end{itemize}
+
+\begin{figure}[t!]
+ \centering
+ \includegraphics[clip=true,trim=0cm 6cm 0cm 0cm,width=8cm]{./figures/plugin_structure.pdf}
+ \caption{Plugin structure of \pkg{RKWard}. One or more plugins are declared in a ``plugin map''. Each plugin is defined by
+ two XML files, and one \proglang{ECMAScript} file.}
+ \label{fig:plugin_structure}
+\end{figure}
 
 Changes to the source code of these elements take effect without the requirement to recompile \pkg{RKWard}.
 
