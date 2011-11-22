@@ -63,7 +63,7 @@ in the order of most recent usage\footnote{
     window.
 }.
 
-\begin{figure}[hb!]
+\begin{figure}[t!]
  \centering
  \includegraphics[width=15.450cm]{./figures/main_window.png}
  \caption{Default \pkg{RKWard} main window after start up. 
@@ -153,7 +153,7 @@ customized actions implemented in \proglang{ECMAScript} \citep{KateScriptedActio
 The editor automatically saves snapshots of the
 currently edited files at configurable intervals. 
 
-\begin{figure}[ht!]
+\begin{figure}[b!]
  \centering
  \includegraphics[width=15.5cm]{./figures/code_hinting.png}
  \caption{Code hinting features of the script editor. The script editor is able to hint A) \proglang{R} object names
@@ -180,9 +180,9 @@ application) as a single string, vector, or matrix, suitable
 for inclusion in an \proglang{R} script, optionally
 transforming it in advance (Figure~\ref{fig:special_paste}).
 
-\begin{figure}[hb]
+\begin{figure}[b!]
  \centering
- \includegraphics[width=9.0cm]{./figures/special_paste.png}
+ \includegraphics[width=7.5cm]{./figures/special_paste.png}
  \caption{Paste special dialog. This tool allows to paste data (e.\,g., tabular, text) from the clipboard, directly to an 
  \proglang{R} script and therefore accelerates the work process with data from different sources 
  like spreadsheet applications.
@@ -190,7 +190,6 @@ transforming it in advance (Figure~\ref{fig:special_paste}).
  \label{fig:special_paste}
 \end{figure}
 
-\newpage
 Script editor windows can be created by opening an existing
 \proglang{R} script file from the file browser, the
 ``File'' menu, or by creating a new empty script. It can
@@ -236,6 +235,19 @@ for editing from the workspace browser. For opening objects from
 \proglang{R} code, the function \code{rk.edit()} can be used.
 Figure~\ref{fig:data_editors} shows multiple \code{data.frame}s open for editing.
 
+\begin{figure}[t!]
+ \centering
+ \includegraphics[width=15.5cm]{./figures/data_editors.png}
+ \caption{\pkg{RKWard} with several \code{data.frame}s in use at the same time. A) 
+  One \code{data.frame} (\code{CO2} data of the \pkg{datasets} package) is opened for editing in the main window. Two further \code{data.frame}s
+  are opened in the background in tabs. 
+  B) Another \code{data.frame} (\code{ChickWeight}) is opened in a detached window. 
+  C) \proglang{R}'s standard data editing features (e.\,g., \code{fix()}, \code{edit()}) 
+  are also usable in \pkg{RKWard}. In this example \code{fix(DNase)} 
+  was invoked from the console (arrow).}
+ \label{fig:data_editors}
+\end{figure}
+
 Metadata on each column of a \code{data.frame} (i.\,e., name of the column, data
 type, and potentially data labels) is shown in the upper portion of
 the data editor, and can be manipulated there, while the data itself is
@@ -262,19 +274,6 @@ The rationale for this approach is that it offers protection against
 accidental, and probably undetected, conversion of data types. The
 user can manually convert the storage mode of a column by simply
 selecting a different data type in the ``Type'' row of the meta information.
-
-\begin{figure}[ht]
- \centering
- \includegraphics[width=15.5cm]{./figures/data_editors.png}
- \caption{\pkg{RKWard} with several \code{data.frame}s in use at the same time. A) 
-  One \code{data.frame} (\code{CO2} data of the \pkg{datasets} package) is opened for editing in the main window. Two further \code{data.frame}s
-  are opened in the background in tabs. 
-  B) Another \code{data.frame} (\code{ChickWeight}) is opened in a detached window. 
-  C) \proglang{R}'s standard data editing features (e.\,g., \code{fix()}, \code{edit()}) 
-  are also usable in \pkg{RKWard}. In this example \code{fix(DNase)} 
-  was invoked from the console (arrow).}
- \label{fig:data_editors}
-\end{figure}
 
 The data editor supports insertion and deletion of rows or columns at 
 arbitrary positions. Rows (columns) can also be added at the bottom 
@@ -337,7 +336,7 @@ settings have been made, i.\,e., in this case, once a file name has been
 selected. The ``Close'' button will close the
 dialog without taking any action.
 
-\begin{figure}[hb!]
+\begin{figure}[b!]
  \centering
  \includegraphics[width=14.99cm]{./figures/CSV_import.png}
  \caption{General data import dialog. Useful defaults for a variety of formats can
@@ -374,7 +373,7 @@ including GUI dialogs for exporting the current plot,
 and adding a grid to an existing plot 
 (works on only certain types of plots).
 
-\begin{figure}[ht!]
+\begin{figure}[b!]
  \centering
  \includegraphics{./figures/plot_history_cropped.png}
  \caption{On{}-screen graphics device window in \pkg{RKWard}. The plot history is 
@@ -444,6 +443,21 @@ with an automated way to conduct the same analysis again on new
 data, providing benefits similar to, for example, the automated report generation
 available from \pkg{RreportGenerator} \citep{RaffelsbergerW2008}.
 
+\begin{figure}[t!]
+ \centering
+ \includegraphics[width=15.5cm]{./figures/results_output_cropped.png}
+ \caption{Sample contents of the output window. Upper portion: Result of analyzing sample data (from the
+\code{DNase} and \code{ChickWeight}
+  datasets of the \pkg{datasets} package) in the ``Descriptive Statistics'' plugin. Standard elements of
+  plugin output include a standardized header, and a  ``Run again''-link, which allows to repeat the
+  analysis with identical or similar parameters. Lower portion: A custom heading added using the
+  \code{rk.header()} function, and a short transcript of R code with corresponding output.}
+% TF: Stefan: I've removed the bit below. It was not really designed to allow this, and for the more complex plugins, this is fairly useless,
+% since only a fraction of the options will fit in the status bar:
+% (Details of the previous analysis are shown in the status bar when the mouse pointer hovers over the ``Run again''-link)
+ \label{fig:results_output}
+\end{figure}
+
 The formatting of output is kept to a minimum. In particular,
 \pkg{RKWard} is very reluctant to round numerical results for the sake of a
 pretty output. Rather, the focus is on making the results easily
@@ -476,21 +490,6 @@ Users can also add custom content to the output window using \code{rk.header()},
 related functions. Further, custom R code as well as the corresponding R output can easily be documented in
 the \pkg{RKWard} output window, including syntax highlighting (see the lower portion of
 Figure~\ref{fig:results_output}).
-
-\begin{figure}[hb!]
- \centering
- \includegraphics[width=15.5cm]{./figures/results_output_cropped.png}
- \caption{Sample contents of the output window. Upper portion: Result of analyzing sample data (from the
-\code{DNase} and \code{ChickWeight}
-  datasets of the \pkg{datasets} package) in the ``Descriptive Statistics'' plugin. Standard elements of
-  plugin output include a standardized header, and a  ``Run again''-link, which allows to repeat the
-  analysis with identical or similar parameters. Lower portion: A custom heading added using the
-  \code{rk.header()} function, and a short transcript of R code with corresponding output.}
-% TF: Stefan: I've removed the bit below. It was not really designed to allow this, and for the more complex plugins, this is fairly useless,
-% since only a fraction of the options will fit in the status bar:
-% (Details of the previous analysis are shown in the status bar when the mouse pointer hovers over the ``Run again''-link)
- \label{fig:results_output}
-\end{figure}
 
 \subsection{Package management}
 \label{sec:package_management}
