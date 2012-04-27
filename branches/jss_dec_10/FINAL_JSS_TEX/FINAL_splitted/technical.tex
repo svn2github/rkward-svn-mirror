@@ -151,8 +151,8 @@ of \pkg{RKWard} is the ``XMLGUI'' technology
 \citep{Faure2000}. This is especially helpful in providing an integrated GUI across
 the many different kinds of document windows and tool views supported in \pkg{RKWard}.
 
-Plugins in \pkg{RKWard} rely on XML\footnote{\url{http://www.w3.org/XML/}}
-and \proglang{ECMAScript}\footnote{\url{http://www.ecmascript.org/}} (see Section~\ref{sec:technical_plugins}). XML is not
+Plugins in \pkg{RKWard} rely on XML\footnote{http://www.w3.org/XML/}
+and \proglang{ECMAScript}\footnote{http://www.ecmascript.org/} (see Section~\ref{sec:technical_plugins}). XML is not
 only well suited to describe the layout of the GUI of plugins, but simple
 functional logic can also be represented \citep[see also][]{Visne2009}. \proglang{ECMAScript} was
 chosen for the generation of \proglang{R} commands within plugins, in particular due to its
@@ -306,8 +306,8 @@ and empirical cumulative distribution function (ECDF) plots (which in turn embed
 \label{sec:technical_plugins_consistency}
 \pkg{RKWard} tries to make it easy to create a consistent interface in all plugins.
 GUI-wise this is supported by providing high-level GUI elements, and embeddable
-clients. Also, the standard elements of each dialog (``Submit'', and
-``Cancel'' buttons, on-the-fly code view, etc.) are hard coded. Up to version
+clients. Also, the standard elements of each dialog (\texttt{Submit}, and
+\texttt{Cancel} buttons, on-the-fly code view, etc.) are hard coded. Up to version
 0.5.3 of \pkg{RKWard} it was not possible to use any GUI elements in plugins which
 were not explicitly defined for this purpose. In the current development
 version, theoretically, all GUI elements available from \pkg{Qt} can be inserted,
@@ -319,7 +319,7 @@ tabular form is facilitated by \code{rk.results()}. A wide range of objects can 
 printed using \code{rk.print()}, which is just a thin wrapper around the
 \code{HTML()} function of the \pkg{R2HTML} package \citep{Lecoutre2003} in the current
 implementation. The use of custom formatting with HTML is possible, but
-discouraged. Standard elements such as a horizontal separator, and the ``Run again''
+discouraged. Standard elements such as a horizontal separator, and the \texttt{Run again}
 link (see the section on the results output in the main article) are inserted automatically, without the need to define
 them for each plugin.
 
@@ -346,7 +346,7 @@ are
 \subsection[Handling of R package dependencies]{Handling of \proglang{R} package dependencies}
 \label{sec:technical_plugins_dependencies}
 A wide range of plugins for diverse functionality is present in \pkg{RKWard},
-including plots (e.\,g., boxplot) or standard tests (e.\,g., Student's t-test)\footnote{
+including plots (e.\,g., boxplot) or standard tests (e.\,g., Student's $t$~test)\footnote{
   At the time of this writing, there are 164 user-accessible plugins in \pkg{RKWard}.
   Listing all is beyond the scope of this article.
 }. Some
@@ -376,17 +376,17 @@ positive review is needed before the plugin is allowed to be made visible by def
 appropriate plugin map.
 
 With the release of version 0.5.5, \pkg{RKWard} gained support for downloading additional sets
-of plugins directly from the internet. By simply clicking an ``Install'' button in a graphical dialog 
-(``Settings$\rightarrow$Configure RKWard$\rightarrow$Plugins''), an
+of plugins directly from the internet. By simply clicking an \texttt{Install} button in a graphical dialog 
+(\texttt{Settings$\rightarrow$Configure RKWard$\rightarrow$Plugins}), an
 external plugin set is downloaded, unpacked and its plugin map added to \pkg{RKWard}'s configuration, so
 it becomes instantly available after the configuration dialog is closed. External plugin sets are
 neither officially included nor supported by the \pkg{RKWard} developers. However, they allow plugin
 developers to easily extend \pkg{RKWard} with state-of-the-art or highly specialized features. To
 achieve this, \pkg{RKWard} draws on \pkg{KNewStuff2}\footnote{
-  \url{http://websvn.kde.org/trunk/KDE/kdelibs/knewstuff/}
+  http://websvn.kde.org/trunk/KDE/kdelibs/knewstuff/
 }, a \pkg{KDE} library providing support for \pkg{GHNS}\footnote{
 \pkg{GHNS} (Get Hot New Stuff) is a technology platform (software and specifications) for desktop users to share their work. It is hosted
-under the umbrella of the freedesktop.org project (\url{http://ghns.freedesktop.org}).}.
+under the umbrella of the freedesktop.org project (http://ghns.freedesktop.org).}.
 
 \subsubsection{Automated testing}
 \label{sec:technical_processes_automatedtesting}

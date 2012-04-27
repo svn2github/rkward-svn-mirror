@@ -4,17 +4,17 @@
 As discussed in Section~\ref{sec:technical_plugins}, plugins in \pkg{RKWard} are
 defined by four separate files (Figure~\ref{fig:plugin_structure}). To give an impression of the technique,
 this section shows (portions of) the relevant files for a plugin that provides
-a simple dialog for a t-test. For brevity, the help-file is omitted.
+a simple dialog for a Student's $t$~test. For brevity, the help-file is omitted.
 
 \subsection{Defining the menu hierarchy}
 \label{sec:defining_menu_hierarchy}
-A so called ``.pluginmap'' file declares each plugin, and, if appropriate, defines where it should
-be placed in the menu hierarchy. Usually each .pluginmap file declares many plugins. In this example
-we only show one, namely, a two variable t-test (see Figure~\ref{fig:ttest-gui-example}). 
+A so called \code{.pluginmap} file declares each plugin, and, if appropriate, defines where it should
+be placed in the menu hierarchy. Usually each \code{.pluginmap} file declares many plugins. In this example
+we only show one, namely, a two variable Student's $t$~test (see Figure~\ref{fig:ttest-gui-example}). 
 The pluginmap (\code{<!DOCTYPE rkpluginmap>}) gives a unique identifier (``id''), the location of the
 GUI description (``file"), and the window title (``label''). The menu layout is defined in a hierarchical
 structure by nesting \code{<menu>} elements to form toplevel menus and submenus. Menus with the same ``id''
-are merged across .pluginmap files. Moreover, the position within the menu can be explicitly defined (attribute ``index'').
+are merged across \code{.pluginmap} files. Moreover, the position within the menu can be explicitly defined (attribute ``index'').
 This might be required if the menu entries are to be ordered non-alphabetically.
 
 \begin{footnotesize}
@@ -53,14 +53,14 @@ The main XML file of each plugin defines the layout and behavior of the GUI, and
 \proglang{ECMAScript} file that is used for generating \proglang{R} code from GUI settings and the help file (not included in this paper).
 
 GUI logic can be defined directly in the XML file (the \code{<logic>} element).
-In this example, the ``Assume equal variances'' checkbox is only enabled for paired sample tests.
+In this example, the \texttt{Assume equal variances} checkbox is only enabled for paired sample tests.
 Optionally, GUI behavior can also be scripted in \proglang{ECMAScript}.
 
-The XML file defines the t-test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs\footnote{
+The XML file defines the Student's $t$~test plugin (\code{<!DOCTYPE rkplugin>}) to be organized in two tabs\footnote{
   A screenshot of the resulting dialog can be found the in the main article.
 }.
-On the first tab, two variables can be selected (\code{<varslot .../>}). These are set to be ``required'', i.\,e.,
-the ``Submit'' button will remain disabled until the user has made a valid selection for both. The second tab includes some
+On the first tab, two variables can be selected (\code{<varslot .../>}). These are set to be \texttt{required}, i.\,e.,
+the \texttt{Submit} button will remain disabled until the user has made a valid selection for both. The second tab includes some
 additional settings like the confidence level (default 0.95).
 
 \begin{footnotesize}

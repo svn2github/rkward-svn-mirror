@@ -9,7 +9,7 @@ The default layout\footnote{
 } of the main application window is divided into five
 parts, as depicted in Figure~\ref{fig:main_window}. The top of the window is occupied by menu bar and toolbar 
 (Figure~\ref{fig:main_window}A). The content of both bars is partially context
-sensitive, e.\,g., the ``Edit'' menu will offer
+sensitive, e.\,g., the \texttt{Edit} menu will offer
 one set of actions when the current document window is a data editor,
 and another set of actions for a \proglang{R} script
 editor window. To ease orientation, all top level menus remain
@@ -20,7 +20,7 @@ visualization features (see Section~\ref{sec:analyzing_data}) for which \pkg{RKW
 interface.
 
 A status bar is shown at the bottom of the window (Figure~\ref{fig:main_window}E). It displays (from
-right to left) a ``Stop''-button to interrupt the current computations,
+right to left) a \texttt{Stop}-button to interrupt the current computations,
 the status of the \proglang{R} engine (busy or idle), the
 current working directory, and a multi purpose region for additional
 information on some menu items and other GUI elements, visible when
@@ -57,7 +57,7 @@ Windows can be selected (or shown / hidden) using a mouse device with point \&
 click, as well as using a series of keyboard shortcuts (defined by
 default) for activating specific tool windows, or for cycling through all windows
 in the order of most recent usage\footnote{
-    This uses the shortcut ``Ctrl+Tab'' by default, and behaves similar to the ``Alt+Tab''
+    This uses the shortcut \texttt{Ctrl+Tab} by default, and behaves similar to the \texttt{Alt+Tab}
     feature of common window managers. The difference is that this cycles through \pkg{RKWard} windows,
     only, including both detached windows, and windows which are attached inside the main application
     window.
@@ -67,29 +67,29 @@ in the order of most recent usage\footnote{
  \centering
  \includegraphics[width=15.450cm]{./figures/main_window.png}
  \caption{Default \pkg{RKWard} main window after start up. 
-A) Menu bar and toolbar, B) tool panel showing workspace browser, C) document view area, showing
+(A) Menu bar and toolbar, (B) tool panel showing workspace browser, (C) document view area, showing
 different documents (welcome message, \code{data.frame} ``my.data'', ``mean'' help page, \proglang{R}
-script ``demo.R''), D) tool panel showing embedded \proglang{R} console, and E) status bar with an option to
+script \code{demo.R}), (D) tool panel showing embedded \proglang{R} console, and (E) status bar with an option to
 stop running processes. Panels B and D can be resized or collapsed. The red border around B indicates that the
 workspace browser is the active interface element.}
  \label{fig:main_window}
 \end{figure}
 
-All key bindings can be configured from the GUI via ``Settings$\rightarrow$Configure Shortcuts''. 
+All key bindings can be configured from the GUI via \texttt{Settings$\rightarrow$Configure Shortcuts}. 
 However, for technical reasons only the shortcuts of currently active components 
 will be listed. Thus, for example, to
 configure data editor shortcuts, one has to open a data editor first and
-then to select ``Settings$\rightarrow$Configure Shortcuts''. Since \pkg{RKWard} relies on the 
+then to select \texttt{Settings$\rightarrow$Configure Shortcuts}. Since \pkg{RKWard} relies on the 
 \pkg{RKWard} editor component,
 shortcuts for the script editor (Section~\ref{sec:code_editor}) are managed separately via 
-``Settings$\rightarrow$Configure Editor$\rightarrow$Shortcuts''. On most systems, it is also
+\texttt{Settings$\rightarrow$Configure Editor$\rightarrow$Shortcuts}. On most systems, it is also
 possible to configure shortcuts by right-clicking on the respective
 menu item.
 
 The choice of available actions on the toolbar can be
-configured via ``Settings$\rightarrow$Configure Toolbars''. Further, it is possible to add and remove sets
+configured via \texttt{Settings$\rightarrow$Configure Toolbars}. Further, it is possible to add and remove sets
 of data manipulation and analysis features from the GUI, using
-``Settings$\rightarrow$Configure RKWard$\rightarrow$Plugins''.
+\texttt{Settings$\rightarrow$Configure RKWard$\rightarrow$Plugins}.
 
 \subsection{Workspace browser and object viewer}
 \label{sec:workspace_browser_object_viewer}
@@ -119,7 +119,7 @@ open a window with detailed information on the object, to delete, rename or copy
 copy it to \code{.GlobalEnv}. Further, the context menu allows to open
 supported types of objects for editing (see Section~\ref{sec:spreadsheet}; currently, only
 \code{data.frame}s can be edited, and only while they exist in \code{.GlobalEnv}). 
-Selecting ``View'' from the 
+Selecting \texttt{View} from the 
 context menu opens a new window in the
 document area, containing basic information on the object as well as 
 tabs which show the output of
@@ -156,8 +156,8 @@ currently edited files at configurable intervals.
 \begin{figure}[t!]
  \centering
  \includegraphics[width=15.5cm]{./figures/code_hinting.png}
- \caption{Code hinting features of the script editor. The script editor is able to hint A) \proglang{R} object names
-and B) function arguments.}
+ \caption{Code hinting features of the script editor. The script editor is able to hint (A) \proglang{R} object names
+and (B) function arguments.}
  \label{fig:code_hinting}
 \end{figure}
 
@@ -174,7 +174,7 @@ inclusion of similar features into the core
 \proglang{R} distribution. For this reason, they are
 technically based on different mechanisms.}. A further feature specific
 to the \proglang{R} language is the
-``Paste Special'' action, which allows to
+\texttt{Paste Special} action, which allows to
 paste the clipboard content (e.\,g., from a separate spreadsheet
 application) as a single string, vector, or matrix, suitable
 for inclusion in an \proglang{R} script, optionally
@@ -192,7 +192,7 @@ transforming it in advance (Figure~\ref{fig:special_paste}).
 
 Script editor windows can be created by opening an existing
 \proglang{R} script file from the file browser, the
-``File'' menu, or by creating a new empty script. It can
+\texttt{File} menu, . It can
 also be invoked from \proglang{R}, e.\,g., using the
 \code{file.edit()}, \code{file.show()}, or \code{fix()}
 commands.
@@ -238,11 +238,11 @@ Figure~\ref{fig:data_editors} shows multiple \code{data.frame}s open for editing
 \begin{figure}[t!]
  \centering
  \includegraphics[width=15.5cm]{./figures/data_editors.png}
- \caption{\pkg{RKWard} with several \code{data.frame}s in use at the same time. A) 
+ \caption{\pkg{RKWard} with several \code{data.frame}s in use at the same time. (A) 
   One \code{data.frame} (\code{CO2} data of the \pkg{datasets} package) is opened for editing in the main window. Two further \code{data.frame}s
   are opened in the background in tabs. 
-  B) Another \code{data.frame} (\code{ChickWeight}) is opened in a detached window. 
-  C) \proglang{R}'s standard data editing features (e.\,g., \code{fix()}, \code{edit()}) 
+  (B) Another \code{data.frame} (\code{ChickWeight}) is opened in a detached window. 
+  (C) \proglang{R}'s standard data editing features (e.\,g., \code{fix()}, \code{edit()}) 
   are also usable in \pkg{RKWard}. In this example \code{fix(DNase)} 
   was invoked from the console (arrow).}
  \label{fig:data_editors}
@@ -257,7 +257,7 @@ Similarly, an editable column showing the row names of the \code{data.frame}
 can be shown or hidden separately from the data.
 
 For columns of type \code{factor}, factor levels can be edited by double-clicking on the
-``Levels'' row of the meta information. Levels can also be assigned to other types of
+\texttt{Levels} row of the meta information. Levels can also be assigned to other types of
 variables, but only for consecutive integer values. These levels will
 be displayed instead of the underlying value, if applicable. Each
 column can also be assigned an arbitrary descriptive
@@ -321,42 +321,42 @@ At the time of this writing, \pkg{RKWard} provides support for importing \progla
 \proglang{Stata}, and ``delimited text'' data. Internally, \pkg{RKWard}
 relies on standard \proglang{R} functions and the package \pkg{foreign}
 \citep{Murdoch2002} for reading these data files. To import CSV data,
-select ``File$\rightarrow$Import format$\rightarrow$Import Text$\rightarrow$CSV''
+select \texttt{File$\rightarrow$Import format$\rightarrow$Import Text$\rightarrow$CSV}
 data from the menu. This will open the dialog shown in
 Figure~\ref{fig:CSV_import}. The central area of this dialog provides 
 options to control the import. The 
-``File name'' field is highlighted, to indicate that
+\texttt{File name} field is highlighted, to indicate that
 it is required to specify a file before the dialog can proceed.
 Further options are available from the tabbed pages of the central area.
 
 The right-side area is common to all data handling
-dialogs. Here the ``Submit'' button is used
+dialogs. Here the \texttt{Submit} button is used
 to start the import action. It is enabled once all required
 settings have been made, i.\,e., in this case, once a file name has been
-selected. The ``Close'' button will close the
+selected. The \texttt{Close} button will close the
 dialog without taking any action.
 
 \begin{figure}[t!]
  \centering
  \includegraphics[width=14.99cm]{./figures/CSV_import.png}
  \caption{General data import dialog. Useful defaults for a variety of formats can
-  be set using the ``Quick Mode'' selector on the left. Further customizations can be done
-  from the ``Rows and Columns'' and ''Further Options'' tabs. The 
+  be set using the \texttt{Quick Mode} selector on the left. Further customizations can be done
+  from the \texttt{Rows and Columns} and \texttt{Further Options} tabs. The 
   code in the bottom area can be copied and used for other purposes.}
  \label{fig:CSV_import}
 \end{figure}
 
 The bottom area optionally shows the \proglang{R}
 code corresponding to the current settings  which will be run
-upon pressing the ``Submit'' button (see Section~\ref{sec:importing_data} for generated \proglang{R} code). 
+upon pressing the \texttt{Submit} button (see Section~\ref{sec:importing_data} for generated \proglang{R} code). 
 The code display is hidden by default and can be revealed using
-the ``Code'' button. This 
+the \texttt{Code} button. This 
 generated code display is updated dynamically as the user changes settings, allowing
 to see the effect of each change instantly.
 
 Most data handling functions will produce some output, which is
 sent to the output window. From there it is possible to repeat the
-action by clicking on the ``Run again''-link
+action by clicking on the \texttt{Run again}-link
 (see Section~\ref{sec:results_output}).
 
 \subsection{Graphics window and plot previews}
@@ -380,7 +380,7 @@ and adding a grid to an existing plot
   available as a drop-down list, allowing to jump directly to a previous 
   plot. In this example, five different plots were performed on the same data 
   set of a random sample (\code{rnorm()}). The plot can be 
-  exported via ``Device$\rightarrow$Export'' as described in Section~\ref{sec:create_plot}.
+  exported via \texttt{Device$\rightarrow$Export} as described in Section~\ref{sec:create_plot}.
 }
  \label{fig:plot_history}
 \end{figure}
@@ -388,8 +388,8 @@ and adding a grid to an existing plot
 Further, a history mechanism is provided,
 which stores created plots automatically and allows to navigate
 back to earlier plots (Figure~\ref{fig:plot_history}). 
-The history is available as a drop-down list of the plot calls as well as using typical ``back''
-and ``forward'' buttons on the toolbar.
+The history is available as a drop-down list of the plot calls as well as using typical \texttt{back}
+and \texttt{forward} buttons on the toolbar.
 The maximum number
 of plots to record, as well as the maximum size of each individual plot,
 is configurable from the settings menu. This plot history is shared
@@ -401,15 +401,15 @@ back to the plot history. In addition, duplicating or closing a device
 window records any unsaved plots to the history.
 
 Further, \pkg{RKWard} provides access to different plotting functions using GUI dialogs,
-available from the ``Plots'' menu. Wherever appropriate, \pkg{RKWard} supports a ``plot
-preview'' feature. When the ``Preview'' box of
+available from the \texttt{Plots} menu. Wherever appropriate, \pkg{RKWard} supports a ``plot
+preview'' feature. When the \texttt{Preview} box of
 the respective dialog is checked, a device window is opened, which
 shows the plot as it would be created with the current settings (see Section~\ref{sec:create_plot} for an example). The
 preview is updated automatically as the user makes changes, allowing to
 see the effect of each setting instantly\footnote{The preview is
 updated asynchronously to keep the GUI responsive; see also the technical supplement to this article.}. For example, the
 central limit theorem plugins
-under the ``Distributions'' menu can be very helpful to dynamically ``show''
+under the \texttt{Distributions} menu can be very helpful to dynamically ``show''
 the convergence in distribution while teaching. For the sake of simplicity, such preview plots are not added to
 the history.
 
@@ -431,17 +431,17 @@ scripts by using a number of dedicated \proglang{R}
 functions included in the \code{rkward} package. For the GUI-driven data handling functions, the output is
 standardized to include the name of the feature, the date and time of
 its execution, and other basic parameters, wherever
-applicable. Further, a clickable ``Run
-Again'' link is rendered below the output of each data
+applicable. Further, a clickable \texttt{Run
+again} link is rendered below the output of each data
 handling feature, which allows to invoke the same feature again with
 identical parameters\footnote{In case not all parameters could be
 reused, e.\,g., because some of the objects in
 question are no longer available, the user will be notified.} (see
-Figure~\ref{fig:results_output}). Thus, the ``Run
-Again'' feature combines the documentation of the result
+Figure~\ref{fig:results_output}). Thus, the \texttt{Run
+again} feature combines the documentation of the result
 with an automated way to conduct the same analysis again on new
 data, providing benefits similar to, for example, the automated report generation
-available from \pkg{RreportGenerator} \citep{RaffelsbergerW2008}.
+available from \pkg{RReportGenerator} \citep{RaffelsbergerW2008}.
 
 \begin{figure}[t!]
  \centering
@@ -449,12 +449,9 @@ available from \pkg{RreportGenerator} \citep{RaffelsbergerW2008}.
  \caption{Sample contents of the output window. Upper portion: Result of analyzing sample data (from the
 \code{DNase} and \code{ChickWeight}
   datasets of the \pkg{datasets} package) in the ``Descriptive Statistics'' plugin. Standard elements of
-  plugin output include a standardized header, and a  ``Run again''-link, which allows to repeat the
+  plugin output include a standardized header, and a  \texttt{Run again}-link, which allows to repeat the
   analysis with identical or similar parameters. Lower portion: A custom heading added using the
-  \code{rk.header()} function, and a short transcript of R code with corresponding output.}
-% TF: Stefan: I've removed the bit below. It was not really designed to allow this, and for the more complex plugins, this is fairly useless,
-% since only a fraction of the options will fit in the status bar:
-% (Details of the previous analysis are shown in the status bar when the mouse pointer hovers over the ``Run again''-link)
+  \code{rk.header()} function, and a short transcript of \proglang{R} code with corresponding output.}
  \label{fig:results_output}
 \end{figure}
 
@@ -466,19 +463,19 @@ processor. Output is based on
 HTML, and the raw
 HTML file and any images therein can be directly
 retrieved from a dedicated folder
-(by default, this is a folder named ``.rkward'' inside the user's home folder). It is also
+(by default, this is a folder named \code{.rkward} inside the user's home folder). It is also
 possible to select and copy sections of the output directly from the
 output window, and to paste them into office applications as
 richly formatted text; even images and tables can be easily copied by drag \& drop to many office applications. In future releases, 
 it is planned to integrate \pkg{RKWard}
 with existing office suites. This
-will possibly also mean addition of different file formats such as Open Document Format and technologies such as \pkg{sweave} and \pkg{odfWeave}
+will possibly also mean addition of different file formats such as Open Document Format and technologies such as \code{sweave} and \pkg{odfWeave}
 \citep{Leisch2002, Kuhn2006}.
 
 Images contained in the output are stored as
-portable network graphics (PNG)\footnote{\url{http://www.libpng.org/pub/png/}} by
-default, but JPEG\footnote{\url{http://www.jpeg.org/jpeg/index.html}} and
-scalable vector graphics (SVG)\footnote{\url{http://www.w3.org/Graphics/SVG/}}
+portable network graphics (PNG)\footnote{http://www.libpng.org/pub/png/} by
+default, but JPEG\footnote{http://www.jpeg.org/jpeg/index.html} and
+scalable vector graphics (SVG)\footnote{http://www.w3.org/Graphics/SVG/}
 can also be used. Similarly, the size of 
 images can be configured by the user. It is expected that SVG will
 become the default output format eventually, but currently some SVG
@@ -487,14 +484,14 @@ rendered by older supported versions of the
 \pkg{KDE} libraries.
 
 Users can also add custom content to the output window using \code{rk.header()}, \code{rk.print()}, and some
-related functions. Further, custom R code as well as the corresponding R output can easily be documented in
+related functions. Further, custom \proglang{R} code as well as the corresponding \proglang{R} output can easily be documented in
 the \pkg{RKWard} output window, including syntax highlighting (see the lower portion of
 Figure~\ref{fig:results_output}).
 
 \subsection{Package management}
 \label{sec:package_management}
 The number of \proglang{R} packages available from the comprehensive \proglang{R} archive
-network (CRAN), Omegahat\footnote{\url{http://www.omegahat.org/}} and Bioconductor \citep{Gentleman2004} has grown exponentially since \proglang{R}\, 1.3
+network (CRAN), Omegahat\footnote{http://www.omegahat.org/} and Bioconductor \citep{Gentleman2004} has grown exponentially since \proglang{R}\, 1.3
 (2001) to \proglang{R}\, 2.7 (2008) \citep{Fox2008, Ligges2003, Visne2009}. \pkg{RKWard}
 utilizes functionality from a growing number of these packages, but avoids
 making the installation of all supported packages a pre-requirement to using
@@ -502,13 +499,13 @@ making the installation of all supported packages a pre-requirement to using
 action, a package management dialog is invoked automatically, which allows to
 download and install the package from a repository such as CRAN. The package
 management dialog can also be invoked manually from the menu
-(``Settings$\rightarrow$Configure Packages'') for installing new or updating existing \proglang{R}
+(\texttt{Settings$\rightarrow$Configure Packages}) for installing new or updating existing \proglang{R}
 packages. The underlying package management technology is that of \proglang{R}
 \citep{Ligges2003, Ripley2005}.
 
 \pkg{RKWard} supports installing packages to any user writable location. If no current
 library location is user writable, \pkg{RKWard} offers to create a new one. 
-On UNIX systems, interactively acquiring root privileges for
+On Unix systems, interactively acquiring root privileges for
 installation to the system-wide libraries is also supported.
 The installation process
 itself can be monitored at the interface for error tracking. At the time of this writing, \pkg{RKWard} has no
@@ -536,7 +533,7 @@ Commands can be submitted while the \proglang{R} engine
 has not yet started, or while another lengthy calculation is still
 in progress. In these cases, commands are placed into a queue first, and
 executed as soon as the \proglang{R} engine becomes
-available. The ``pending jobs'' window (not shown in the tool area by default)
+available. The \texttt{pending jobs} window (not shown in the tool area by default)
 lists current \proglang{R} commands waiting for
 evaluation by the \proglang{R} engine. While this
 window is mostly of interest to application developers for diagnostic
@@ -558,9 +555,9 @@ related \pkg{RKWard} dialogs and the underlying \proglang{R} functions.
 An arbitrary number of help windows can be browsed simultaneously, in the
 TDI view area (see Figure~\ref{fig:main_window}C) or in detached windows.
 
-A central access point to the help system is the ``Help'' menu. Further, help pages on
+A central access point to the help system is the \texttt{Help} menu. Further, help pages on
 \nobreak{\pkg{RKWard}} GUI dialogs can be accessed from the dialog itself using the
-``Help'' button. A useful (``reverse'') feature here is that these pages include 
+\texttt{Help} button. A useful (``reverse'') feature here is that these pages include 
 a link near the top of the page to start the corresponding GUI dialog directly.
 Help on \proglang{R} specific functions can be invoked from multiple places, 
 such as, the context menu of the workspace browser, by pressing F2 (function
@@ -575,5 +572,5 @@ HTML viewer component and supports many standard
 features like increasing or decreasing the font size and searching text
 within a page. Additionally, \proglang{R} code inside a help
 page can be sent to the \proglang{R} engine for
-evaluation by selecting it and pressing F8 (or via ``Run$\rightarrow$Run
-Selection'').
+evaluation by selecting it and pressing F8 (or via \texttt{Run$\rightarrow$Run
+Selection}).

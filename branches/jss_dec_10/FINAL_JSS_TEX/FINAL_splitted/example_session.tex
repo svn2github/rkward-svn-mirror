@@ -13,22 +13,22 @@ before and after the treatment.
 \begin{figure}[b!]
  \centering
  \includegraphics[width=13.5cm]{./figures/import_data.png}
- \caption{A) CSV import dialog. Useful defaults for a variety of common text separated value formats can
-  be set using the ``Quick Mode'' selector on the left. Beyond that, many options can be customized. B) Data editor. The imported CSV
-  data from ``experiment.txt'' are presented (data visually trimmed).}
+ \caption{(A) CSV import dialog. Useful defaults for a variety of common text separated value formats can
+  be set using the \texttt{Quick Mode} selector on the left. Beyond that, many options can be customized. (B) Data editor. The imported CSV
+  data from \code{experiment.txt} are presented (data visually trimmed).}
  \label{fig:import_data}
 \end{figure}
 
 Suppose that the data was saved as or exported to CSV format, for example, from a 
 spreadsheet application. \pkg{RKWard}'s import plugin can
 comfortably read it into a new \proglang{R} object.
-The import dialog (``File$\rightarrow$Import$\rightarrow$Import
-format$\rightarrow$Import Text/CSV data''; Figure~\ref{fig:import_data}A) assists in reading the
+The import dialog (\texttt{File$\rightarrow$Import$\rightarrow$Import
+format$\rightarrow$Import Text/CSV data}; Figure~\ref{fig:import_data}A) assists in reading the
 data by a common point \& click interface. In this
-example, ``comma'' and ``period'' were chosen via ``Quick mode'' as the field
+example, ``comma'' and ``period'' were chosen via \texttt{Quick mode} as the field
 separator and decimal point characters respectively.
 
-The generated \proglang{R} code can be revealed by clicking on the ``Code'' button:
+The generated \proglang{R} code can be revealed by clicking on the \texttt{Code} button:
 
 \begin{Code}
 read.csv(file = '/media/software/experiment.txt',
@@ -36,55 +36,55 @@ read.csv(file = '/media/software/experiment.txt',
          check.names = TRUE, strip.white = FALSE, blank.lines.skip = TRUE)
 \end{Code}
 
-Checking the ``Edit Object'' box automatically opens a data editor tab
+Checking the \texttt{Edit Object} box automatically opens a data editor tab
 showing the imported data (Figure~\ref{fig:import_data}B).
 
-\subsection{Conducting a Student's t-Test}
+\subsection{Conducting a Student's $t$~test}
 \label{sec:conducting_ttest}
 To test the hypothesis that the given treatment significantly increased the response, a Student's
-t-Test for a paired sample is conducted using the
-``Analysis$\rightarrow$Means$\rightarrow$t-Tests$\rightarrow$Two variable t-Test'' plugin.
+$t$~test for a paired sample is conducted using the
+\texttt{Analysis$\rightarrow$Means$\rightarrow$t-Tests$\rightarrow$Two variable t-Test} plugin.
 In the object browser on the left side, the two variables from the expanded
 \proglang{R} object containing the table of imported data 
 are selected (Figure~\ref{fig:t_test_dialog}). 
-Pressing the ``Submit'' button conducts the test, and opens the output document tab
+Pressing the \texttt{Submit} button conducts the test, and opens the output document tab
 showing the results, including the date of analysis and relevant test parameters (Figure~\ref{fig:t_test_results}).
 
 \begin{figure}[b!]
  \centering
  \includegraphics[width=13.5cm]{./figures/t-test_dialog.png}
- \caption{Student's t-Test dialog for two variables. The bottom area shows the \proglang{R} code corresponding to the settings.}
+ \caption{Student's $t$~test dialog for two variables. The bottom area shows the \proglang{R} code corresponding to the settings.}
  \label{fig:t_test_dialog}
 \end{figure}
 
 \begin{figure}[t!]
  \centering
  \includegraphics[width=15.4cm]{./figures/t-test_results.png}
- \caption{Results of conducting a Student's t-Test in tabular HTML format.}
+ \caption{Results of conducting a Student's $t$~test in tabular HTML format.}
  \label{fig:t_test_results}
 \end{figure}
 
 \subsection{Creating a plot}
 \label{sec:create_plot}
-To visualize the data, ``Boxplot'' is chosen from the ``Plots'' menu
-and the two variables, corresponding to the t-Test above, are selected.
+To visualize the data, \texttt{Boxplot} is chosen from the \texttt{Plots} menu
+and the two variables, corresponding to the Student's $t$~test above, are selected.
 The dialog allows to define custom variable labels (Figure~\ref{fig:boxplot1}).
-Checking the ``Preview'' box opens a graphics window showing the boxplot as
+Checking the \texttt{Preview} box opens a graphics window showing the boxplot as
 it is configured, and updates the window in real time on any changes to plot parameters.
 The plot can also be exported to several image formats, directly from the preview window (Figure~\ref{fig:boxplot2}).
 
 \begin{figure}[b!]
  \centering
  \includegraphics[width=15.4cm]{./figures/boxplot1.png}
- \caption{Boxplot dialog. The first tab ``Variables'' is used to select the variables for analysis. It is possible to
-  combine any data present in \code{.GlobalEnv}. The second tab ``Options'' allows further adjustments (e.\,g., the addition of mean and standard deviation) to the plot (not shown).}
+ \caption{Boxplot dialog. The first tab \texttt{Variables} is used to select the variables for analysis. It is possible to
+  combine any data present in \code{.GlobalEnv}. The second tab \texttt{Options} allows further adjustments (e.\,g., the addition of mean and standard deviation) to the plot (not shown).}
  \label{fig:boxplot1}
 \end{figure}
 
 \begin{figure}[t!]
  \centering
  \includegraphics[width=14.5cm]{./figures/boxplot2.png}
- \caption{Plotted data and plot export dialog. The export dialog (``Device$\rightarrow$Export'') provides numerous 
+ \caption{Plotted data and plot export dialog. The export dialog (\texttt{Device$\rightarrow$Export}) provides numerous 
   options like resolution and size for different vector formats (e.\,g., SVG, PDF) and 
   pixel formats (e.\,g., PNG, JPEG). (Note: For the shown figure, the optional  
   mean ($\blacksquare$) and standard deviation ($+$) parameters were selected in the boxplot plugin.)}
