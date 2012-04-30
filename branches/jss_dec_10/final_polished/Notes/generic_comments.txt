@@ -1,0 +1,96 @@
+------------ What's left TODO of the generic commments --------------
+
+
+----- (1) Style ------
+
+o Pay particular attention to your .bib files. In addition to the
+advice in the FAQ, please make sure that all your software references
+are current. Please use the current 2012 R citation (also included
+below) and, if applicable, cross-reference other packages in this
+volume with their full/correct reference. A list of suitable .bib
+items is included below. (Note that for some titles
+markup/capitalization have been changed according to JSS style.)
+
+TODO: At least the R citation needs an update
+
+----- (2) Code and replication materials -----
+
+o Please include the latest version of your software package along
+with the manuscript. This needs to encompass the full sources. Binary
+versions can be provided in addition (but are not necessary for CRAN
+packages). The version of the source packages published on
+jstatsoft.org should be under a GPL-2 license.
+
+TODO: package. Does that mean we should include 0.5.7?
+
+----- (3) Organization of the files -----
+
+o The .tex, .bib, and compiled .pdf for your manuscript should be
+called v49iXX.tex, v49iXX.bib, and v49iXX.pdf , where XX is the
+two-digit number of your submission within the volume, e.g.,
+v49i01.tex/bib/pdf.
+
+o All graphics files should be collected in a sub-directory "Figures".
+To help LaTeX find the graphics, you can simply include the line
+
+\graphicspath{{Figures/}}
+
+in the header of your .tex file.
+
+o All code and replication materials should be collected in a
+sub-directory "Code". The main replication file should be v49iXX.R or
+v49iXX.txt (see point (2) above), where XX is again the two-digit
+number of your submission.
+
+o Please wrap all of these files into a single organized .zip (or
+.tar.gz) file. Please make sure the .zip files only contains the
+necessary files. That is, please do not include .aux, .log, etc.
+files. Also, do not include the JSS style files (jss.cls, jss.bst,
+jsslogo.jpg, etc.).
+
+
+
+----------------- What's already done or not relevant ------------------
+
+
+o Please have another look at the FAQ at
+http://www.jstatsoft.org/style
+and make sure that you follow all instructions closely.
+
+o In particular, note that for describing components of GUIs, the
+JSS-specific \code{} markup should be used. For example for menu
+items, buttons, etc.
+
+o Do not capitalize expansions of abbreviations. In particular
+introduce the abbreviation GUI in regular text as "graphical user
+interface" without capitalization. Similarly for "integrated
+development environment" etc.
+
+o In case your software is a CRAN package, please point out somewhere
+(typically in the introduction) that your package is "available from
+the Comprehensive \proglang{R} Archive Network at
+\url{http://CRAN.R-project.org/package=...}" where ... should be
+replaced with the name of your package.
+
+o For R packages, please also make sure that you fix all ERRORs and
+WARNINGs of R CMD check - and if possible also all NOTEs.
+
+o In addition to the source package, please provide replication
+materials for all examples/tables/figures from the manuscript. This
+can be in the form of a standalone .R file containing the source code
+(e.g., as generated from the GUI) or in a standalone .txt file
+describing concisely what has to be clicked/entered in the GUI. If
+extra data files are required, these should be supplied as well.
+
+o Include the publication information in the LaTeX header of your .tex
+file. This is:
+
+\Volume{49}
+\Issue{...}
+\Month{June}
+\Year{2012}
+\Submitdate{...}
+\Acceptdate{...}
+
+where the "..." fields should be replaced with the correct information
+for your submission.

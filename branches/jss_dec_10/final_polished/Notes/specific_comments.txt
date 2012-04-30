@@ -13,6 +13,8 @@ just giving URLs in footnotes.
 o Include the URLs from Footnotes 4-10, 20-23 into the regular text (e.g.,
 in parentheses).
 
+TODO: I think we did this wrong. Re-do the \url{} markup on all urls, but merge these footnotes into the main text body.
+
 o \pkg{R} -> \proglang{R}. There are also various instances of "R" without
 any markup, please correct.
 
