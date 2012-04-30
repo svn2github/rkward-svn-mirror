@@ -1,0 +1,18 @@
+<!DOCTYPE rkpluginmap>
+
+<document base_prefix="" namespace="rkward">
+  <components>
+    <component type="standard" id="t_test_two_vars"
+          file="demo_t_test_two_vars.xml" label="Two Variable t-test" />
+  </components>
+
+  <hierarchy>
+    <menu id="analysis" label="Analysis" index="4">
+      <menu id="means" label="Means" index="4">
+        <menu id="ttests" label="t-Tests">
+          <entry component="t_test_two_vars" />
+        </menu>
+      </menu>
+    </menu>
+  </hierarchy>
+</document>
