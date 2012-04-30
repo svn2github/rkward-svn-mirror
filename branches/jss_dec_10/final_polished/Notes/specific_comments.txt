@@ -1,0 +1,74 @@
+---- What's left TODO of the specific notes: ----
+
+o Omit the footnotes in the \author{} statement. Instead put the remarks
+into the \section*{Acknowledgments}. Give only the main affiliation in
+\author{}, further affiliations can be given in the \Address{}.
+
+TODO: Move equal contribution note to Acknowledgments
+Done: Affiliation for Stefan
+
+o Formally \cite suitable references for KDE and Qt etc. instead of
+just giving URLs in footnotes.
+
+o Include the URLs from Footnotes 4-10, 20-23 into the regular text (e.g.,
+in parentheses).
+
+o \pkg{R} -> \proglang{R}. There are also various instances of "R" without
+any markup, please correct.
+
+TODO: check again
+
+o Please use three digits for R versions, i.e., 1.3.0 etc.
+
+TODO: check again
+
+o Omit the URLs in the references to standard journal articles. If the
+journal is open access (i.e., including JSS, R News etc.) a single URL
+or the DOI should be kept.
+
+TODO: check again
+
+--------- What's done (with comments if needed) ---------
+
+o For \cite-ing the R-GUI page of Philippe a formal BibTeX item is
+provided below.
+
+o Please use \code{} markup for file names (not sf).
+
+o Tlc -> Tcl
+
+o The .pdf underlying Figure 1 is extremely large and hence delays loading
+of the page when reading the paper on screen. Please supply a leaner
+.pdf (the text, boxes, and shadings should not require 1M...).
+
+o Please \cite Rcmdr and TeachingDemos. Suitable BibTeX items are provided
+below.
+
+o Use \code{} markup for GUI elements, e.g., menu items, buttons, or key
+combinations. (You can also use \texttt which may be easier in combination
+with arrows.)
+
+o If you keep quotation marks in addition to \code markup for GUI elements,
+please make sure that the direction is appropriate. Currently, there are
+a few instances where this is not the case (e.g., "Future Options" in
+the caption of Figure 6).
+
+o Please use "(A)", "(B)" etc. instead of "A)", "B)" etc.
+
+o Is "RreportGenerator" or "RReportGenerator" correct?
+
+o \pkg{Sweave} -> \code{Sweave} (because it is a function not a package).
+
+o An enhanced Sweave citation is included below.
+
+o UNIX -> Unix
+
+o Use "$t$~test" instead of "t-Test".
+
+Done. However, in an RKWard menu item the spelling t-Test is used, and the spelling was kept for direct references to this particular menu item.
+
+o Omit the doi in the Gentleman et al. reference and the citeseer reference
+in Kim and Lutteroth.
+
+o Is there an update on the publication information in Roediger et al. (2011b)
+yet? If volume/number/pages are not available yet, a doi can be supplied.
