@@ -1,0 +1,404 @@
+%!TEX root=RKWard_paper.tex
+\section{Introduction}
+In this supplement we will give an overview of some key aspects of \pkg{RKWard}'s
+technical design and development process, comparing them briefly to competing GUI solutions, where appropriate.
+We will give slightly more attention to the details of the
+plugin framework (Section~\ref{sec:technical_plugins}) used in \pkg{RKWard}, since this is central to the extensibility of
+\pkg{RKWard}, and we will conclude with an example for extending \pkg{RKWard} by a plugin (Section~\ref{sec:example_plugin}).
+
+Note that this document refers to \pkg{RKWard} version 0.5.6. Several technical details, described here, have changed
+in \pkg{RKWard} version 0.5.7 and the current development version.
+
+\section{Asynchronous command execution}
+\label{sec:technical_asynchronous}
+One central design decision in the implementation of \pkg{RKWard} is that the
+interface to the \proglang{R} engine operates asynchronously. The intention is to
+keep the application usable to a high degree, even during the computation of
+time-consuming analysis. For instance, while waiting for the estimation of a
+complex model to complete, the user should be able to continue to use the GUI to
+prepare the next analysis. Asynchronous command execution is also a prerequisite
+for an implementation of the plot-preview feature (see the section no graphics windows
+in the main article). Internally, the GUI frontend and the \proglang{R} engine run in two separate processes\footnote{
+    Up to \pkg{RKWard} version 0.5.4, two separate threads inside a single process were used. This alternate design is still
+    available as a compile time option.
+}. Commands generated from plugins or user actions are placed in queue in the frontend and are evaluated in
+the backend process in the order they were submitted\footnote{
+    It is possible, and in some cases necessary, to enforce a different order of command execution in
+    internal code. For instance, \pkg{RKWard} makes sure that no user command can
+    potentially interfere while \pkg{RKWard} is loading the data of a \code{data.frame} for
+    editing.
+}.
+
+The asynchronous design implies that \pkg{RKWard} avoids relying on the
+\proglang{R} engine during interactive use. This is one of several reasons for
+the use of \proglang{ECMAScript} in plugins, instead of scripting using
+\proglang{R} itself (see Sections~\ref{sec:technical_toolkit} and \ref{sec:technical_plugins}).
+A further implication is that \pkg{RKWard} avoids querying information about the
+existence and properties of objects in \proglang{R} interactively. Rather,
+\pkg{RKWard} keeps a representation of \proglang{R} objects and their basic properties
+(e.\,g., class and dimensions), which is used for the workspace browser,
+object name completion, function argument hinting, and
+other places. The object representation includes objects in all environments
+in the search path, and any objects contained within these environments in a
+hierarchical tree\footnote{
+    Currently, environments of functions or formulas are not taken into account, but slots of S4 objects,
+    and package namespace environments are represented in the object tree.
+}. The representation of \proglang{R} objects is gathered
+pro-actively\footnote{
+    To limit the amount of processing, and to avoid recursion, \pkg{RKWard} currently stops
+    gathering object information at a depth of three levels. Information on deeper levels is gathered
+    on an as-needed basis, when the user accesses information on the respective parent objects.
+}. This has a notable impact on performance when loading packages.
+Specifically, objects which would usually be ``lazy loaded'' only when needed \citep[see][]{Ripley2004} are
+accessed in order to fetch information on their properties. This means the data
+has to be loaded from disk; however, the memory is freed immediately after fetching
+information on the object. Additionally, for packages with extremely large number of objects, \pkg{RKWard}
+provides an option to exclude specific packages from scanning the object structures.
+
+A further side-effect of the asynchronous threaded design is that there is
+inherently a rather clear separation between the GUI code and the code making direct use
+of the \proglang{R} application programming interface (API) (see also Figure~\ref{fig:design_sketch}). 
+In future releases it could be made possible to run GUI and \proglang{R} engine on different computers.
+
+\begin{figure}[t!]
+ \centering
+ \includegraphics[clip=true,trim=0cm 2cm 0cm 0cm]{design_sketch.pdf}
+ \caption{Technical design of \pkg{RKWard}. Only a few central components are visualized.
+ All communication with the \proglang{R} engine is passed through a single interface living in the frontend process. The \proglang{R} engine itself
+ runs in a separate process. 
+ Separate threads within the frontend process are used to generate \proglang{R} code from plugins.
+}
+ \label{fig:design_sketch}
+\end{figure}
+
+\section{Object modification detection}
+\label{sec:technical_omd}
+\pkg{RKWard} allows the user to run arbitrary commands in \proglang{R} at any time, even while
+editing a \code{data.frame} or while selecting objects for analysis in a GUI dialog. Any user
+command can potentially add, modify, or remove objects in \proglang{R}. \pkg{RKWard} tries to
+detect such changes in order to always display accurate information in the
+workspace browser, object selection lists, and object views. Beyond that,
+detecting any changes is particularly important with respect to objects which
+are currently being edited in the data editor (which provides an illusion
+of in-place editing, see the section on the spreadsheet-like data editor in the
+main article). Here, it is necessary to synchronize
+the data between \proglang{R} and the GUI in both directions.
+
+For simplicity and performance, object modification detection is only
+implemented for objects inside the ``global environment'' (including environments
+inside the global environment), since this is where changes are typically done.
+Currently, object modification detection is based on active bindings.
+Essentially, any object which is created in the global environment is first
+moved to a hidden storage environment, and then replaced with an active binding.
+The active binding acts as a transparent proxy to the object in the storage
+environment, which registers any write-access to the object\footnote{
+    This is similar to the approach taken in the \pkg{trackObjs} package \citep{Plate2009}.
+}.
+
+The use of active bindings has significant performance implications when
+objects are accessed very frequently. This is particularly notable where an
+object inside the global environment is used as the index variable in a loop,
+as illustrated by the following example. When control returns to the top level
+prompt, after the first assignment, \code{i} will become subject to object modification
+detection (i.\,e., it will be wrapped into an active
+binding). The subsequent \code{for} loop will then run slow.
+
+\begin{Code}
+R> i <- 1
+R> for (i in 1:100000) i + i
+\end{Code}
+
+In contrast, in the following example, \code{i} is a local object, and will not
+be replaced by an active binding. Therefore the loop will run approximately as fast
+as in a plain \proglang{R} session:
+
+\begin{Code}
+R> f <- function () {
+R+    i <- 1
+R+    for (i in 1:100000) i + i
+R+ }
+R> f ()
+\end{Code}
+
+Future versions of \pkg{RKWard} will try to avoid this performance problem. 
+One approach that is currently under consideration is to simply perform
+a pointer comparison of the \code{SEXP} records of objects in global environment with
+their copies in a hidden storage environment. Due to the implicit sharing of
+\code{SEXP} records \citep{Rexts, Rinternals}, this should provide for a reliable
+way to detect changes for most types of \proglang{R} objects, with comparatively low memory
+and performance overhead. Special handling will be needed for environments and
+active bindings.
+
+\section{Choice of toolkit and implementation languages}
+\label{sec:technical_toolkit}
+In addition to \proglang{R}, \pkg{RKWard} is based on the \pkg{KDE} libraries \citep{KDEmain}, which are in turn based
+on \pkg{Qt} \citep{QTmain}, and implemented mostly in \proglang{C++}. Compared to many competing libraries,
+this constitutes a rather heavy dependency. Moreover, the \pkg{KDE} libraries are
+still known to have portability issues especially on Mac OS X, and to some degree
+also on the Microsoft Windows platform \citep{Jarvis2010}.
+
+The major reason for choosing the \pkg{KDE} and \pkg{Qt} libraries has been the 
+many high level features, they provide. This has allowed \pkg{RKWard} development to make quick
+progress despite limited resources. Most importantly, the \pkg{KDE} libraries provide a
+full featured text editor \citep{CullmannND} as a component which can be
+seamlessly integrated into a host application using the KParts technology
+\citep{Faure2000}. Additionally, another KPart provides HTML browsing capabilities in a
+similarly integrated way. The availability of \pkg{KWord} \citep{KWord} as an
+embeddable KPart might prove useful in future versions of \pkg{RKWard}, when better
+integration with office suites will be sought. Additionally \pkg{Qt} libraries offer 
+the encapsulation of the look-and-feel on specific platforms for a high degree of interoperability 
+and a wide selection of powerful widgets \citep{Raaphorst2003}.
+
+Another technology from the \pkg{KDE} libraries that is important to the development
+of \pkg{RKWard} is the ``XMLGUI'' technology
+\citep{Faure2000}. This is especially helpful in providing an integrated GUI across
+the many different kinds of document windows and tool views supported in \pkg{RKWard}.
+
+Plugins in \pkg{RKWard} rely on XML (\url{http://www.w3.org/XML/})
+and \proglang{ECMAScript} (\url{http://www.ecmascript.org/}; see Section~\ref{sec:technical_plugins}). XML is not
+only well suited to describe the layout of the GUI of plugins, but simple
+functional logic can also be represented \citep[see also][]{Visne2009}. \proglang{ECMAScript} was
+chosen for the generation of \proglang{R} commands within plugins, in particular due to its
+availability as an embedded scripting engine inside the \pkg{Qt} libraries. While at
+first glance \proglang{R} itself would appear as a natural choice of scripting language as
+well, this would make it impossible to use plugins in an asynchronous way.
+Further, the main functional requirement in this place is the manipulation and
+concatenation of text strings. While \proglang{R} provides support for this, concatenating
+strings with the \code{+}-operator, as available in \proglang{ECMAScript}, allows for a
+very readable way to perform such basic text manipulation.
+
+\section{On-screen graphics windows}
+\label{sec:technical_graphics}
+Contrary to the approach used in \pkg{JGR} \citep{JGR2010}, \pkg{RKWard} does
+not technically provide a custom on-screen graphics device. \pkg{RKWard} detects when
+new graphics windows are created via calls to \code{X11()} or \code{windows()}. These windows
+are then ``captured'' in a platform dependent way (based on the XEmbed \citep{Ettrich2002} protocol
+for \pkg{X11}, or on reparenting for the Microsoft Windows platform). An \pkg{RKWard} menu bar and a
+toolbar is then added to these windows to provide added functionality. While
+this approach requires some platform dependent code, any corrections or
+improvements made to the underlying \proglang{R} native devices will automatically be
+available in \pkg{RKWard}.
+
+A recent addition to the on-screen device is the ``plot history'' feature which
+adds a browsable list of plots to the device window. Since \pkg{RKWard} does not use a
+custom on-screen graphics device, this feature is implemented in a package
+dependent way. For example, as of this writing, plotting calls that use either
+the ``standard graphics system'' or the ``\pkg{lattice} system'' can be added to the plot
+history; other plots are drawn but not added. The basic procedure is to identify
+changes to the on-screen canvas and record the existing plot before a new plot
+wipes it out. A single global history for the recorded plots is maintained
+which is used by all the on-screen device windows. This is similar to the
+implementation in \proglang{Rgui.exe} (Microsoft Windows), but unlike the one in \proglang{Rgui.app} 
+(Mac OS X). Each such device window points to a position in the history
+and behaves independently when recording a new plot or deleting an existing
+one.
+
+Plot history support for the
+\pkg{lattice} system \citep{Sarkar2008} is implemented by inserting a hook in the \code{print.lattice()}
+function. This hook retrieves and stores the \code{lattice.status} object from the
+\code{lattice:::.LatticeEnv} environment, thereby making \code{update()} calls on trellis
+objects transparent to the user. Any recorded trellis object is then replayed
+using \code{plot.lattice()}, bypassing the recording mechanism. The standard graphics
+system, on the other hand, is implemented differently because the hook in
+\code{plot.new()} is ineffective for this purpose. A customized function is overloaded
+on \code{plot.new()} which stores and retrieves the existing plot, essentially, using
+\code{recordPlot()} and replays them using \code{replayPlot()}.
+
+The actual plotting calls are tracked using appropriate \code{sys.call()} commands in
+the hooks. These call strings are displayed as a drop-down menu on the toolbar
+for non-sequential browsing (see the section on graphics windows in the main article) providing a very intuitive browsing
+interface unlike the native implementations in \code{windows()} and \code{quartz()} devices.
+
+\section{Plugin infrastructure}
+\label{sec:technical_plugins}
+One of the earliest features of \pkg{RKWard} was the extensibility by plugins.
+Basically, plugins in \pkg{RKWard} provide complete GUI dialogs, or re-usable
+GUI components, which accept user settings and translate those user settings
+into \proglang{R} code\footnote{
+    Plugins are also used in some other contexts within \pkg{RKWard}, for instance, the
+    integrated text editor (\pkg{kate} part) supports extensions via plugins and user scripts. At this point we
+    will focus only on plugins generating \proglang{R} code.
+}. Thus, the plugin framework is basically a tool set used to define
+GUIs for the automatic generation of \proglang{R} code.
+
+Much of the functionality in \pkg{RKWard} is currently implemented as plugins. For example, importing different file
+formats relying on the \pkg{foreign} package is achieved by this approach. Similarly,
+\pkg{RKWard} provides a modest GUI driven tool set for statistical analysis,
+especially for item response theory, distributions, and descriptive
+statistical analysis.
+
+\subsection{Defining a plugin}
+\label{sec:technical_plugins_defining}
+Plugins consist of four parts as visualized in Figure~\ref{fig:plugin_structure} 
+\citep[see Section~\ref{sec:example_plugin} for an example; for a complete
+manual, see][]{Friedrichsmeier2010}:
+
+\begin{itemize}
+    \item
+    An XML file (Section~\ref{sec:defining_menu_hierarchy}), 
+    called a ``plugin map'', is used to declare one or more plugins, each
+    with a unique identifier. For most plugins, the plugin map also defines the
+    placement in the menu hierarchy. Plugin maps are meant to represent groups of
+    plugins. Users can disable/enable such groups of plugins in order to reduce the
+    complexity of the menu hierarchy.
+
+    \item
+    A second XML file describes the plugin GUI layout itself (Section~\ref{sec:defining_dialog_ui}). 
+    Most importantly this includes
+    the definition of the GUI layout and GUI behavior. High level GUI elements can
+    be defined with simple XML-tags. Layout is based on ``rows'' and ``columns'',
+    instead of pixel counts. In most cases this allows for a very sensible resizing
+    behavior. \pkg{RKWard} supports single-page dialogs and multi-page wizards, however,
+    most plugins define only a single-page GUI. GUI behavior can be programmed by
+    connecting ``properties'' of the GUI elements to each other. For example, the state
+    of a checkbox could be connected to the ``enabled'' property of a dependent
+    control. More complex logic is also supported, as is procedural scripting of GUI
+    behavior using \proglang{ECMAScript}.
+
+    \item
+    A separate \proglang{ECMAScript} file (Section~\ref{sec:generating_r_code_from_ui_settings}) 
+    is used to translate GUI settings into \proglang{R}
+    code\footnote{
+        In earlier versions of \pkg{RKWard}, \proglang{PHP} was used
+        as a scripting engine, and \proglang{PHP} interpreters were run as separate processes.
+        Usage of \proglang{PHP} was abandoned in \pkg{RKWard} version 0.5.3 for reasons of performance and simplicity.
+    }. This \proglang{ECMAScript} file is evaluated asynchronously in a separate thread. \pkg{RKWard}
+    currently enforces structuring the code into three separate sections for
+    preprocessing, calculating, and printing results. The generated code is always
+    run in a local environment, in order to allow the use of temporary variables
+    without the danger of overwriting user data.
+
+    \item
+    A third XML file defines a help page. This help page usually links to the \proglang{R} help
+    pages of the main functions/concepts used by the plugin, as well as to other
+    related \pkg{RKWard} help pages. Compared to \proglang{R} help
+    pages, the plugin help pages try to give more hands-on advice on using the
+    plugin. Plugins can be invoked from their help page by clicking on a link near
+    the top, which can be useful after following a link from a related help page.
+\end{itemize}
+
+\begin{figure}[t!]
+ \centering
+ \includegraphics[clip=true,trim=0cm 6cm 0cm 0cm,width=8cm]{plugin_structure.pdf}
+ \caption{Plugin structure of \pkg{RKWard}. One or more plugins are declared in a ``plugin map''. Each plugin is defined by
+ two XML files, and one \proglang{ECMAScript} file.}
+ \label{fig:plugin_structure}
+\end{figure}
+
+Changes to the source code of these elements take effect without the requirement to recompile \pkg{RKWard}.
+
+\subsection{Embedding and reuse of plugins}
+\label{sec:technical_plugins_embedding}
+\pkg{RKWard} supports several mechanisms for modularization and re-use of
+functionality in plugins. File inclusion is one very simple but effective
+mechanism, which can be used in the \proglang{ECMAScript} files, but is also supported in
+the XML files. In script files, this is most useful by defining common functions
+in an included file. For the XML files, the equivalent is to define ``snippets''
+in the included file, which can then be inserted.
+
+A third mechanism allows to completely embed one plugin into another. For
+instance the \code{plot\_options} plugin is used by many plugins in \pkg{RKWard}, to provide
+common plot options such as labels, axis options, and grids. Other plugins
+can embed it using the \code{embed}-tag in their XML file (the plugin supports
+hiding irrelevant options). The generated code portions can be fetched from the
+\proglang{ECMAScript} file just like any other GUI settings, and inserted into the complete
+code. Other examples of embedded plugins are options for histograms, barplots,
+and empirical cumulative distribution function (ECDF) plots (which in turn embed the generic plot options plugin).
+
+\subsection{Enforcing a consistent interface}
+\label{sec:technical_plugins_consistency}
+\pkg{RKWard} tries to make it easy to create a consistent interface in all plugins.
+GUI-wise this is supported by providing high-level GUI elements, and embeddable
+clients. Also, the standard elements of each dialog (\texttt{Submit}, and
+\texttt{Cancel} buttons, on-the-fly code view, etc.) are hard coded. Up to version
+0.5.3 of \pkg{RKWard} it was not possible to use any GUI elements in plugins which
+were not explicitly defined for this purpose. In the current development
+version, theoretically, all GUI elements available from \pkg{Qt} can be inserted,
+where necessary.
+
+For generating output, the function \code{rk.header()} can be used to print a
+standardized caption for each piece of output. Printing results in vector or
+tabular form is facilitated by \code{rk.results()}. A wide range of objects can be
+printed using \code{rk.print()}, which is just a thin wrapper around the
+\code{HTML()} function of the \pkg{R2HTML} package \citep{Lecoutre2003} in the current
+implementation. The use of custom formatting with HTML is possible, but
+discouraged. Standard elements such as a horizontal separator, and the \texttt{Run again}
+link (see the section on the results output in the main article) are inserted automatically, without the need to define
+them for each plugin.
+
+Regarding the style of the generated \proglang{R} code, enforcing consistency is harder,
+but plugins which are to become part of the official \pkg{RKWard} application are
+reviewed for adherence to some guidelines. Perhaps the most important guidelines
+are 
+
+\begin{itemize}
+  \item 
+  Write readable code, which is properly indented, and commented where necessary.
+
+  \item 
+  Do not hide any relevant computations from the user by performing them in the
+  \nobreak{\proglang{ECMAScript}}. Rather, generate \proglang{R} code which will perform
+  those computations, transparently.
+
+  \item
+  Plugins can be restricted to accept only certain types of data (such as only one-dimensional numeric data).
+  Use such restrictions where appropriate to avoid errors, but be very careful not to add
+  too many of them.
+\end{itemize}
+
+\subsection[Handling of R package dependencies]{Handling of \proglang{R} package dependencies}
+\label{sec:technical_plugins_dependencies}
+A wide range of plugins for diverse functionality is present in \pkg{RKWard},
+including plots (e.\,g., boxplot) or standard tests (e.\,g., Student's $t$~test)\footnote{
+  At the time of this writing, there are 164 user-accessible plugins in \pkg{RKWard}.
+  Listing all is beyond the scope of this article.
+}. Some
+of the plugins depend on \proglang{R} packages other than the recommended \proglang{R} base packages.
+Examples herein are the calculation of kurtosis, skewness or the exact Wilcoxon
+test.
+
+\pkg{RKWard} avoids loading all these packages pro-actively, as \pkg{Rcmdr} does. Rather,
+plugins which depend on a certain package simply include an appropriate call to
+\code{require()} in the pre-processing section of the generated \proglang{R} code. The \code{require()}
+function is overloaded in \pkg{RKWard}, in order to bring up the package-installation
+dialog whenever needed. Packages invoked by \code{require()} remain loaded
+in the active \pkg{RKWard} session unless unloaded manually (from the workspace browser, or using the
+\proglang{R} function \code{detach()}).
+
+Dependencies between (embedded) plugins are handled using the \code{<require>}-tag in the plugin map.
+
+\subsection{Development process}
+\subsubsection[RKWard core and external plugins]{\pkg{RKWard} core and external plugins}
+\label{sec:technical_processes_plugins}
+Newly developed plugins are placed in a dedicated plugin map file\footnote{
+ \code{under\_development.pluginmap}
+}. Plugins in this map are not visible to the user by default, but need to be enabled manually. Once the
+author(s) of a plugin announces that they consider it stable, the plugin is subjected to a review for
+correctness, style, and usability. The review status is tracked in the project wiki. Currently at least one
+positive review is needed before the plugin is allowed to be made visible by default, by moving it to an
+appropriate plugin map.
+
+With the release of version 0.5.5, \pkg{RKWard} gained support for downloading additional sets
+of plugins directly from the internet. By simply clicking an \texttt{Install} button in a graphical dialog 
+(\texttt{Settings$\rightarrow$Configure RKWard$\rightarrow$Plugins}), an
+external plugin set is downloaded, unpacked and its plugin map added to \pkg{RKWard}'s configuration, so
+it becomes instantly available after the configuration dialog is closed. External plugin sets are
+neither officially included nor supported by the \pkg{RKWard} developers. However, they allow plugin
+developers to easily extend \pkg{RKWard} with state-of-the-art or highly specialized features. To
+achieve this, \pkg{RKWard} draws on \pkg{KNewStuff2}, a \pkg{KDE} library providing support for \pkg{GHNS}\footnote{
+\pkg{GHNS} (Get Hot New Stuff) is a technology platform (software and specifications) for desktop users to share their work. It is hosted
+under the umbrella of the freedesktop.org project at \url{http://ghns.freedesktop.org}.
+}.
+
+\subsubsection{Automated testing}
+\label{sec:technical_processes_automatedtesting}
+A second requirement for new plugins is that each plugin must be accompanied by
+at least one automated test. The automated testing framework in \pkg{RKWard} consists
+of an \proglang{R} package, \pkg{rkwardtests}, providing a set of \proglang{R} functions which allow to run a
+plugin with specific GUI settings, automatically. The resulting \proglang{R} code, \proglang{R} messages, and
+output are then compared to a defined standard. Automated tests are run routinely after changes in the
+plugin infrastructure, and before any new release.
+
+The automated testing framework is also useful in testing some aspects of the
+application which are not implemented as plugins, but this is currently limited
+to very few basic tests.

@@ -1,0 +1,56 @@
+\section{Installation and platform availability}
+\label{sec:installing_starting_RKWard}
+Contrary to some other \proglang{R} GUIs, such as \pkg{Rcmdr}, \pkg{RKWard} cannot be installed and started as a
+regular \proglang{R} add-on package. Rather, it is started as a stand-alone application which embeds the
+\proglang{R} engine, and needs to be installed in a platform dependent way, as detailed below\footnote{
+  See http://p.sf.net/rkward/download for an overview and platform specific download links.
+}. Besides the
+\pkg{KDE} runtime environment and \proglang{R}, \pkg{RKWard} utilizes a growing number of \proglang{R} add-on packages.
+However, these do not have to be installed before hand. Rather \pkg{RKWard} will prompt the user to install
+missing packages interactively, on an as-needed basis (see Section~\ref{sec:package_management}).
+
+\subsection{Installation on the GNU/Linux platform}
+Historically, \pkg{RKWard} originated on the GNU/Linux platform, and binary packages are available for many
+major GNU/Linux distributions, including Debian, Ubuntu, OpenSuse, Gentoo, Fedora, but also for other POSIX
+compliant systems such as FreeBSD (\url{http://standards.ieee.org/develop/wg/POSIX.html}). The exact size of the installation is system dependent. On Debian x86, the
+package is currently around 1.5 MB (megabyte) compressed, and 5.5 MB uncompressed. However, if the \pkg{KDE}
+runtime environment is not yet installed, an installation of \pkg{RKWard} may need several hundred MB of disc
+space.
+
+On systems which provide up-to-date packages of \proglang{R} and \pkg{KDE}, compilation from source is
+generally unproblematic. Instructions are provided at \url{http://p.sf.net/rkward/compiling}.
+
+\subsection{Installation on Microsoft Windows}
+\pkg{RKWard} will run on Windows XP, Windows Server 2003, Vista, and Windows 7. 32-bit binaries are
+provided by the project (download links and instructions are provided at \url{http://p.sf.net/rkward/windows}). Users can
+choose between a small installer (1.7 MB), which will add \pkg{RKWard} to pre-existing installations of
+\proglang{R} and \pkg{KDE}, and an installation bundle, which provides \pkg{RKWard}, \proglang{R}, and
+\pkg{KDE}. This bundle just needs to be unpacked to any user-writable folder, and can be run without any
+further steps of installation. When using this bundle, \pkg{RKWard} can also be installed to removable storage
+devices (e.\,g., USB sticks) and shared between systems. Its configuration settings are stored in the user's
+home directory, and will not be shared across systems, unless the user takes further steps. The size of the
+current installation bundle is 132 MB compressed, and around 670 MB installed.
+
+Source installation on the Microsoft Windows platform is comparatively difficult, since various tools need to
+be installed (see \url{http://sourceforge.net/apps/mediawiki/rkward/?title=RKWard\_on\_Windows/Packaging} for details).
+
+\subsection{Installation on Mac OS X}
+At the time of this writing, the developers lack the resources to support a Mac OS X port, and especially
+to provide binaries for Mac OS X. Although \pkg{RKWard} has been successfully compiled and installed on the Mac, and
+appeared to be mostly functional, there have also been unresolved reports of failure to compile or start
+\pkg{RKWard} on Mac OS X. Since the \pkg{KDE} project currently does not offer binaries for Mac OS X,
+installation of \pkg{RKWard} also requires compilation of the \pkg{KDE} runtime environment and its
+dependencies from source, which takes many hours to complete on current systems. Further, \pkg{RKWard}'s
+graphics device window related features (see Section~\ref{sec:plot_previews}) are only available when
+compiling and using \pkg{KDE} and \pkg{RKWard} in \pkg{X11} mode. In conclusion, \pkg{RKWard} on Mac OS X is
+not suitable for most users in its current state.
+
+\subsection[Starting RKWard]{Starting \pkg{RKWard}}
+\pkg{RKWard} cannot be loaded from within an \proglang{R}
+session, but is rather started as a stand-alone application with an
+embedded \proglang{R} engine. To facilitate the first
+steps for new users, a dialog offers the choice to load an existing
+workspace, to start with an empty workspace, or to create a new
+\code{data.frame} and open that for editing. Also, an overview help page is
+shown in the document area of the main window. Both these start-up features
+can be turned off.

@@ -1,0 +1,91 @@
+\documentclass[article,shortnames]{jss}
+\graphicspath{{Figures/}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% declarations for jss.cls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amssymb}
+%% almost as usual
+\author{Stefan R\"odiger\\Lausitz University of\\Applied Sciences\\ \& Charit\'e
+	\And Thomas Friedrichsmeier\\Ruhr-University Bochum
+	\AND Prasenjit Kapat\\The Ohio State University
+	\And Meik Michalke\\Heinrich Heine University\\D\"usseldorf
+}
+\title{Supplement to:\linebreak 
+  \pkg{RKWard} -- A Comprehensive Graphical User Interface and Integrated Development Environment for Statistical Analysis with \proglang{R}}
+
+%% for pretty printing and a nice hypersummary also set:
+\Plainauthor{Stefan R\"odiger, Thomas Friedrichsmeier, Prasenjit Kapat, Meik Michalke} %% comma-separated
+\Plaintitle{RKWard -- A Comprehensive Graphical User Interface and Integrated Development Environment for Statistical Analysis with {R}} %% without formatting
+\Shorttitle{Supplement to: \pkg{RKWard} a GUI for \proglang{R}} %% a short title (if necessary)
+
+%% an abstract and keywords
+\Abstract{
+\pkg{RKWard} is a GUI to \proglang{R} with the objective to provide a 
+portable and extensible \proglang{R} interface for both
+basic and advanced statistical and graphical analysis. This supplement discusses 
+in detail technical aspects of \pkg{RKWard} including the usage of the \pkg{KDE}/\pkg{Qt} software libraries which are the base of \pkg{RKWard}.
+Statistical procedures and plots are implemented as an extendable plugin architecture in \pkg{RKWard}. 
+This plugin architechture is based on \proglang{ECMAScript} (\proglang{JavaScript}), \proglang{R}, and XML. The general 
+design is described and its application is exemplified on a Student's $t$~test.
+
+%%
+}
+\Keywords{cross-platform, GUI, integrated development environment, plugin, \proglang{R}}
+
+\Plainkeywords{cross-platform, GUI, integrated development environment, plugin, R} %% without formatting
+%% at \leftarrowst one keyword must be supplied
+
+
+%% publication information
+%% NOTE: Typically, this can be left commented and will be filled out by the technical editor
+\Volume{49}
+\Issue{9}
+\Month{June}
+\Year{2012}
+\Submitdate{2010-12-28}
+\Acceptdate{2011-05-06}
+
+%% The address of (at least) one author should be given
+%% in the following format:
+\Address{
+  Stefan R\"odiger\\
+  Lausitz University of Applied Sciences\\
+  Department of Bio-, Chemistry and Process Engineering\\
+  AND\\
+  Kardiologie-CCM, Charit\'e-Universit\"{a}tsmedizin Berlin\\
+  Germany\\
+  E-mail: \email{stefan\_roediger@gmx.de}\\
+  E-mail: \email{rkward-devel@lists.sourceforge.net}\\
+}
+
+% \Address{
+%  Prasenjit Kapat\\
+%  Affiliation\\
+%  Department\\
+%  E-mail: \email{noname@here.org}
+% }
+% \Address{
+%  Meik Michalke\\
+%  Affiliation\\
+%  Department\\
+% }
+
+
+%% for those who use Sweave please include the following line (with % symbols):
+%% need no \usepackage{Sweave.sty}
+
+%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%% include your article here, just as usual
+%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
+\newpage 
+
+\input{v49i09_technical}
+\input{v49i09_example_plugin}
+\input{v49i09_acknowledgements}
+
+\bibliography{v49i09_sources}
+\end{document}

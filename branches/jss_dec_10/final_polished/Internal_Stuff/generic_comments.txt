@@ -1,18 +1,5 @@
 ------------ What's left TODO of the generic commments --------------
 
-
------ (1) Style ------
-
-o Pay particular attention to your .bib files. In addition to the
-advice in the FAQ, please make sure that all your software references
-are current. Please use the current 2012 R citation (also included
-below) and, if applicable, cross-reference other packages in this
-volume with their full/correct reference. A list of suitable .bib
-items is included below. (Note that for some titles
-markup/capitalization have been changed according to JSS style.)
-
-TODO: At least the R citation needs an update
-
 ----- (2) Code and replication materials -----
 
 o Please include the latest version of your software package along
@@ -22,6 +9,9 @@ packages). The version of the source packages published on
 jstatsoft.org should be under a GPL-2 license.
 
 TODO: package. Does that mean we should include 0.5.7?
+-- We have added a note to the technical supplement that this is based on
+version 0.5.6 of RKWard. Some implementation details have already changed
+since then.
 
 ----- (3) Organization of the files -----
 
@@ -52,6 +42,7 @@ jsslogo.jpg, etc.).
 
 ----------------- What's already done or not relevant ------------------
 
+----- (1) Style ------
 
 o Please have another look at the FAQ at
 http://www.jstatsoft.org/style
@@ -65,6 +56,14 @@ o Do not capitalize expansions of abbreviations. In particular
 introduce the abbreviation GUI in regular text as "graphical user
 interface" without capitalization. Similarly for "integrated
 development environment" etc.
+
+o Pay particular attention to your .bib files. In addition to the
+advice in the FAQ, please make sure that all your software references
+are current. Please use the current 2012 R citation (also included
+below) and, if applicable, cross-reference other packages in this
+volume with their full/correct reference. A list of suitable .bib
+items is included below. (Note that for some titles
+markup/capitalization have been changed according to JSS style.)
 
 o In case your software is a CRAN package, please point out somewhere
 (typically in the introduction) that your package is "available from
