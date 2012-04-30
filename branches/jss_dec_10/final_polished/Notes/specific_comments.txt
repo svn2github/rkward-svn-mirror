@@ -1,12 +1,9 @@
 ---- What's left TODO of the specific notes: ----
 
-o Formally \cite suitable references for KDE and Qt etc. instead of
-just giving URLs in footnotes.
-
 o Include the URLs from Footnotes 4-10, 20-23 into the regular text (e.g.,
 in parentheses).
 
-TODO: I think we did this wrong. Re-do the \url{} markup on all urls, but merge these footnotes into the main text body.
+-- Done. But I guess now we have to revisit all page breaks. Sigh...
 
 o \pkg{R} -> \proglang{R}. There are also various instances of "R" without
 any markup, please correct.
@@ -17,9 +14,17 @@ o Omit the URLs in the references to standard journal articles. If the
 journal is open access (i.e., including JSS, R News etc.) a single URL
 or the DOI should be kept.
 
-TODO: check again
+TODO: check again. I think this basically translates to "Either link to the full document, or do not link to anything at all" (possibly excepting articles in press).
 
 --------- What's done (with comments if needed) ---------
+
+o Formally \cite suitable references for KDE and Qt etc. instead of
+just giving URLs in footnotes.
+
+-- We have wrapped the URLs into formal citations. We have kept the remainder of the
+two footnotes (but merged them into a single footnote), as we believe this will help
+the casual reader to get a very basic idea about the meaning of the two terms. We hope
+this complies with your expectations.
 
 o Omit the footnotes in the \author{} statement. Instead put the remarks
 into the \section*{Acknowledgments}. Give only the main affiliation in
