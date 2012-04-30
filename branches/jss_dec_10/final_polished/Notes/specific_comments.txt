@@ -1,12 +1,5 @@
 ---- What's left TODO of the specific notes: ----
 
-o Omit the footnotes in the \author{} statement. Instead put the remarks
-into the \section*{Acknowledgments}. Give only the main affiliation in
-\author{}, further affiliations can be given in the \Address{}.
-
-TODO: Move equal contribution note to Acknowledgments
-Done: Affiliation for Stefan
-
 o Formally \cite suitable references for KDE and Qt etc. instead of
 just giving URLs in footnotes.
 
@@ -20,10 +13,6 @@ any markup, please correct.
 
 TODO: check again
 
-o Please use three digits for R versions, i.e., 1.3.0 etc.
-
-TODO: check again
-
 o Omit the URLs in the references to standard journal articles. If the
 journal is open access (i.e., including JSS, R News etc.) a single URL
 or the DOI should be kept.
@@ -31,6 +20,13 @@ or the DOI should be kept.
 TODO: check again
 
 --------- What's done (with comments if needed) ---------
+
+o Omit the footnotes in the \author{} statement. Instead put the remarks
+into the \section*{Acknowledgments}. Give only the main affiliation in
+\author{}, further affiliations can be given in the \Address{}.
+
+-- We have moved the remarks as advised. To avoid confusion, the full section
+"Acknowledgements" is now included in both the main paper, and the annex.
 
 o For \cite-ing the R-GUI page of Philippe a formal BibTeX item is
 provided below.
@@ -45,6 +41,8 @@ of the page when reading the paper on screen. Please supply a leaner
 
 o Please \cite Rcmdr and TeachingDemos. Suitable BibTeX items are provided
 below.
+
+o Please use three digits for R versions, i.e., 1.3.0 etc.
 
 o Use \code{} markup for GUI elements, e.g., menu items, buttons, or key
 combinations. (You can also use \texttt which may be easier in combination
@@ -67,7 +65,7 @@ o UNIX -> Unix
 
 o Use "$t$~test" instead of "t-Test".
 
-Done. However, in an RKWard menu item the spelling t-Test is used, and the spelling was kept for direct references to this particular menu item.
+-- Done. However, in one RKWard menu item the spelling "t-Test" is used, and this spelling was kept for direct references to this particular menu item.
 
 o Omit the doi in the Gentleman et al. reference and the citeseer reference
 in Kim and Lutteroth.
