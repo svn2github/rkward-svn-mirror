@@ -4,17 +4,21 @@ o Include the URLs from Footnotes 4-10, 20-23 into the regular text (e.g.,
 in parentheses).
 
 -- Done. But I guess now we have to revisit all page breaks. Sigh...
+-- SR 05/01/2012: p. 1 sigle line, rest fine IMHO
 
 o \pkg{R} -> \proglang{R}. There are also various instances of "R" without
 any markup, please correct.
 
 TODO: check again
+-- SR 05/01/2012: Checked, no further places found
 
 o Omit the URLs in the references to standard journal articles. If the
 journal is open access (i.e., including JSS, R News etc.) a single URL
 or the DOI should be kept.
 
 TODO: check again. I think this basically translates to "Either link to the full document, or do not link to anything at all" (possibly excepting articles in press).
+-- SR 05/01/2012: Checked, we are save to give the URL of the open access papers
+
 
 --------- What's done (with comments if needed) ---------
 
@@ -77,3 +81,5 @@ in Kim and Lutteroth.
 
 o Is there an update on the publication information in Roediger et al. (2011b)
 yet? If volume/number/pages are not available yet, a doi can be supplied.
+
+-- Roediger et al. (2011b) is officialy listed in PubMed now, the DOI (http://dx.doi.org/10.1007/10_2011_132) however is currently broken. Therefore we referenced the PubMed URL instead
