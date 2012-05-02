@@ -1,4 +1,4 @@
------------- What's left TODO of the generic commments --------------
+------------ What's left TODO of the generic commments, or comments that we should address in our response --------------
 
 ----- (2) Code and replication materials -----
 
@@ -8,10 +8,11 @@ versions can be provided in addition (but are not necessary for CRAN
 packages). The version of the source packages published on
 jstatsoft.org should be under a GPL-2 license.
 
-TODO: package. Does that mean we should include 0.5.7?
--- We have added a note to the technical supplement that this is based on
-version 0.5.6 of RKWard. Some implementation details have already changed
-since then.
++++ As requested, we have included the most recent released version of RKWard
+in our submission. We placed it in the sub-directory "Code" as
+rkward-0.5.7.tar.gz. However, we wish to point out, that the article is still
+based on RKWard 0.5.6. We have added a note to this effect to the technical supplement, 
+as some implementation details have already changed since then.
 
 ----- (3) Organization of the files -----
 
@@ -20,17 +21,19 @@ called v49iXX.tex, v49iXX.bib, and v49iXX.pdf , where XX is the
 two-digit number of your submission within the volume, e.g.,
 v49i01.tex/bib/pdf.
 
-o All graphics files should be collected in a sub-directory "Figures".
-To help LaTeX find the graphics, you can simply include the line
-
-\graphicspath{{Figures/}}
-
-in the header of your .tex file.
++++ Note that we have split our article into several .tex files for easier collaborative
+editing. We have prefixed each of these files with "v49i09". Naturally, we will be
+glad to paste everything into two standalone .tex files (one for the article, one for the
+annex) if you wish. The PDF of the annex is called v49i09_annex.pdf.
 
 o All code and replication materials should be collected in a
 sub-directory "Code". The main replication file should be v49iXX.R or
 v49iXX.txt (see point (2) above), where XX is again the two-digit
 number of your submission.
+
++++ Note that we include both a .R file replicating most applicable features, and a .txt file
+providing instructions on running the replication script (i.e. inside an RKWard session), and
+on reproducing the example in Section 7 of the annex.
 
 o Please wrap all of these files into a single organized .zip (or
 .tar.gz) file. Please make sure the .zip files only contains the
@@ -93,3 +96,10 @@ file. This is:
 
 where the "..." fields should be replaced with the correct information
 for your submission.
+
+o All graphics files should be collected in a sub-directory "Figures".
+To help LaTeX find the graphics, you can simply include the line
+
+\graphicspath{{Figures/}}
+
+in the header of your .tex file.

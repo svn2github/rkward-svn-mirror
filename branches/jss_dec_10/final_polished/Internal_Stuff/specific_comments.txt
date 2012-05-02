@@ -19,13 +19,12 @@ or the DOI should be kept.
 TODO: check again. I think this basically translates to "Either link to the full document, or do not link to anything at all" (possibly excepting articles in press).
 -- SR 05/01/2012: Checked, we are save to give the URL of the open access papers
 
-
---------- What's done (with comments if needed) ---------
+---- Snippets for response to editor ------
 
 o Formally \cite suitable references for KDE and Qt etc. instead of
 just giving URLs in footnotes.
 
--- We have wrapped the URLs into formal citations. We have kept the remainder of the
++++ We have wrapped the URLs into formal citations. We have kept the remainder of the
 two footnotes (but merged them into a single footnote), as we believe this will help
 the casual reader to get a very basic idea about the meaning of the two terms. We hope
 this complies with your expectations.
@@ -34,8 +33,19 @@ o Omit the footnotes in the \author{} statement. Instead put the remarks
 into the \section*{Acknowledgments}. Give only the main affiliation in
 \author{}, further affiliations can be given in the \Address{}.
 
--- We have moved the remarks as advised. To avoid confusion, the full section
++++ We have moved the remarks as advised. To avoid confusion, the full section
 "Acknowledgements" is now included in both the main paper, and the annex.
+
+o Use "$t$~test" instead of "t-Test".
+
++++ Done. However, in one RKWard menu item the spelling "t-Test" is used, and this spelling was kept for direct references to this particular menu item.
+
+o Is there an update on the publication information in Roediger et al. (2011b)
+yet? If volume/number/pages are not available yet, a doi can be supplied.
+
++++ Roediger et al. (2011b) is officialy listed in PubMed now, the DOI (http://dx.doi.org/10.1007/10_2011_132) however is currently broken. Therefore we referenced the PubMed URL instead
+
+--------- What's done ---------
 
 o For \cite-ing the R-GUI page of Philippe a formal BibTeX item is
 provided below.
@@ -72,14 +82,5 @@ o An enhanced Sweave citation is included below.
 
 o UNIX -> Unix
 
-o Use "$t$~test" instead of "t-Test".
-
--- Done. However, in one RKWard menu item the spelling "t-Test" is used, and this spelling was kept for direct references to this particular menu item.
-
 o Omit the doi in the Gentleman et al. reference and the citeseer reference
 in Kim and Lutteroth.
-
-o Is there an update on the publication information in Roediger et al. (2011b)
-yet? If volume/number/pages are not available yet, a doi can be supplied.
-
--- Roediger et al. (2011b) is officialy listed in PubMed now, the DOI (http://dx.doi.org/10.1007/10_2011_132) however is currently broken. Therefore we referenced the PubMed URL instead
