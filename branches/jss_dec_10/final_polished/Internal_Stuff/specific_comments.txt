@@ -11,6 +11,7 @@ any markup, please correct.
 
 TODO: check again
 -- SR 05/01/2012: Checked, no further places found
+-- PK 05/02/2012: Checked, none found
 
 o Omit the URLs in the references to standard journal articles. If the
 journal is open access (i.e., including JSS, R News etc.) a single URL
