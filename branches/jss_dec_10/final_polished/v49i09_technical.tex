@@ -71,6 +71,7 @@ In future releases it could be made possible to run GUI and \proglang{R} engine 
  \label{fig:design_sketch}
 \end{figure}
 
+\pagebreak
 \section{Object modification detection}
 \label{sec:technical_omd}
 \pkg{RKWard} allows the user to run arbitrary commands in \proglang{R} at any time, even while
@@ -209,6 +210,7 @@ the hooks. These call strings are displayed as a drop-down menu on the toolbar
 for non-sequential browsing (see the section on graphics windows in the main article) providing a very intuitive browsing
 interface unlike the native implementations in \code{windows()} and \code{quartz()} devices.
 
+\pagebreak
 \section{Plugin infrastructure}
 \label{sec:technical_plugins}
 One of the earliest features of \pkg{RKWard} was the extensibility by plugins.
@@ -385,10 +387,11 @@ external plugin set is downloaded, unpacked and its plugin map added to \pkg{RKW
 it becomes instantly available after the configuration dialog is closed. External plugin sets are
 neither officially included nor supported by the \pkg{RKWard} developers. However, they allow plugin
 developers to easily extend \pkg{RKWard} with state-of-the-art or highly specialized features. To
-achieve this, \pkg{RKWard} draws on \pkg{KNewStuff2}, a \pkg{KDE} library providing support for \pkg{GHNS}\footnote{
+achieve this, \pkg{RKWard} (version 0.5.6) draws on \pkg{KNewStuff2}, a \pkg{KDE} library providing support for \pkg{GHNS}\footnote{
 \pkg{GHNS} (Get Hot New Stuff) is a technology platform (software and specifications) for desktop users to share their work. It is hosted
 under the umbrella of the freedesktop.org project at \url{http://ghns.freedesktop.org}.
-}.
+}
+\footnote{In future version of \pkg{RKWard}, \pkg{KNewStuff2}/\pkg{GHNS} framework will be deprecated in favor of standard \proglang{R} packages.}.
 
 \subsubsection{Automated testing}
 \label{sec:technical_processes_automatedtesting}
