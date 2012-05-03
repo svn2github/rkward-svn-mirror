@@ -12,7 +12,9 @@ jstatsoft.org should be under a GPL-2 license.
 in our submission. We placed it in the sub-directory "Code" as
 rkward-0.5.7.tar.gz. However, we wish to point out, that the article is still
 based on RKWard 0.5.6. We have added a note to this effect to the technical supplement, 
-as some implementation details have already changed since then.
+as some implementation details have already changed since then. For one such detail, the
+reliance on GHNS for managing plugins, we added a very short hint about the approach
+which has been adopted meanwhile, to footnote 10.
 
 ----- (3) Organization of the files -----
 
@@ -21,10 +23,12 @@ called v49iXX.tex, v49iXX.bib, and v49iXX.pdf , where XX is the
 two-digit number of your submission within the volume, e.g.,
 v49i01.tex/bib/pdf.
 
-+++ Note that we have split our article into several .tex files for easier collaborative
++++ Note that we provide two PDF files, one for the main article, and one for the
+technical supplement. The latter is called v49i09_annex.pdf. Further, we have split
+both documents into several .tex files for easier collaborative
 editing. We have prefixed each of these files with "v49i09". Naturally, we will be
 glad to paste everything into two standalone .tex files (one for the article, one for the
-annex) if you wish. The PDF of the annex is called v49i09_annex.pdf.
+supplement) if you wish.
 
 o All code and replication materials should be collected in a
 sub-directory "Code". The main replication file should be v49iXX.R or
@@ -33,7 +37,7 @@ number of your submission.
 
 +++ Note that we include both a .R file replicating most applicable features, and a .txt file
 providing instructions on running the replication script (i.e. inside an RKWard session), and
-on reproducing the example in Section 7 of the annex.
+on reproducing the example in Section 7 of the technical supplement.
 
 o Please wrap all of these files into a single organized .zip (or
 .tar.gz) file. Please make sure the .zip files only contains the
