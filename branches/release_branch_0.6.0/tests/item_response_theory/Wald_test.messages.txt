@@ -1,0 +1,3 @@
+Warning in Waldtest.Rm(estimates.rsm) :
+  
+The following items were excluded due to inappropriate response patterns within subgroups: 

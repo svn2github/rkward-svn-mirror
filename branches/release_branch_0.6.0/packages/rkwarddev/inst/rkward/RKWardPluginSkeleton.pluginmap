@@ -1,0 +1,71 @@
+<!DOCTYPE rkpluginmap >
+<document 
+	namespace="rkward"
+	id="CreateRKWardpluginskeleton_rkward"
+>
+	<about 
+		name="RKWard Plugin Skeleton"
+		shortinfo="GUI interface to create RKWard plugin skeletons"
+		version="0.04-2"
+		releasedate="2011-10-21"
+		url="http://rkward.sf.net"
+		license="GPL (&gt;= 3)"
+	>
+		<author 
+			given="Meik"
+			family="Michalke"
+			email="meik.michalke@hhu.de"
+			role="aut, cre"
+		 />
+		<dependencies rkward_min_version="0.5.7">
+			<!-- 
+				<package 
+					name="CHANGE_ME_OR_DELETE_ME"
+					min_version="CHANGE_ME_OR_DELETE_ME"
+					max_version="CHANGE_ME_OR_DELETE_ME"
+					repository="CHANGE_ME_OR_DELETE_ME"
+				 /> 
+			-->
+			<!-- 
+				If this plugin depends on other pluginmaps, edit this part to your needs:
+
+				<pluginmap 
+					name="CHANGE_ME_OR_DELETE_ME"
+					url="CHANGE_ME_OR_DELETE_ME"
+				 /> 
+			-->
+		</dependencies>
+	</about>
+	<!-- 
+		<require file="path/file.pluginmap" /> 
+	-->
+	<components>
+		<component 
+			id="cmp_CrtRKWrdplgnskltnCrtRKWrd"
+			label="Create RKWard plugin skeleton"
+			type="standard"
+			file="plugins/CreateRKWardpluginskeleton.xml"
+		 />
+	</components>
+	<hierarchy>
+		<menu 
+			id="file"
+			label.file="File"
+		>
+			<menu 
+				id="export"
+				label="export"
+			>
+				<entry component="cmp_CrtRKWrdplgnskltnCrtRKWrd" />
+			</menu>
+		</menu>
+	</hierarchy>
+	<!-- 
+		<context id="x11">
+		</context> 
+	-->
+	<!-- 
+		<context id="import">
+		</context> 
+	-->
+</document>
