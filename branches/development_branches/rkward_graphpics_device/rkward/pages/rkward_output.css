@@ -1,0 +1,65 @@
+pre.code {
+	margin-left: 2em;
+}
+
+pre.code:before {
+	display: block;
+	content: "> ";
+	width: 2em;
+	color: black;
+	float: left;
+	margin-left: -2em;
+}
+
+pre.output_normal {
+	clear: both;	/* make sure never to float around the "> " marker */
+}
+
+pre.output_warning {
+	clear: both;	/* make sure never to float around the "> " marker */
+	background-color: #ffaaaa;
+}
+
+table {
+	border-spacing: 0px;
+}
+
+/* TOC menu */
+.RKTOC {
+	background-color: #eeeeff;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	height: 100%;
+	width: 25%;
+	padding: 7px;
+	display: none;
+	overflow: auto;
+}
+
+.RKTOChidden {
+	display: inline;
+	height: 1em;
+	overflow: hidden;
+}
+
+.toggleTOC:link, .toggleTOC:visited {
+	color: blue;
+	font-weight: bold;
+}
+
+.right {
+	position: absolute;
+	right: 7px;
+	text-align: right;
+}
+
+.center {
+	position: absolute;
+	right: 25%;
+	left: 25%;
+	top: 7px;
+	text-align: center;
+}
+
+/* end TOC menu */
