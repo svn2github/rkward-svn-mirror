@@ -1,0 +1,15 @@
+<!DOCTYPE rkplugin>
+<document> 
+	<code file="load_data.js"/>
+	<help file="load_data.rkh"/>
+	<logic>
+		<connect client="globalenv_warning.visible" governor="envir.active.not"/>
+		<connect client="otherenv_warning.visible" governor="envir.active"/>
+	</logic>
+	<dialog label="Load an R data file">
+		<browser size="small" id="file" label="R data file to load" filter="*.RData" />
+		<text id="globalenv_warning" type="warning">WARNING: This may overwrite existing objects in .GlobalEnv. Be sure to save your workspace, first.</text>
+		<saveobject id="envir" label="Save to environment" initial="my.env" checkable="true"/>
+		<text id="otherenv_warning" type="warning">WARNING: If the environment already exists, all objects inside it will be lost.</text>
+	</dialog>
+</document>

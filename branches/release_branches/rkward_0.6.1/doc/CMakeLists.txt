@@ -1,0 +1,2 @@
+ADD_SUBDIRECTORY (rkward)
+ADD_SUBDIRECTORY (rkwardplugins)

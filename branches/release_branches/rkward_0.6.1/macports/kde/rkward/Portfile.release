@@ -1,0 +1,58 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+fetch.type          svn
+svn.url             http://svn.code.sf.net/p/rkward/code/branches/release_branch_0.6.0
+svn.revision        4388
+worksrcdir          ${workpath}/release_branch_0.6.0
+
+name                rkward
+version             0.6.0
+categories          kde kde4 math science
+maintainers         hhu.de:meik.michalke
+license             GPL-2
+platforms           darwin
+
+description         KDE frontend to the R statistics language
+
+long_description    RKWard aims to become an easy to use, transparent frontend to R, a powerful system \
+                    for statistical computation and graphics. Besides a convenient GUI for the most important \
+                    statistical functions, future versions will also provide seamless integration with an office-suite.
+
+homepage            http://rkward.sourceforge.net
+
+master_sites        https://sourceforge.net/projects/rkward/files/Current_Stable_Releases
+
+PortGroup           cmake 1.0
+depends_lib         port:kde4-baseapps \
+                    port:kate \
+                    port:R
+
+if {${configure.compiler} == "clang"} {
+        configure.compiler llvm-gcc-4.2
+}
+
+post-extract {
+        # creates the build dir if it doesn't exist
+        # this won't return errors if directory is already there
+        file mkdir ${worksrcdir}/build
+}
+
+configure.dir       ${worksrcdir}/build
+configure.args-append \
+        -DNO_R_XML=1 \
+        -DRKVERSION_NUMBER=${version} \
+        -DBUNDLE_INSTALL_DIR=${applications_dir}
+# work around moved Qt include dir
+if { ![file exists ${prefix}/include/Qt/qglobal.h] && [file exists ${prefix}/include/QtCore/qglobal.h] } {
+        configure.args-append -DQT_QT_INCLUDE_DIR=${prefix}/include/QtCore
+}
+configure.cmd       cmake ..
+
+build.dir           ${worksrcdir}/build
+
+pre-pkg {
+        file copy -force -- ${worksrcdir}/macports/postinstall ${package.scripts}/postinstall
+        file attributes ${package.scripts}/postinstall -permissions 0755
+}
