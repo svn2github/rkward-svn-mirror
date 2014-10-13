@@ -1,0 +1,51 @@
+<!DOCTYPE rkpluginmap >
+<document 
+	namespace="CreateRKWardpluginskeleton"
+	id="CreateRKWardpluginskeleton__rkward"
+	priority="medium"
+>
+	<!-- 
+		this code was generated using the rkwarddev package.
+			perhaps don't make changes here, but in the rkwarddev script instead! 
+	-->
+	<dependencies rkward_min_version="0.6.0">
+	</dependencies>
+	<about 
+		name="RKWard Plugin Skeleton"
+		shortinfo="GUI interface to create RKWard plugin skeletons"
+		longinfo="GUI interface to create RKWard plugin skeletons"
+		version="0.06-5"
+		releasedate="2014-10-12"
+		url="http://rkward.sf.net"
+		license="GPL (&gt;= 3)"
+	>
+		<author 
+			given="Meik"
+			family="Michalke"
+			email="meik.michalke@hhu.de"
+			role="aut, cre"
+		 />
+	</about>
+	<components>
+		<component 
+			id="cmp_CrtRKWrdplgnskltnCrtRKWrd"
+			label="Create RKWard plugin skeleton"
+			type="standard"
+			file="plugins/CreateRKWardpluginskeleton.xml"
+		>
+		</component>
+	</components>
+	<hierarchy>
+		<menu 
+			id="file"
+			label.file="File"
+		>
+			<menu 
+				id="export"
+				label="export"
+			>
+				<entry component="cmp_CrtRKWrdplgnskltnCrtRKWrd" />
+			</menu>
+		</menu>
+	</hierarchy>
+</document>

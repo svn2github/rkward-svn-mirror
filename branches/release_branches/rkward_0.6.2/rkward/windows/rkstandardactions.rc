@@ -1,0 +1,57 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkward_standardactions" version="620">
+<!-- What is this for, wouldn't it be easier to just inline these actions in the parts where they
+     end up? Yes, but then they would be separate actions, internally, and each could be assigned
+     a shortcut of its own. This is needed to tie them all together. -->
+	<MenuBar>
+		<Menu name="file">
+			<Action name="copy_lines_to_output"/>
+		</Menu>
+		<Menu name="edit">
+			<Action name="paste_special" group="after_edit_paste_merge"/>
+		</Menu>
+		<Menu name="run">
+			<Action name="run_current" group="run_actions_merge"/>
+			<Action name="run_all" group="run_actions_merge"/>
+			<WeakSeparator group="postrun_actions_merge"/>
+			<Action name="interrupt" group="postrun_actions_merge"/>
+		</Menu>
+		<Menu name="help">
+			<Action name="function_reference" group="help_actions_merge"/>
+			<Action name="window_help" group="prehelp_actions_merge"/>
+		</Menu>
+		<Menu name="settings">
+			<Action name="window_configure"/>
+		</Menu>
+	</MenuBar>
+	<ToolBar fullWidth="true" name="mdiToolBar">
+		<Action name="run_line" group="toolbar_actions_merge"/>
+		<Action name="run_selection" group="toolbar_actions_merge"/>
+		<Action name="run_all" group="toolbar_actions_merge"/>
+		<WeakSeparator group="postrun_actions_merge"/>
+		<Action name="interrupt" group="postrun_actions_merge"/>
+	</ToolBar>
+
+
+	<Menu name="ktexteditor_popup">
+		<Action name="paste_special" group="edit_paste_merge"/>
+		<Menu name="run">
+			<Action name="run_current" group="run_actions_merge"/>
+			<Action name="run_all" group="run_actions_merge"/>
+		</Menu>
+		<Action name="function_reference" group="ktexteditor_popup_merge2"/>
+		<Separator group="ktexteditor_popup_merge2"/>
+		<Action name="window_configure" group="ktexteditor_popup_merge2"/>
+	</Menu>
+	<Menu name="rkconsole_context_menu">
+		<Action name="copy_lines_to_output" group="rkconsole_context_merge_copy"/>
+		<Action name="paste_special" group="rkconsole_context_merge_paste"/>
+		<Action name="run_current" group="rkconsole_context_merge1"/>
+		<Action name="function_reference" group="rkconsole_context_merge2"/>
+		<Separator/>
+		<Action name="window_configure"/>
+	</Menu>
+	<Menu name="rkcommandlog_context_menu">
+		<Action name="run_current" group="rkcommandlog_context_merge1"/>
+	</Menu>
+</kpartgui>
