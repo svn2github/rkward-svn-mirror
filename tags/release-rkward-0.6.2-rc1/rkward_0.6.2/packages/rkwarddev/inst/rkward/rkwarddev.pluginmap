@@ -1,5 +1,0 @@
-<!DOCTYPE rkpluginmap>
-
-<document base_prefix="" namespace="rkward">
-	<require file="RKWardPluginSkeleton.pluginmap" />
-</document>

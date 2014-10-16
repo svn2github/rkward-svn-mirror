@@ -1,2 +1,0 @@
-/* Version number of package */
-#define RKWARD_VERSION "@RKVERSION_NUMBER@"

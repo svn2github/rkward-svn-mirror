@@ -1,8 +1,0 @@
-#!/usr/bin/make -f
-#								-*- makefile -*-
-# debian/rules file for the Debian/GNU Linux r-other-reaktanz-ximple package
-# Copyright 2014 by m.eik michalke <meik.michalke@hhu.de>
-
-debRreposname := other-reaktanz
-
-include /usr/share/R/debian/r-cran.mk
