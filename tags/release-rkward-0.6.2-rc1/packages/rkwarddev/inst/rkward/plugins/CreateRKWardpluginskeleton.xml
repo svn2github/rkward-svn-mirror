@@ -1,0 +1,131 @@
+<!DOCTYPE rkplugin >
+<document>
+	<!-- this code was generated using the rkwarddev package.
+			perhaps don't make changes here, but in the rkwarddev script instead! -->
+	<code file="CreateRKWardpluginskeleton.js" />
+	<help file="CreateRKWardpluginskeleton.rkh" />
+	<logic>
+		<connect governor="frm_Dfndpndn.checked" client="frm_DpndsRKW.enabled" />
+		<connect governor="frm_Dfndpndn.checked" client="frm_DpndsnRv.enabled" />
+	</logic>
+	<dialog label="RKWard Plugin Skeleton">
+		<tabbook id="tbbk_PlgnSklt" label="Plugin Skeleton">
+			<tab label="About the plugin" id="tab_Abtthplg">
+				<column id="clm_fAAPPLLGPL">
+					<frame label="About the plugin" id="frm_Abtthplg">
+						<row id="row_inPPLLGPL3">
+							<input label="Plugin name" id="inp_Pluginnm" size="small" required="true" />
+							<input label="License" id="inp_License" initial="GPL (&gt;= 3)" required="true" />
+						</row>
+						<row id="row_inptlblShS">
+							<input label="Short description" id="inp_Shrtdscr" required="true" />
+						</row>
+						<row id="row_inVV0010RR">
+							<input label="Version number" id="inp_Vrsnnmbr" initial="0.01-0" required="true" />
+							<input label="Release date (empty for today)" id="inp_Rlsdtmpt" />
+						</row>
+						<row id="row_inptlbHHCC">
+							<input label="Homepage" id="inp_Homepage" />
+							<input label="Category" id="inp_Category" />
+						</row>
+					</frame>
+					<frame label="Plugin author" id="frm_Plugnthr">
+						<row id="row_cGGFFEEGGF">
+							<column id="clm_inptGGFFEE">
+								<input label="Given name" id="inp_Givennam" required="true" />
+								<input label="Family name" id="inp_Familynm" required="true" />
+								<input label="E-mail" id="inp_Email" required="true" />
+								<stretch />
+							</column>
+							<column id="clm_frmlAAAAMM">
+								<frame label="Author roles" id="frm_Authrrls">
+									<checkbox id="chc_Author" label="Author" value="true" checked="true" />
+									<checkbox id="chc_Maintanr" label="Maintainer" value="true" checked="true" />
+									<stretch />
+								</frame>
+							</column>
+						</row>
+					</frame>
+				</column>
+			</tab>
+			<tab label="Create options" id="tab_Cretptns">
+				<column id="clm_fDTEMPDIRD">
+					<frame id="frm_rDTEMPDIRD">
+						<row id="row_bDTEMPDIRD">
+							<browser label="Directory to save to (empty for $TEMPDIR)" type="dir" id="brw_DTEMPDIR" required="false" />
+						</row>
+						<row id="row_cOOAAIIOOA">
+							<column id="clm_chckOOAAII">
+								<checkbox id="chc_Ovrwrtxs" label="Overwrite existing files" value="true" />
+								<checkbox id="chc_Addwzrds" label="Add wizard section" value="true" />
+								<checkbox id="chc_Incldplg" label="Include plugin tests" value="true" checked="true" />
+								<stretch />
+							</column>
+							<column id="clm_cOOARKWARK">
+								<checkbox id="chc_Opnflsfr" label="Open files for editing" value="true" checked="true" />
+								<checkbox id="chc_AddplRKW" label="Add plugin to RKWard configuration" value="true" checked="true" />
+								<checkbox id="chc_Shwthplg" label="Show the plugin" value="true" />
+								<stretch />
+							</column>
+						</row>
+						<row id="row_dPPTFEVWRD">
+							<dropdown id="drp_Plcntpmn" label="Place in top menu">
+								<option label="Test (created if needed)" value="test" checked="true" />
+								<option label="File" value="file" />
+								<option label="Edit" value="edit" />
+								<option label="View" value="view" />
+								<option label="Workspace" value="workspace" />
+								<option label="Run" value="run" />
+								<option label="Data" value="data" />
+								<option label="Analysis" value="analysis" />
+								<option label="Plots" value="plots" />
+								<option label="Distributions" value="distributions" />
+								<option label="Windows" value="windows" />
+								<option label="Settings" value="settings" />
+								<option label="Help" value="help" />
+							</dropdown>
+						</row>
+					</frame>
+					<frame label="Define dependencies" checkable="true" checked="false" id="frm_Dfndpndn">
+						<row id="row_fDRKWDRKWR">
+							<frame label="Depends on RKWard version" id="frm_DpndsRKW">
+								<input label="RKWard min" id="inp_RKWardmn" size="small" />
+								<input label="RKWard max" id="inp_RKWardmx" size="small" />
+								<stretch />
+							</frame>
+							<frame label="Depends on R version" id="frm_DpndsnRv">
+								<input label="R min" id="inp_Rmin" size="small" />
+								<input label="R max" id="inp_Rmax" size="small" />
+								<stretch />
+							</frame>
+						</row>
+						<row id="row_oDRDRPPDRD">
+							<optionset id="ost_frmlDRDRPP">
+								<content>
+									<optiondisplay />
+									<frame label="Depends on R packages" id="frm_DpndsnRp">
+										<input label="Package" id="inp_Package" />
+										<stretch />
+									</frame>
+								</content>
+								<optioncolumn id="ocl_inpPckgtxt" connect="inp_Package.text" label="Package" />
+							</optionset>
+						</row>
+					</frame>
+				</column>
+			</tab>
+			<tab label="Help page" id="tab_Helppage">
+				<column id="clm_fWWSSSSUUU">
+					<frame label="Write help files" checkable="true" checked="false" id="frm_Wrthlpfl">
+						<row id="row_inptlblSmS">
+							<input label="Summary" id="inp_Summary" size="large" />
+						</row>
+						<row id="row_inptlblUsU">
+							<input label="Usage" id="inp_Usage" size="large" />
+						</row>
+					</frame>
+				</column>
+			</tab>
+		</tabbook>
+	</dialog>
+</document>

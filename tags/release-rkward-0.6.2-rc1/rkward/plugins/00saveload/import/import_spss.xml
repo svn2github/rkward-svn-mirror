@@ -1,0 +1,40 @@
+<!DOCTYPE rkplugin>
+<document>
+	<code file="import_spss.js" />
+	<help file="import_spss.rkh" />
+	<snippets>
+		<include file="convert_encoding.xml"/>
+	</snippets>
+	<logic>
+		<external id="filename"/>
+		<connect governor="filename" client="file.selection"/>
+		
+		<connect governor="data_frame.state" client="doedit.enabled" />
+		
+		<connect governor="use_labels.state" client="labels_limit.enabled"/>
+		<connect governor="use_labels.state" client="trim_labels.enabled"/>
+		
+		<insert snippet="encoding_logic"/>
+	</logic>
+	<dialog label="Import SPSS file">
+		<tabbook>
+			<tab id="tab_general" label="General">
+				<browser type="file" id="file" label="File name" />
+				<stretch/>
+				<row>
+					<saveobject id="saveto" initial="my.spss.data" label="Object to save to"/>
+					<checkbox id="doedit" value="1" value_unchecked="0" label="Edit Object" checked="true" />
+				</row>
+				<stretch/>
+				<checkbox id="data_frame" checked="true" label="Import as a data.frame" value="1" value_unchecked="0"/>
+				<frame label="Labels">
+					<checkbox id="convert_var_labels" checked="true" label="Convert Variable labels to RKWard format" value="1" value_unchecked="0"/>
+					<checkbox id="use_labels" checked="true" label="Use value labels" value="1" value_unchecked="0"/>
+					<spinbox id="labels_limit" type="integer" initial="1000000" min="1" label="Maximum number of labels per object" />
+					<checkbox id="trim_labels" checked="false" label="Trim white space" value="1" value_unchecked="0"/>
+				</frame>
+			</tab>
+			<insert snippet="encoding_tab"/>
+		</tabbook>
+	</dialog>
+</document>

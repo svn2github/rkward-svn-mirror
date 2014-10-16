@@ -1,0 +1,61 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           kde4 1.1
+name                rkward
+version             0.6.1
+patchfiles          patch-rkward-rbackend-rkstructuregetter.cpp.diff
+worksrcdir          ${name}-${version}
+
+conflicts           rkward-devel
+categories          kde kde4 math science
+maintainers         hhu.de:meik.michalke
+license             GPL-2
+platforms           darwin
+
+description         KDE frontend to the R statistics language
+
+long_description    RKWard aims to become an easy to use, transparent frontend to R, a powerful system \
+                    for statistical computation and graphics. Besides a convenient GUI for the most important \
+                    statistical functions, future versions will also provide seamless integration with an office-suite.
+
+homepage            http://rkward.sourceforge.net
+
+master_sites        sourceforge:rkward
+
+depends_lib         port:kdelibs4 \
+                    port:kate \
+                    port:okular \
+                    port:R
+
+checksums           rmd160  b476b0adbb9cfbd1253c86bf763c351b7cd22e25 \
+                    sha256  7887bc22645a8e6de278da55e31a61acd91aca0ade777af11a110d0dfcfffde7
+
+post-extract {
+        file mkdir ${worksrcpath}/build
+}
+
+configure.dir       ${worksrcpath}/build
+configure.args-append \
+        -DNO_R_XML=1 \
+        -DRKVERSION_NUMBER=${version} \
+        -DBUNDLE_INSTALL_DIR=${applications_dir} \
+        -DR_EXECUTABLE=${frameworks_dir}/R.framework/Resources/R
+
+variant debug description {Add full debugging support} {
+        depends_lib-append port:valgrind
+}
+
+configure.post_args ..
+
+build.dir           ${worksrcpath}/build
+
+livecheck.type      regex
+livecheck.url       http://sourceforge.net/projects/${name}/files/Current_Stable_Releases/
+livecheck.regex     "${name}-(\\d+\\.\\d+\\.\\d+)\\.tar"
+
+pre-pkg {
+        file copy -force -- ${worksrcdir}/macports/postinstall ${package.scripts}/postinstall
+        file attributes ${package.scripts}/postinstall -permissions 0755
+}
