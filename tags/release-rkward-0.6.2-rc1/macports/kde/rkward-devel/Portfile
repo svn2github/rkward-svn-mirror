@@ -1,0 +1,95 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+# $Id$
+
+PortSystem          1.0
+PortGroup           kde4 1.1
+fetch.type          svn
+name                rkward-devel
+version             0.6.1-svn
+svn.url             http://svn.code.sf.net/p/rkward/code/trunk
+#svn.revision        4494
+worksrcdir          trunk/rkward
+
+conflicts           rkward
+categories          kde kde4 math science
+maintainers         hhu.de:meik.michalke
+license             GPL-2
+platforms           darwin
+
+description         KDE frontend to the R statistics language
+
+long_description    RKWard aims to become an easy to use, transparent frontend to R, a powerful system \
+                    for statistical computation and graphics. Besides a convenient GUI for the most important \
+                    statistical functions, future versions will also provide seamless integration with an office-suite.
+
+homepage            http://rkward.sourceforge.net
+
+depends_lib         port:kdelibs4 \
+                    port:kate \
+                    port:okular \
+                    port:R
+
+configure.args-append \
+        -DNO_R_XML=1 \
+        -DRKVERSION_NUMBER=${version} \
+        -DBUNDLE_INSTALL_DIR=${applications_dir} \
+        -DR_EXECUTABLE=${frameworks_dir}/R.framework/Resources/R
+
+############
+# configure R to use Mac binaries by default
+# you must first install the OS X packages of CRAN R, as we'll link against them
+subport rkward-devel-binary {
+        conflicts-append rkward-devel rkward-binary
+        depends_lib-delete   port:R
+        configure.compiler   llvm-gcc-4.2
+        configure.args-delete \
+               -DR_EXECUTABLE=${frameworks_dir}/R.framework/Resources/R
+        configure.args-append \
+               -DUSE_BINARY_PACKAGES=1 \
+               -DR_EXECUTABLE=/Library/Frameworks/R.framework/Resources/R \
+               -DR_LIBDIR=${frameworks_dir}/R.framework/Resources/library
+        # create libdir if it doesn't exist
+        file mkdir ${frameworks_dir}/R.framework/Resources/library
+}
+
+############
+# stable release, subport used for binary bundes
+subport rkward-binary {
+        conflicts-append rkward-devel rkward-devel-binary
+        configure.args-delete \
+               -DR_EXECUTABLE=${frameworks_dir}/R.framework/Resources/R \
+               -DRKVERSION_NUMBER=${version}
+        version             0.6.1
+        svn.url             http://svn.code.sf.net/p/rkward/code/branches/release_branches/rkward_${version}
+        svn.revision        4635
+        patchfiles          patch-rkward-rbackend-rkstructuregetter.cpp.diff
+        worksrcdir          rkward_${version}
+        depends_lib-delete   port:R
+        configure.compiler   llvm-gcc-4.2
+        configure.args-append \
+               -DRKVERSION_NUMBER=${version} \
+               -DUSE_BINARY_PACKAGES=1 \
+               -DR_EXECUTABLE=/Library/Frameworks/R.framework/Resources/R \
+               -DR_LIBDIR=${frameworks_dir}/R.framework/Resources/library
+        # create libdir if it doesn't exist
+        file mkdir ${frameworks_dir}/R.framework/Resources/library
+}
+
+post-extract {
+        file mkdir ${worksrcpath}/build
+}
+
+configure.dir       ${worksrcpath}/build
+
+variant debug description {Add full debugging support} {
+        depends_lib-append port:valgrind
+}
+
+configure.post_args ..
+
+build.dir           ${worksrcpath}/build
+
+pre-pkg {
+        file copy -force -- ${workpath}/trunk/rkward/macports/postinstall ${package.scripts}/postinstall
+        file attributes ${package.scripts}/postinstall -permissions 0755
+}
