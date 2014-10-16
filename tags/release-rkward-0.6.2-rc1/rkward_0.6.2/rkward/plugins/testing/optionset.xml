@@ -1,0 +1,84 @@
+<!DOCTYPE rkplugin>
+
+<document>
+	<code file="optionset.js"/>
+
+	<logic>
+		<set id="set.contents.dummybox.enabled" to="false"/>
+		<!--		<connect governor="set.contents.x" client="set.contents.test_embed.xvar"/> -->
+		<connect governor="x.available" client="set.var" />
+		<connect governor="x.available.shortname" client="set.varname" />
+		<connect governor="mset.object" client="cset.object" />
+		<connect governor="mset.objshort" client="cset.objshort" />
+		<connect governor="mset.current_row" client="cset.current_row" />
+	</logic>
+
+	<dialog label="Testing Optionset">
+		<text id="text">
+			This plugin is bogus! Do not use!
+		</text>
+		<tabbook>
+			<tab label="Manual set">
+				<optionset id="mset">
+					<content>
+						<frame>
+							<optiondisplay index="true"/>
+							<row>
+								<varselector id="vars"/>
+								<column>
+									<varslot type="numeric" id="mx" source="vars" required="true" label="Pick an object"/>	<!-- NOTE: requiredness does not work, correctly, yet -->
+									<input id="summary" label="Enter a summary" size="large" initial="I am the default"/>
+									<stretch/>
+								</column>
+							</row>
+						</frame>
+					</content>
+					<optioncolumn id="object" connect="mx.available"/>
+					<optioncolumn id="objshort" label="Object" connect="mx.available.shortname"/>
+					<optioncolumn id="summary" label="Summary" connect="summary.text"/>
+				</optionset>
+			</tab>
+			<tab label="Connected driven set">
+				<text>This option set is connected to the set on the first tab.</text>
+				<optionset id="cset" keycolumn="object">
+					<content>
+						<frame>
+							<optiondisplay index="true"/>
+							<input id="summary" label="Enter another summary" size="large"/>
+						</frame>
+					</content>
+					<optioncolumn id="object" external="true"/>
+					<optioncolumn id="objshort" label="Object" external="true"/>
+					<optioncolumn id="summary2" connect="summary.text"/>
+				</optionset>
+			</tab>
+			<tab label="Driven set">
+				<text>First, select some objects, here (it doesn't matter, what you pick).</text>
+				<row>
+					<varselector id="vars"/>
+					<varslot type="numeric" id="x" source="vars" required="false" label="variables" multi="true"/>
+				</row>
+				<text><p>&nbsp;</p><p>Next, see how the controls allow you to specify "Comments" for each object.</p></text>
+				<row>
+					<optionset id="set" min_rows="1" keycolumn="var">
+						<content>
+							<frame>
+								<optiondisplay index="false"/>
+								<checkbox id="dummybox" label="This dummy option is always disabled"/>
+								<input id="commenta" label="Comment A"/>
+								<input id="commentb" label="Comment B" initial="This is a default entry. Change it, if you like."/>
+								<embed id="test_embed" component="rkward::plot_options" as_button="true"/>
+							</frame>
+						</content>
+						<optioncolumn id="var" label="test" external="true" connect="test_embed.xvar"/>
+						<optioncolumn id="varname" label="Varname" external="true"/>
+						<optioncolumn id="ca" label="Comment A" connect="commenta.text"/>
+						<optioncolumn id="cb" connect="commentb.text"/>
+						<optioncolumn id="plotoption_printout" connect="test_embed.code.printout"/>
+						<optioncolumn id="plotoption_pre" connect="test_embed.code.preprocess"/>
+					</optionset>
+				</row>
+			</tab>
+		</tabbook>
+	</dialog>
+</document> 

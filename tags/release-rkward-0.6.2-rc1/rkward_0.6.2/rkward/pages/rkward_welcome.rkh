@@ -1,0 +1,36 @@
+<!DOCTYPE rkhelp>
+<document>
+	<title>Welcome to RKWard</title>
+
+	<summary>
+	This help page gives a rough overview of the most important parts of RKWard.
+
+	By default, this page is shown each time RKWard is started. You can disable or re-enable this behavior under Settings->Configure RKWard->General.
+	</summary>
+
+	<section title="Introduction to RKWard" id="introduction">
+	RKWard is a GUI frontend and IDE to <link href="http://www.r-project.org">R</link>, a powerful scripting language for statistical computing. It aims to provide useful features both to experienced users of R, wishing to exploit R's scripting capabilities, as well as to users new to R, looking for an easy way to carry out statistical computation tasks.
+	</section>
+
+	<section title="Getting Started" id="getting_started">
+	Due to the large differences in prior knowledge of R, we provide two different guides for getting started with RKWard. The first is aimed at users with some knowledge of the R language, and focuses on introducing the IDE features of RKWard: <link href="rkward://page/rkward_for_r_users" />.
+
+	The second gives a more hands on introduction to getting started with RKWard, but does not go quite as deep. If you have never used R or RKWard before, you should start with this guide, then later read the above page link: <link href="rkward://page/rkward_for_new_users" />.
+	</section>
+
+	<section title="General Information" id="further_info">
+	For more general information on RKWard, who writes it, how to help, further questions, etc. refer to <link href="http://rkward.sourceforge.net/">the project homepage</link>.
+	</section>
+
+	<section title="For Developers" id="rkward_devs">
+	For more information on RKWard, mainly of interest to developers see <link href="rkward://page/rkward_for_rkward_devs">page for developers</link>.
+	</section>
+
+	<section title="Trouble Shooting" id="Trouble Shooting">
+	If you encounter problems please feel free to search in <link href="rkward://page/rkward_trouble_shooting">Trouble Shooting</link> first.
+	</section>
+
+	<section title="Missing something?" id="missing_something">
+	Are you missing a particular GUI dialog in the current menu? Check out the <link href="help:rkwardplugins">Introduction to Writing Plugins for RKWard</link> to learn how easy it is to enhance RKWard with your custom dialogs. And if you like, how to share your work with the community of RKWard users.
+	</section>
+</document>

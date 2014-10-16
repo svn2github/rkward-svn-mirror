@@ -1,0 +1,40 @@
+<!DOCTYPE kpartgui>
+<kpartgui name="rkward_commandeditor" version="54">
+	<MenuBar>
+		<Menu name="edit"><text>&amp;Edit</text>
+			<Menu name="tools" group="edit_first_merge"><text>&amp;Tools Move</text>
+				<Merge/>
+			</Menu>
+			<Action name="mark_block" group="edit_select_merge"/>
+			<Action name="unmark_block" group="edit_select_merge"/>
+		</Menu>
+		<Menu name="run"><text>&amp;Run</text>
+			<Action name="run_block" group="postrun_actions_merge"/>
+			<Separator group="postrun_actions_merge"/>
+			<Action name="setwd_to_script" group="postrun_actions_merge"/>
+		</Menu>
+		<Menu name="settings"><text>&amp;Settings</text>
+			<Action name="configure_commandeditor"></Action>
+		</Menu>
+	</MenuBar>
+
+	<ToolBar fullWidth="true" name="mdiToolBar">
+		<Separator group="posttoolbar_actions_merge"/>
+		<Action name="run_block" group="posttoolbar_actions_merge"/>
+		<Action name="setwd_to_script" group="posttoolbar_actions_merge"/>
+	</ToolBar>
+
+	<Menu name="ktexteditor_popup">
+		<Merge/>
+		<Action name="mark_block"/>
+		<Action name="unmark_block"/>
+		<Menu name="run"><text>&amp;Run</text>
+			<DefineGroup name="run_actions_merge"/>
+			<Action name="run_block"/>
+			<Separator/>
+			<Action name="setwd_to_script"/>
+		</Menu>
+		<Separator/>
+		<DefineGroup name="ktexteditor_popup_merge2"/>
+	</Menu>
+</kpartgui>
