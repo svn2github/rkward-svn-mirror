@@ -1,5 +1,11 @@
 PROJECT(rkward)
 
+MESSAGE(FATAL_ERROR 
+"   
+The RKWard source repository has moved, and you are trying to build using the old location.
+This SVN repository will no longer receive any updates. Get the current source repository from:
+  git clone git://anongit.kde.org/rkward.git")
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4)	# KDElibs seems to need 2.6, though
 
 IF(NOT CMAKE_VERBOSE_MAKEFILE)
